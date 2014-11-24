@@ -10,12 +10,12 @@ import java.util.*;
 
 public class VirksomhetCertificateChainValidator implements DifiSecurityValidator {
     private DifiKeyStoreUtil difiKeystoreUtil;
-    private AcceptpedCertificatePolicyProvoider policyProvider;
+    private AcceptedCertificatePolicyProvider policyProvider;
 
     public VirksomhetCertificateChainValidator() {
     }
 
-    public VirksomhetCertificateChainValidator(DifiKeyStoreUtil difiKeystoreUtil, AcceptpedCertificatePolicyProvoider policyProvider) {
+    public VirksomhetCertificateChainValidator(DifiKeyStoreUtil difiKeystoreUtil, AcceptedCertificatePolicyProvider policyProvider) {
         this.difiKeystoreUtil = difiKeystoreUtil;
         this.policyProvider = policyProvider;
     }

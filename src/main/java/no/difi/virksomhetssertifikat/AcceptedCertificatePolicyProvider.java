@@ -3,10 +3,10 @@ package no.difi.virksomhetssertifikat;
 import java.util.Arrays;
 import java.util.List;
 
-public class AcceptpedCertificatePolicyProvoider {
+public class AcceptedCertificatePolicyProvider {
     private List<String> list;
 
-    public AcceptpedCertificatePolicyProvoider(String... args) {
+    public AcceptedCertificatePolicyProvider(String... args) {
         list = Arrays.asList(args);
     }
 

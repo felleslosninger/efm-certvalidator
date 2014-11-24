@@ -93,6 +93,6 @@ public class VirksomhetRevocationStatusValidatorTests extends X509TestGenerator 
     }
 
     private DifiKeyStoreUtil createKeyStoreUtil() {
-        return new DifiKeyStoreUtil(getClass().getResourceAsStream("classpath:/config/cacserts.jks"), "changeit", "JKS", getClass().getResourceAsStream("classpath:/config/intermediate.jks"), "changeit", "JKS");
+        return new DifiKeyStoreUtil("classpath:/config/cacserts.jks", "changeit", "JKS", "classpath:/config/intermediate.jks", "changeit", "JKS");
     }
 }
