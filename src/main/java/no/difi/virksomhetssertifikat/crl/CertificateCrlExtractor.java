@@ -34,7 +34,7 @@ public class CertificateCrlExtractor {
         return urls;
     }
 
-    private Collection<? extends String> getDistributionUrls(X509Certificate cert) throws IOException {
+    public static Collection<? extends String> getDistributionUrls(X509Certificate cert) throws IOException {
         ArrayList<String> urls = new ArrayList<String>();
 
         byte[] cdp = cert.getExtensionValue(X509Extensions.CRLDistributionPoints.getId());
@@ -66,7 +66,7 @@ public class CertificateCrlExtractor {
                 throw e;
             }
         }else{
-            throw new IllegalArgumentException("No extention specifying distribution point:" + cert);
+            throw new IllegalArgumentException("No extension specifying distribution point:" + cert);
         }
 
         return urls;

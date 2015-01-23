@@ -39,35 +39,15 @@ public class CrlDownloader {
 
     public List<File> downloadValidateAndSave(HashSet<String> urls) throws CRLException, IOException, CertificateException {
         boolean fileWriten = false;
-        CertificateFactory certificatefactory = CertificateFactory.getInstance("X.509");
         ArrayList<File> files = new ArrayList<File>(urls.size());
         for(String url: urls){
 
-            InputStream inputStream = new URL(url).openStream();
-            byte[] bytes = IOUtils.toByteArray(inputStream);
-            ByteArrayInputStream byteInputStream = new ByteArrayInputStream(bytes);
-            try{
-            Collection<? extends CRL> crls = certificatefactory.generateCRLs(byteInputStream);
-            if (crls.isEmpty()) {
-                LOG.warn("The crl url " + url + " responded with a crl containing no (zero) crl definitions");
-            } else {
-                byteInputStream.reset();
+            File file;
 
-                File crl = new File(crlDownloadPath, urlToFilename(url));
-                crl.createNewFile();
-                FileOutputStream randomFile = new FileOutputStream(crl);
-                try{
-                    IOUtils.copy(byteInputStream, randomFile);
-                }finally {
-                    IOUtils.closeQuietly(randomFile);
-                }
-                files.add(crl);
-
+            file = downloadValidateCrl(url);
+            if(file != null){
+                files.add(file);
                 fileWriten = true;
-            }
-            }finally {
-                IOUtils.closeQuietly(inputStream);
-                IOUtils.closeQuietly(byteInputStream);
             }
         }
 
@@ -78,13 +58,48 @@ public class CrlDownloader {
         return files;
     }
 
+    public File downloadValidateCrl(String url) throws CertificateException, IOException, CRLException{
+        CertificateFactory certificatefactory = CertificateFactory.getInstance("X.509");
+        InputStream inputStream = new URL(url).openStream();
+        byte[] bytes = IOUtils.toByteArray(inputStream);
+        ByteArrayInputStream byteInputStream = new ByteArrayInputStream(bytes);
+        try{
+            Collection<? extends CRL> crls = certificatefactory.generateCRLs(byteInputStream);
+            if (crls.isEmpty()) {
+                LOG.warn("The crl url " + url + " responded with a crl containing no (zero) crl definitions");
+            } else {
+                byteInputStream.reset();
+
+                File crl = new File(crlDownloadPath, FileCrlLoader.urlToFilename(url));
+                crl.createNewFile();
+                File urlFile = new File(crlDownloadPath, FileCrlLoader.urlToFilename(url) + ".url");
+                urlFile.createNewFile();
+                FileOutputStream file = new FileOutputStream(crl);
+                FileOutputStream urlFileStream = new FileOutputStream(urlFile);
+
+                try{
+                    IOUtils.write(url, urlFileStream);
+                    IOUtils.copy(byteInputStream, file);
+                }finally {
+                    IOUtils.closeQuietly(file);
+                    IOUtils.closeQuietly(urlFileStream);
+                }
+                return crl;
+            }
+        }finally {
+            IOUtils.closeQuietly(inputStream);
+            IOUtils.closeQuietly(byteInputStream);
+        }
+
+        //TODO: better error handling
+        return null;
+    }
+
     private void updateTimestamp() throws IOException {
         File crl = new File(crlDownloadPath, "timestamp");
         crl.createNewFile();
         FileUtils.writeStringToFile(crl, Long.toString(DateTime.now().getMillis()));
     }
 
-    public String urlToFilename(String url) {
-        return url.replace(":", "").replace("/", "-");
-    }
+
 }
