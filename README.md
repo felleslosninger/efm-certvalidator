@@ -9,8 +9,9 @@ private nøkkelen. Besittelse av den private nøkkelen vil i PKI- og virksomhets
 at avsender er den den utgir seg for å være.
 
 For å være sikker på at avsender har privatnøkkelen må man sjekke at
-  # sertifikatet er korrekt, gyldig og utstedt av noen man stoler på.
-  # At meldingen man mottar er signert av privatnøkklen(kontrollert med den offentlige nøkkelen)
+
+  * sertifikatet er korrekt, gyldig og utstedt av noen man stoler på.
+  * At meldingen man mottar er signert av privatnøkklen(kontrollert med den offentlige nøkkelen)
 
 Hvis begge punktene er i orden vil man kunne stole på innholdet i sertifikatet og klienten. Hvis en av punktene eller
 deler av punktene ikke holder åpner man for angrep.
