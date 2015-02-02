@@ -32,6 +32,9 @@ public class DifiKeyStoreUtil {
     public KeyStore loadCaCertsKeystore() throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
         KeyStore jks = KeyStore.getInstance(cacertsType);
         InputStream is = toInputStream(caResource);
+        if (is == null) {
+            throw new IOException("CA certificate can't be read from " + intermediateResource);
+        }
         jks.load(is, caPassword.toCharArray());
         is.close();
         return jks;
@@ -40,6 +43,9 @@ public class DifiKeyStoreUtil {
     public KeyStore loadIntermediateCertsKeystore() throws CertificateException, NoSuchAlgorithmException, IOException, KeyStoreException {
         KeyStore jks = KeyStore.getInstance(intermediateType);
         InputStream is = toInputStream(intermediateResource);
+        if (is == null) {
+            throw new IOException("Intermediate Certificate can't be read from " + intermediateResource);
+        }
         jks.load(is, intermediatePassword.toCharArray());
         is.close();
         return jks;
@@ -47,9 +53,9 @@ public class DifiKeyStoreUtil {
     }
 
     protected InputStream toInputStream(String intermediateResource) throws IOException {
-        if(intermediateResource.startsWith("file:"))
+        if (intermediateResource.startsWith("file:"))
             return FileUtils.openInputStream(new File(intermediateResource.replace("file:", "")));
-        else if(intermediateResource.startsWith("classpath:"))
+        else if (intermediateResource.startsWith("classpath:"))
             return this.getClass().getResourceAsStream(intermediateResource.replace("classpath:", ""));
         else
             throw new UnsupportedOperationException("Cant load keystore from, " + intermediateResource);
