@@ -32,9 +32,6 @@ public class DifiKeyStoreUtil {
     public KeyStore loadCaCertsKeystore() throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
         KeyStore jks = KeyStore.getInstance(cacertsType);
         InputStream is = toInputStream(caResource);
-        if (is == null) {
-            throw new IOException("CA certificate can't be read from " + intermediateResource);
-        }
         jks.load(is, caPassword.toCharArray());
         is.close();
         return jks;
@@ -43,22 +40,23 @@ public class DifiKeyStoreUtil {
     public KeyStore loadIntermediateCertsKeystore() throws CertificateException, NoSuchAlgorithmException, IOException, KeyStoreException {
         KeyStore jks = KeyStore.getInstance(intermediateType);
         InputStream is = toInputStream(intermediateResource);
-        if (is == null) {
-            throw new IOException("Intermediate Certificate can't be read from " + intermediateResource);
-        }
         jks.load(is, intermediatePassword.toCharArray());
         is.close();
         return jks;
 
     }
 
-    protected InputStream toInputStream(String intermediateResource) throws IOException {
-        if (intermediateResource.startsWith("file:"))
-            return FileUtils.openInputStream(new File(intermediateResource.replace("file:", "")));
-        else if (intermediateResource.startsWith("classpath:"))
-            return this.getClass().getResourceAsStream(intermediateResource.replace("classpath:", ""));
-        else
-            throw new UnsupportedOperationException("Cant load keystore from, " + intermediateResource);
+    protected InputStream toInputStream(String resource) throws IOException {
+        if (resource.startsWith("file:"))
+            return FileUtils.openInputStream(new File(resource.replace("file:", "")));
+        else if (resource.startsWith("classpath:")) {
+            InputStream inputStream = this.getClass().getResourceAsStream(resource.replace("classpath:", ""));
+            if (inputStream == null) {
+                throw new IOException("Cant read classpath resource from " + resource);
+            }
+            return inputStream;
+        } else
+            throw new UnsupportedOperationException("Cant load keystore from, " + resource + ", missing file: or classpath: prefix");
     }
 
 }
