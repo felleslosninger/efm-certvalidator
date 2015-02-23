@@ -61,14 +61,14 @@ public class CrlDownloader {
         InputStream inputStream = null;
         ByteArrayInputStream byteInputStream = null;
         try{
-            LOG.debug("Downloading CRL url "+ url);
+            LOG.info("Downloading CRL url "+ url);
             CertificateFactory certificatefactory = CertificateFactory.getInstance("X.509");
             inputStream = new URL(url).openStream();
             byte[] bytes = IOUtils.toByteArray(inputStream);
             byteInputStream = new ByteArrayInputStream(bytes);
             Collection<? extends CRL> crls = certificatefactory.generateCRLs(byteInputStream);
             if (crls.isEmpty()) {
-                LOG.warn("The crl url " + url + " responded with a crl containing no (zero) crl definitions");
+                LOG.warn("The CRL url " + url + " responded with a crl containing no (zero) CRL definitions");
             } else {
                 byteInputStream.reset();
 
@@ -89,7 +89,7 @@ public class CrlDownloader {
                 return crl;
             }
         } catch (Exception e) {
-            LOG.error("Failed to download CRL " + url, e);
+            LOG.error("Failed to download and save CRL " + url, e);
         } finally {
             IOUtils.closeQuietly(inputStream);
             IOUtils.closeQuietly(byteInputStream);
