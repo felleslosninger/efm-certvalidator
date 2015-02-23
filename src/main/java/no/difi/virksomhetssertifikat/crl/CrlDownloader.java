@@ -41,7 +41,6 @@ public class CrlDownloader {
         boolean fileWriten = false;
         ArrayList<File> files = new ArrayList<File>(urls.size());
         for(String url: urls){
-
             File file;
 
             file = downloadValidateCrl(url);
@@ -59,11 +58,14 @@ public class CrlDownloader {
     }
 
     public File downloadValidateCrl(String url) throws CertificateException, IOException, CRLException{
-        CertificateFactory certificatefactory = CertificateFactory.getInstance("X.509");
-        InputStream inputStream = new URL(url).openStream();
-        byte[] bytes = IOUtils.toByteArray(inputStream);
-        ByteArrayInputStream byteInputStream = new ByteArrayInputStream(bytes);
+        InputStream inputStream = null;
+        ByteArrayInputStream byteInputStream = null;
         try{
+            LOG.debug("Downloading CRL url "+ url);
+            CertificateFactory certificatefactory = CertificateFactory.getInstance("X.509");
+            inputStream = new URL(url).openStream();
+            byte[] bytes = IOUtils.toByteArray(inputStream);
+            byteInputStream = new ByteArrayInputStream(bytes);
             Collection<? extends CRL> crls = certificatefactory.generateCRLs(byteInputStream);
             if (crls.isEmpty()) {
                 LOG.warn("The crl url " + url + " responded with a crl containing no (zero) crl definitions");
@@ -86,12 +88,12 @@ public class CrlDownloader {
                 }
                 return crl;
             }
-        }finally {
+        } catch (Exception e) {
+            LOG.error("Failed to download CRL " + url, e);
+        } finally {
             IOUtils.closeQuietly(inputStream);
             IOUtils.closeQuietly(byteInputStream);
         }
-
-        //TODO: better error handling
         return null;
     }
 

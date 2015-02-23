@@ -46,13 +46,17 @@ public class DifiKeyStoreUtil {
 
     }
 
-    protected InputStream toInputStream(String intermediateResource) throws IOException {
-        if(intermediateResource.startsWith("file:"))
-            return FileUtils.openInputStream(new File(intermediateResource.replace("file:", "")));
-        else if(intermediateResource.startsWith("classpath:"))
-            return this.getClass().getResourceAsStream(intermediateResource.replace("classpath:", ""));
-        else
-            throw new UnsupportedOperationException("Cant load keystore from, " + intermediateResource);
+    protected InputStream toInputStream(String resource) throws IOException {
+        if (resource.startsWith("file:"))
+            return FileUtils.openInputStream(new File(resource.replace("file:", "")));
+        else if (resource.startsWith("classpath:")) {
+            InputStream inputStream = this.getClass().getResourceAsStream(resource.replace("classpath:", ""));
+            if (inputStream == null) {
+                throw new IOException("Cant read classpath resource from " + resource);
+            }
+            return inputStream;
+        } else
+            throw new UnsupportedOperationException("Cant load keystore from, " + resource + ", missing file: or classpath: prefix");
     }
 
 }

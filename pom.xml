@@ -4,7 +4,7 @@
     <groupId>no.difi</groupId>
     <artifactId>Virksomhetssertifikatvalidator</artifactId>
     <packaging>jar</packaging>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1.1-SNAPSHOT</version>
     <name>Virksomhetssertifikatvalidator</name>
     <url>http://www.difi.no</url>
 
