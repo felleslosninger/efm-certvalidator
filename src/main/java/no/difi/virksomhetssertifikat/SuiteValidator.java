@@ -1,16 +1,22 @@
 package no.difi.virksomhetssertifikat;
 
+import no.difi.virksomhetssertifikat.api.CertificateValidator;
+import no.difi.virksomhetssertifikat.api.CertificateValidationException;
+
 import java.security.cert.X509Certificate;
 
-public class ValidatorSuite implements CertificateValidator {
+/**
+ * Combine multiple validators into one validator.
+ */
+public class SuiteValidator implements CertificateValidator {
 
     private CertificateValidator[] certificateValidators;
 
-    public ValidatorSuite(CertificateValidator... certificateValidators) {
+    public SuiteValidator(CertificateValidator... certificateValidators) {
         this.certificateValidators = certificateValidators;
     }
 
-    public boolean isValid(X509Certificate cert) throws VirksomhetsValidationException {
+    public boolean isValid(X509Certificate cert) throws CertificateValidationException {
         for (CertificateValidator certificateValidator : certificateValidators)
             if (!certificateValidator.isValid(cert))
                 return false;
