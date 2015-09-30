@@ -26,7 +26,6 @@ public class VirksomheCriticalOidValidatorTest extends X509TestGenerator {
     public void shouldValidateCertWithApprovedCriticalExtentions() throws Exception {
         VirksomheCriticalOidValidator validator = new VirksomheCriticalOidValidator("2.10.2");
         X509Certificate cert = createX509Certificate(new X509ExtensionCustom() {
-            @Override
             public void setup(X509v3CertificateBuilder v3CertGen) throws CertIOException {
                 v3CertGen.addExtension(new ASN1ObjectIdentifier("2.10.2"), true, new byte[3]);
             }
@@ -41,7 +40,6 @@ public class VirksomheCriticalOidValidatorTest extends X509TestGenerator {
         String approvedExtentionList = "2.10.2";
         VirksomheCriticalOidValidator validator = new VirksomheCriticalOidValidator(approvedExtentionList);
         X509Certificate cert = createX509Certificate(new X509ExtensionCustom() {
-            @Override
             public void setup(X509v3CertificateBuilder v3CertGen) throws CertIOException {
                 String notApprovedExtention = "2.10.6";
                 boolean CRITICAL = true;

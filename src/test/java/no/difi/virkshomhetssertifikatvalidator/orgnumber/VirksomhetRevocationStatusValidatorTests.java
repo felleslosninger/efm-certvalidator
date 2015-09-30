@@ -32,7 +32,6 @@ public class VirksomhetRevocationStatusValidatorTests extends X509TestGenerator 
         Mockito.when(validator.getDifiKeyStoreUtil()).thenReturn(Mockito.mock(DifiKeyStoreUtil.class));
 
         assertTrue(validator.isValid(cert));
-
     }
 
     @Test
@@ -66,23 +65,18 @@ public class VirksomhetRevocationStatusValidatorTests extends X509TestGenerator 
         VirksomhetRevocationOCSPStatusValidator validator = Mockito.mock(VirksomhetRevocationOCSPStatusValidator.class);
         Mockito.when(validator.isValid(Matchers.any(X509Certificate.class))).thenCallRealMethod();
         Mockito.when(validator.getRevocationStatus(Matchers.eq(cert), Matchers.any(X509Certificate.class))).thenReturn(new OCSP.RevocationStatus() {
-            @Override
             public CertStatus getCertStatus() {
-
                 return status;
             }
 
-            @Override
             public Date getRevocationTime() {
                 return new Date();
             }
 
-            @Override
             public CRLReason getRevocationReason() {
                 return null;
             }
 
-            @Override
             public Map<String, Extension> getSingleExtensions() {
                 return null;
             }

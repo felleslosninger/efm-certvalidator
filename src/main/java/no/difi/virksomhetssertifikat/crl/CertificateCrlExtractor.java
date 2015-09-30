@@ -1,10 +1,10 @@
 package no.difi.virksomhetssertifikat.crl;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.x509.*;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.security.KeyStore;
@@ -18,7 +18,8 @@ import java.util.Enumeration;
  * Utility for å hente ut crl url fra et sertifikat.
  */
 public class CertificateCrlExtractor {
-    private static final Log LOG = LogFactory.getLog(CertificateCrlExtractor.class.getName());
+
+    private static Logger logger = LoggerFactory.getLogger(CertificateCrlExtractor.class);
 
     public ArrayList<String> extractAllPossibleCRLUrls(KeyStore ks) throws KeyStoreException, IOException {
         Enumeration<String> aliases = ks.aliases();
@@ -28,7 +29,7 @@ public class CertificateCrlExtractor {
             try{
                 urls.addAll(getDistributionUrls(cert));
             }catch(IllegalArgumentException e){
-                LOG.info("Cant extract CRL from cert:" + cert.toString());
+                logger.info("Cant extract CRL from cert:" + cert.toString());
             }
         }
         return urls;

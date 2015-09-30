@@ -5,11 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class VirksomheCriticalOidValidator implements DifiSecurityValidator {
+public class VirksomheCriticalOidValidator implements CertificateValidator {
     private List<String> approvedOids;
-
-    public VirksomheCriticalOidValidator() {
-    }
 
     public VirksomheCriticalOidValidator(String... approvedOids) {
         this.approvedOids = Arrays.asList(approvedOids);
@@ -27,7 +24,6 @@ public class VirksomheCriticalOidValidator implements DifiSecurityValidator {
         return true;
     }
 
-    @Override
     public String faultMessage(X509Certificate cert) {
         return "Certificate has critical extentions that isnt handled";
     }

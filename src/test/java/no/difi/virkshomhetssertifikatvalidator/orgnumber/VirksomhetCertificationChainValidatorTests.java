@@ -21,7 +21,6 @@ public class VirksomhetCertificationChainValidatorTests extends X509TestGenerato
 
     @Test(expected = VirksomhetsValidationException.class)
     public void shouldRejectACertificateThatIsntSigned() throws NoSuchAlgorithmException, SignatureException, InvalidKeyException, CertificateException, KeyStoreException, IOException, OperatorCreationException, VirksomhetsValidationException {
-
         X509Certificate issuer = createX509Certificate();
 
         VirksomhetCertificateChainValidator validator = Mockito.mock(VirksomhetCertificateChainValidator.class);
@@ -32,5 +31,4 @@ public class VirksomhetCertificationChainValidatorTests extends X509TestGenerato
 
         validator.isValid(cert);
     }
-
 }

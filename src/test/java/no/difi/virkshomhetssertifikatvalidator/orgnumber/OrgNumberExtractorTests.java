@@ -25,7 +25,6 @@ public class OrgNumberExtractorTests extends X509TestGenerator {
         Assert.assertEquals(ORGNR, orgNr);
     }
 
-
     @Test
     public void shouldExtractOrgnumberFromCertBasedOnOrgNumberInOrganiation() throws NoSuchAlgorithmException, SignatureException, InvalidKeyException, CertificateException, CertIOException, OperatorCreationException {
         String ORGNR = "123456789";
@@ -44,6 +43,4 @@ public class OrgNumberExtractorTests extends X509TestGenerator {
 
         Assert.assertEquals(ORGNR, orgNr);
     }
-
-
 }

@@ -8,7 +8,7 @@ import java.security.cert.*;
 import java.util.*;
 
 
-public class VirksomhetCertificateChainValidator implements DifiSecurityValidator {
+public class VirksomhetCertificateChainValidator implements CertificateValidator {
     private DifiKeyStoreUtil difiKeystoreUtil;
     private AcceptedCertificatePolicyProvider policyProvider;
 
@@ -62,7 +62,6 @@ public class VirksomhetCertificateChainValidator implements DifiSecurityValidato
 
     }
 
-    @Override
     public String faultMessage(X509Certificate cert) {
         return "Certificate chain not valid";
     }

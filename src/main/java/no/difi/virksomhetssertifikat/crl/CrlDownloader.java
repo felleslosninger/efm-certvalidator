@@ -3,9 +3,8 @@ package no.difi.virksomhetssertifikat.crl;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.URL;
@@ -28,7 +27,7 @@ import java.util.List;
  * blir oppdatert hvis _en_ av crlene kan lastes ned og validers.
  */
 public class CrlDownloader {
-    private static final Log LOG = LogFactory.getLog(CrlDownloader.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(CrlDownloader.class);
 
     private String crlDownloadPath;
 
@@ -61,14 +60,14 @@ public class CrlDownloader {
         InputStream inputStream = null;
         ByteArrayInputStream byteInputStream = null;
         try{
-            LOG.info("Downloading CRL url "+ url);
+            logger.info("Downloading CRL url " + url);
             CertificateFactory certificatefactory = CertificateFactory.getInstance("X.509");
             inputStream = new URL(url).openStream();
             byte[] bytes = IOUtils.toByteArray(inputStream);
             byteInputStream = new ByteArrayInputStream(bytes);
             Collection<? extends CRL> crls = certificatefactory.generateCRLs(byteInputStream);
             if (crls.isEmpty()) {
-                LOG.warn("The CRL url " + url + " responded with a crl containing no (zero) CRL definitions");
+                logger.warn("The CRL url " + url + " responded with a crl containing no (zero) CRL definitions");
             } else {
                 byteInputStream.reset();
 
@@ -89,7 +88,7 @@ public class CrlDownloader {
                 return crl;
             }
         } catch (Exception e) {
-            LOG.error("Failed to download and save CRL " + url, e);
+            logger.error("Failed to download and save CRL " + url, e);
         } finally {
             IOUtils.closeQuietly(inputStream);
             IOUtils.closeQuietly(byteInputStream);
@@ -100,7 +99,7 @@ public class CrlDownloader {
     private void updateTimestamp() throws IOException {
         File crl = new File(crlDownloadPath, "timestamp");
         crl.createNewFile();
-        FileUtils.writeStringToFile(crl, Long.toString(DateTime.now().getMillis()));
+        FileUtils.writeStringToFile(crl, Long.toString(System.currentTimeMillis()));
     }
 
 

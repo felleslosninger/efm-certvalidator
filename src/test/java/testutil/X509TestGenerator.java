@@ -44,7 +44,7 @@ public abstract  class X509TestGenerator {
         PublicKey RSAPubKey = keyPair.getPublic();
         PrivateKey RSAPrivateKey = keyPair.getPrivate();
 
-        X500Name issuerName = null;
+        X500Name issuerName;
         if(issuer != null)
             issuerName = new X500Name(issuer.getSubjectX500Principal().getName());
         else
@@ -86,15 +86,12 @@ public abstract  class X509TestGenerator {
         return createX509Certificate(s, null, DateTime.now().minusYears(1).toDate(), DateTime.now().plusYears(1).toDate());
     }
 
-
     protected X509Certificate constructCertWithCertificatePolicie(final String policie) throws NoSuchAlgorithmException, SignatureException, InvalidKeyException, CertificateException, CertIOException, OperatorCreationException {
         return createX509Certificate(new X509ExtensionCustom() {
-                @Override
                 public void setup(X509v3CertificateBuilder v3CertGen) throws CertIOException {
-
                     v3CertGen.addExtension(Extension.certificatePolicies, true, new CertificatePolicies(new PolicyInformation(new ASN1ObjectIdentifier(policie))));
-
                 }
-            });
+            }
+        );
     }
 }

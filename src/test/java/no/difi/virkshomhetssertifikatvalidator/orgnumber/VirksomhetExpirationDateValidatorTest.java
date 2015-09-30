@@ -20,8 +20,6 @@ import static junit.framework.Assert.assertTrue;
 
 public class VirksomhetExpirationDateValidatorTest extends X509TestGenerator {
 
-
-
     @Test
     public void shouldValidateAValidCertificate() throws NoSuchAlgorithmException, SignatureException, InvalidKeyException, CertificateException, CertIOException, OperatorCreationException {
         VirksomhetExpirationDateValidator validator = new VirksomhetExpirationDateValidator();
@@ -48,7 +46,4 @@ public class VirksomhetExpirationDateValidatorTest extends X509TestGenerator {
 
         assertFalse(validator.isValid(cert));
     }
-
-
-
 }
