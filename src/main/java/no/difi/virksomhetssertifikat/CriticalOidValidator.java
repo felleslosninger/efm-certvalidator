@@ -21,14 +21,15 @@ public class CriticalOidValidator implements CertificateValidator {
         this.approvedOids = Arrays.asList(approvedOids);
     }
 
-    public void validate(X509Certificate cert) throws CertificateValidationException {
+    @Override
+    public void validate(X509Certificate certificate) throws CertificateValidationException {
         // TODO Burde ikke mangel på oids ende med feilet test?
-        if(cert.getCriticalExtensionOIDs() == null)
+        if(certificate.getCriticalExtensionOIDs() == null)
             return;
 
-        for(String oid : cert.getCriticalExtensionOIDs()){
+        for(String oid : certificate.getCriticalExtensionOIDs()){
             if(!approvedOids.contains(oid)) {
-                logger.debug("Certificate doesn't contain critical OID '{}'. ({})", oid, cert.getSerialNumber());
+                logger.debug("Certificate doesn't contain critical OID '{}'. ({})", oid, certificate.getSerialNumber());
                 throw new FailedValidationException(String.format("Certificate doesn't contain critical OID '%s'.", oid));
             }
         }

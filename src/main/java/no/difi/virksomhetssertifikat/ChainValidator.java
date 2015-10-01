@@ -23,7 +23,8 @@ public class ChainValidator implements CertificateValidator {
         this.policyProvider = policyProvider;
     }
 
-    public void validate(X509Certificate cert) throws CertificateValidationException {
+    @Override
+    public void validate(X509Certificate certificate) throws CertificateValidationException {
         CertPath certPath;
         CertStore intermadiate;
         Set<TrustAnchor> trustAnchors;
@@ -33,7 +34,7 @@ public class ChainValidator implements CertificateValidator {
             ));
 
             trustAnchors = getTrustAnchors(difiKeystoreUtil.loadCaCertsKeystore());
-            certPath = getCertPath(trustAnchors, intermadiate, cert );
+            certPath = getCertPath(trustAnchors, intermadiate, certificate);
         }catch(Exception e){
             throw new CertificateValidationException("Could not build trusted certificate path", e);
         }

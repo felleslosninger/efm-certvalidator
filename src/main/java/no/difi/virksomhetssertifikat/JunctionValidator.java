@@ -18,14 +18,18 @@ public class JunctionValidator implements CertificateValidator {
     }
 
     @Override
-    public void validate(X509Certificate cert) throws CertificateValidationException {
+    public void validate(X509Certificate certificate) throws CertificateValidationException {
         switch (kind) {
             case AND:
-                validateAND(cert);
+                validateAND(certificate);
                 break;
 
             case OR:
-                validateOR(cert);
+                validateOR(certificate);
+                break;
+
+            case XOR:
+                validateXOR(certificate);
                 break;
         }
     }
@@ -55,7 +59,29 @@ public class JunctionValidator implements CertificateValidator {
         throw new CertificateValidationException(stringBuilder.toString());
     }
 
+    private void validateXOR(X509Certificate certificate) throws CertificateValidationException {
+        List<CertificateValidationException> exceptions = new ArrayList<>();
+
+        for (CertificateValidator certificateValidator : certificateValidators) {
+            try {
+                certificateValidator.validate(certificate);
+                return;
+            } catch (CertificateValidationException e) {
+                exceptions.add(e);
+            }
+        }
+
+        if (exceptions.size() != certificateValidators.length - 1) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(String.format("Xor-junction failed with results (%s of %s):", exceptions.size(), certificateValidators.length));
+            for (Exception e : exceptions)
+                stringBuilder.append("\n* ").append(e.getMessage());
+
+            throw new CertificateValidationException(stringBuilder.toString());
+        }
+    }
+
     public enum Kind {
-        AND, OR
+        AND, OR, XOR
     }
 }

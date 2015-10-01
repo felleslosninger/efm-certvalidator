@@ -33,13 +33,14 @@ public class OCSPStatusValidator implements CertificateValidator {
         this.difiKeyStoreUtil = difiKeyStoreUtil;
     }
 
-    public void validate(X509Certificate cert) throws CertificateValidationException {
+    @Override
+    public void validate(X509Certificate certificate) throws CertificateValidationException {
         try {
             KeyStore ks = getDifiKeyStoreUtil().loadCaCertsKeystore();
 
-            X509Certificate issuer = getCertsIssuerCertificate(ks, cert.getIssuerX500Principal());
+            X509Certificate issuer = getCertsIssuerCertificate(ks, certificate.getIssuerX500Principal());
 
-            OCSP.RevocationStatus status = getRevocationStatus(cert, issuer);
+            OCSP.RevocationStatus status = getRevocationStatus(certificate, issuer);
 
             if (!status.getCertStatus().equals(OCSP.RevocationStatus.CertStatus.GOOD))
                 throw new FailedValidationException("Certificate status is not reported as GOOD by OCSP.");

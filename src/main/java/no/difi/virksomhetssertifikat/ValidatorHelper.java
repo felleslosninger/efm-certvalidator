@@ -41,9 +41,9 @@ public class ValidatorHelper implements CertificateValidator {
         validate(getCertificate(certificate));
     }
 
-    public boolean isValid(X509Certificate cert) {
+    public boolean isValid(X509Certificate certificate) {
         try {
-            certificateValidator.validate(cert);
+            certificateValidator.validate(certificate);
             return true;
         } catch (CertificateValidationException e) {
             logger.info(e.getMessage());
@@ -51,9 +51,9 @@ public class ValidatorHelper implements CertificateValidator {
         }
     }
 
-    public boolean isValid(byte[] cert) {
+    public boolean isValid(byte[] certificate) {
         try {
-            return isValid(getCertificate(cert));
+            return isValid(getCertificate(certificate));
         } catch (CertificateValidationException e) {
             logger.debug(e.getMessage(), e);
             return false;

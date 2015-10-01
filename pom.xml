@@ -9,7 +9,12 @@
 
     <name>Virksomhetssertifikatvalidator</name>
     <description>Certificate validator</description>
-    <url>http://www.difi.no/</url>
+    <url>https://github.com/difi/Virksomhetsserifikatvalidator</url>
+
+    <organization>
+        <name>Norwegian Agency for Public Management and eGovernment</name>
+        <url>http://www.difi.no</url>
+    </organization>
 
     <properties>
         <java.encoding>UTF-8</java.encoding>
@@ -86,5 +91,20 @@
                 </configuration>
             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>cobertura-maven-plugin</artifactId>
+                    <version>2.7</version>
+                    <configuration>
+                        <formats>
+                            <format>html</format>
+                            <format>xml</format>
+                        </formats>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>
