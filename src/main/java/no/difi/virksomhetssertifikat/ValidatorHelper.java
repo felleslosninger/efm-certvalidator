@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -37,6 +38,10 @@ public class ValidatorHelper implements CertificateValidator {
         certificateValidator.validate(certificate);
     }
 
+    public void validate(InputStream inputStream) throws CertificateValidationException {
+        validate(getCertificate(inputStream));
+    }
+
     public void validate(byte[] certificate) throws CertificateValidationException {
         validate(getCertificate(certificate));
     }
@@ -51,6 +56,15 @@ public class ValidatorHelper implements CertificateValidator {
         }
     }
 
+    public boolean isValid(InputStream inputStream) {
+        try {
+            return isValid(getCertificate(inputStream));
+        } catch (CertificateValidationException e) {
+            logger.debug(e.getMessage(), e);
+            return false;
+        }
+    }
+
     public boolean isValid(byte[] certificate) {
         try {
             return isValid(getCertificate(certificate));
@@ -61,8 +75,12 @@ public class ValidatorHelper implements CertificateValidator {
     }
 
     protected X509Certificate getCertificate(byte[] cert) throws CertificateValidationException {
+        return getCertificate(new ByteArrayInputStream(cert));
+    }
+
+    protected X509Certificate getCertificate(InputStream inputStream) throws CertificateValidationException {
         try {
-            return (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(cert));
+            return (X509Certificate) certFactory.generateCertificate(inputStream);
         } catch (CertificateException e) {
             throw new CertificateValidationException(e.getMessage(), e);
         }

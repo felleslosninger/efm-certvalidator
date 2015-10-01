@@ -2,12 +2,16 @@ package no.difi.virksomhetssertifikat;
 
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import no.difi.virksomhetssertifikat.api.CertificateValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JunctionValidator implements CertificateValidator {
+
+    private static Logger logger = LoggerFactory.getLogger(JunctionValidator.class);
 
     private Kind kind;
     private CertificateValidator[] certificateValidators;
@@ -56,6 +60,7 @@ public class JunctionValidator implements CertificateValidator {
         for (Exception e : exceptions)
             stringBuilder.append("\n* ").append(e.getMessage());
 
+        logger.debug("{}\n({})", stringBuilder.toString(), certificate.getSerialNumber());
         throw new CertificateValidationException(stringBuilder.toString());
     }
 
@@ -77,6 +82,7 @@ public class JunctionValidator implements CertificateValidator {
             for (Exception e : exceptions)
                 stringBuilder.append("\n* ").append(e.getMessage());
 
+            logger.debug("{}\n({})", stringBuilder.toString(), certificate.getSerialNumber());
             throw new CertificateValidationException(stringBuilder.toString());
         }
     }

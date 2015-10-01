@@ -4,11 +4,19 @@ import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import no.difi.virksomhetssertifikat.api.CertificateValidator;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import no.difi.virksomhetssertifikat.api.PrincipalNameProvider;
+import org.bouncycastle.asn1.x500.AttributeTypeAndValue;
+import org.bouncycastle.asn1.x500.RDN;
+import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x500.style.RFC4519Style;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.security.auth.x500.X500Principal;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class PrincipalNameValidator implements CertificateValidator {
 
@@ -38,31 +46,43 @@ public class PrincipalNameValidator implements CertificateValidator {
 
     @Override
     public void validate(X509Certificate certificate) throws CertificateValidationException {
-        X500Principal current = null;
-        switch (principal) {
-            case SUBJECT:
-                current = certificate.getSubjectX500Principal();
-                break;
+        try {
+            X500Name current = null;
+            switch (principal) {
+                case SUBJECT:
+                    current = new JcaX509CertificateHolder(certificate).getSubject();
+                    break;
 
-            case ISSUER: {
-                current = certificate.getIssuerX500Principal();
-                break;
+                case ISSUER:
+                    current = new JcaX509CertificateHolder(certificate).getIssuer();
+                    break;
             }
-        }
 
-        if (!provider.validate(extract(current, field))) {
+            for (String value : extract(current, field))
+                if (provider.validate(value))
+                    return;
+
             logger.debug("Validation of subject principal({}) failed. ({})", field, certificate.getSerialNumber());
-            throw new FailedValidationException("");
+            throw new FailedValidationException(String.format("Validation of subject principal(%s) failed.", field));
+        } catch (CertificateEncodingException e) {
+            logger.debug("Unable to fetch principal. ({])", certificate.getSerialNumber());
+            throw new FailedValidationException("Unable to fetch principal.", e);
         }
     }
 
-    protected String extract(X500Principal principal, String field) {
+    @SuppressWarnings("all")
+    protected List<String> extract(X500Name principal, String field) {
         if (field == null)
-            return principal.getName();
+            return Arrays.asList(principal.toString());
 
-        // TODO Extract
-        // X500Name.asX500Name(cert.getSubjectX500Principal()).get
-        return null;
+        RFC4519Style.INSTANCE.attrNameToOID(field);
+
+        List<String> values = new ArrayList<>();
+        for (RDN rdn : principal.getRDNs(RFC4519Style.INSTANCE.attrNameToOID(field)))
+            for (AttributeTypeAndValue value : rdn.getTypesAndValues())
+                    values.add(value.getValue().toString());
+
+        return values;
     }
 
     public enum Principal {
