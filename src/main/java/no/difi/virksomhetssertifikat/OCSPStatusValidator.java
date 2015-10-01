@@ -1,6 +1,10 @@
 package no.difi.virksomhetssertifikat;
 
+import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import no.difi.virksomhetssertifikat.api.CertificateValidator;
+import no.difi.virksomhetssertifikat.api.FailedValidationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sun.security.provider.certpath.OCSP;
 
 import javax.security.auth.x500.X500Principal;
@@ -12,6 +16,8 @@ import java.security.cert.X509Certificate;
 import java.util.Enumeration;
 
 public class OCSPStatusValidator implements CertificateValidator {
+
+    private static Logger logger = LoggerFactory.getLogger(OCSPStatusValidator.class);
 
     private DifiKeyStoreUtil difiKeyStoreUtil;
 
@@ -27,7 +33,7 @@ public class OCSPStatusValidator implements CertificateValidator {
         this.difiKeyStoreUtil = difiKeyStoreUtil;
     }
 
-    public boolean isValid(X509Certificate cert) {
+    public void validate(X509Certificate cert) throws CertificateValidationException {
         try {
             KeyStore ks = getDifiKeyStoreUtil().loadCaCertsKeystore();
 
@@ -35,10 +41,13 @@ public class OCSPStatusValidator implements CertificateValidator {
 
             OCSP.RevocationStatus status = getRevocationStatus(cert, issuer);
 
-            return status.getCertStatus().equals(OCSP.RevocationStatus.CertStatus.GOOD);
+            if (!status.getCertStatus().equals(OCSP.RevocationStatus.CertStatus.GOOD))
+                throw new FailedValidationException("Certificate status is not reported as GOOD by OCSP.");
+        } catch (CertificateValidationException e) {
+            throw e;
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            logger.debug(e.getMessage());
+            throw new FailedValidationException(e.getMessage(), e);
         }
     }
 
@@ -58,10 +67,5 @@ public class OCSPStatusValidator implements CertificateValidator {
 
     public OCSP.RevocationStatus getRevocationStatus(X509Certificate cert, X509Certificate issuer) throws IOException, CertPathValidatorException {
         return OCSP.check(cert, issuer);
-    }
-
-    @Override
-    public String faultMessage(X509Certificate cert) {
-        return "Not available";
     }
 }

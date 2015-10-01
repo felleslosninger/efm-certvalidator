@@ -1,7 +1,7 @@
 package no.difi.virksomhetssertifikat;
 
-import no.difi.virksomhetssertifikat.api.CertificateValidator;
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
+import no.difi.virksomhetssertifikat.api.CertificateValidator;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyStore;
@@ -23,7 +23,7 @@ public class ChainValidator implements CertificateValidator {
         this.policyProvider = policyProvider;
     }
 
-    public boolean isValid(X509Certificate cert) throws CertificateValidationException {
+    public void validate(X509Certificate cert) throws CertificateValidationException {
         CertPath certPath;
         CertStore intermadiate;
         Set<TrustAnchor> trustAnchors;
@@ -58,13 +58,13 @@ public class ChainValidator implements CertificateValidator {
 
             PKIXCertPathValidatorResult result = (PKIXCertPathValidatorResult) validator.validate(certPath, params);
 
-            return true;
+            // No exception means success.
         }catch(Exception e){
             throw new CertificateValidationException("Could validate certificate", e);
         }
-
     }
 
+    @Deprecated
     public String faultMessage(X509Certificate cert) {
         return "Certificate chain not valid";
     }

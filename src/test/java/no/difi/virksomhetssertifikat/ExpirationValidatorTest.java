@@ -2,20 +2,17 @@ package no.difi.virksomhetssertifikat;
 
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
+import no.difi.virksomhetssertifikat.testutil.X509TestGenerator;
 import org.bouncycastle.cert.CertIOException;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.joda.time.DateTime;
 import org.junit.Test;
-import no.difi.virksomhetssertifikat.testutil.X509TestGenerator;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
 
 
 
@@ -27,7 +24,7 @@ public class ExpirationValidatorTest extends X509TestGenerator {
 
         X509Certificate cert = createX509Certificate(DateTime.now().minusDays(10).toDate(), DateTime.now().plusDays(10).toDate());
 
-        assertTrue(validator.isValid(cert));
+        validator.validate(cert);
     }
 
     @Test(expected = FailedValidationException.class)
@@ -36,7 +33,7 @@ public class ExpirationValidatorTest extends X509TestGenerator {
 
         X509Certificate cert = createX509Certificate(DateTime.now().minusDays(10).toDate(), DateTime.now().minusDays(2).toDate());
 
-        assertFalse(validator.isValid(cert));
+        validator.validate(cert);
     }
 
     @Test(expected = FailedValidationException.class)
@@ -45,6 +42,6 @@ public class ExpirationValidatorTest extends X509TestGenerator {
 
         X509Certificate cert = createX509Certificate(DateTime.now().plusDays(10).toDate(), DateTime.now().plusDays(20).toDate());
 
-        assertFalse(validator.isValid(cert));
+        validator.validate(cert);
     }
 }

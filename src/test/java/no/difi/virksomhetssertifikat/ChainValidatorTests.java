@@ -23,11 +23,11 @@ public class ChainValidatorTests extends X509TestGenerator {
         X509Certificate issuer = createX509Certificate();
 
         ChainValidator validator = Mockito.mock(ChainValidator.class);
-        Mockito.when(validator.getTrustAnchors(Matchers.any(KeyStore.class))).thenReturn(new HashSet<TrustAnchor>(Arrays.asList(new TrustAnchor(issuer, null))));
+        Mockito.when(validator.getTrustAnchors(Matchers.any(KeyStore.class))).thenReturn(new HashSet<>(Arrays.asList(new TrustAnchor(issuer, null))));
 
         X509Certificate cert = createX509Certificate();
-        Mockito.when(validator.isValid(cert)).thenCallRealMethod();
+        Mockito.doCallRealMethod().when(validator).validate(cert);
 
-        validator.isValid(cert);
+        validator.validate(cert);
     }
 }

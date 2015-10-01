@@ -17,7 +17,7 @@ public class ExpirationValidator implements CertificateValidator {
 
     private static Logger logger = LoggerFactory.getLogger(ExpirationValidator.class);
 
-    public boolean isValid(X509Certificate cert) throws FailedValidationException {
+    public void validate(X509Certificate cert) throws FailedValidationException {
         try{
             cert.checkValidity(new Date());
         }catch (CertificateNotYetValidException e){
@@ -27,11 +27,5 @@ public class ExpirationValidator implements CertificateValidator {
             logger.debug("Certificate expired. ({})", cert.getSerialNumber());
             throw new FailedValidationException("Certificate does not have a valid expiration date.");
         }
-
-        return true;
-    }
-
-    public String faultMessage(X509Certificate cert) {
-        return "Certificate does not have a valid expiration date";
     }
 }

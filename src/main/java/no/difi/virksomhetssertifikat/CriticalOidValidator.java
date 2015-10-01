@@ -1,6 +1,8 @@
 package no.difi.virksomhetssertifikat;
 
+import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import no.difi.virksomhetssertifikat.api.CertificateValidator;
+import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,22 +21,21 @@ public class CriticalOidValidator implements CertificateValidator {
         this.approvedOids = Arrays.asList(approvedOids);
     }
 
-    public boolean isValid(X509Certificate cert) {
-        // TODO Burde ikke mangel på oids ende med feilet test?
+    public void validate(X509Certificate cert) throws CertificateValidationException {
+        // TODO Burde ikke mangel pÃ¥ oids ende med feilet test?
         if(cert.getCriticalExtensionOIDs() == null)
-            return true;
+            return;
 
         for(String oid : cert.getCriticalExtensionOIDs()){
             if(!approvedOids.contains(oid)) {
                 logger.debug("Certificate doesn't contain critical OID '{}'. ({})", oid, cert.getSerialNumber());
-                return false;
+                throw new FailedValidationException(String.format("Certificate doesn't contain critical OID '%s'.", oid));
             }
         }
-
-        return true;
     }
 
-    public String faultMessage(X509Certificate cert) {
+    @Deprecated
+    public String faultMessage() {
         return "Certificate has critical extentions that isnt handled";
     }
 }
