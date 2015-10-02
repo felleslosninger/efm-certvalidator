@@ -3,6 +3,7 @@ package no.difi.virksomhetssertifikat;
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import no.difi.virksomhetssertifikat.api.CertificateValidator;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
+import no.difi.virksomhetssertifikat.util.DifiKeyStoreUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sun.security.provider.certpath.OCSP;

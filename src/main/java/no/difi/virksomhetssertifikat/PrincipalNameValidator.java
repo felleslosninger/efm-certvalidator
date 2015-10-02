@@ -22,9 +22,9 @@ public class PrincipalNameValidator implements CertificateValidator {
 
     private static Logger logger = LoggerFactory.getLogger(PrincipalNameValidator.class);
 
-    private String field;
-    private PrincipalNameProvider provider;
-    private Principal principal;
+    protected String field;
+    protected PrincipalNameProvider provider;
+    protected Principal principal;
 
     public PrincipalNameValidator(PrincipalNameProvider provider) {
         this(null, provider, Principal.SUBJECT);
@@ -50,11 +50,11 @@ public class PrincipalNameValidator implements CertificateValidator {
             X500Name current = null;
             switch (principal) {
                 case SUBJECT:
-                    current = new JcaX509CertificateHolder(certificate).getSubject();
+                    current = getSubject(certificate);
                     break;
 
                 case ISSUER:
-                    current = new JcaX509CertificateHolder(certificate).getIssuer();
+                    current = getIssuer(certificate);
                     break;
             }
 
@@ -68,6 +68,14 @@ public class PrincipalNameValidator implements CertificateValidator {
             logger.debug("Unable to fetch principal. ({])", certificate.getSerialNumber());
             throw new FailedValidationException("Unable to fetch principal.", e);
         }
+    }
+
+    protected X500Name getIssuer(X509Certificate certificate) throws CertificateEncodingException {
+        return new JcaX509CertificateHolder(certificate).getIssuer();
+    }
+
+    protected X500Name getSubject(X509Certificate certificate) throws CertificateEncodingException {
+        return new JcaX509CertificateHolder(certificate).getSubject();
     }
 
     @SuppressWarnings("all")

@@ -17,7 +17,7 @@ public class SimplePrincipalNameProvider implements PrincipalNameProvider {
     }
 
     @Override
-    public boolean validate(String name) {
-        return expected.contains(name);
+    public boolean validate(String value) {
+        return expected.contains(value);
     }
 }

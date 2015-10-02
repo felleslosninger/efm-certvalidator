@@ -3,6 +3,7 @@ package no.difi.virksomhetssertifikat;
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import no.difi.virksomhetssertifikat.testutil.X509TestGenerator;
+import no.difi.virksomhetssertifikat.util.DifiKeyStoreUtil;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.junit.Test;
 import org.mockito.Matchers;
