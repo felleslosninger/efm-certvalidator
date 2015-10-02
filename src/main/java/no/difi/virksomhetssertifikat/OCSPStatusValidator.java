@@ -21,16 +21,12 @@ public class OCSPStatusValidator implements CertificateValidator {
 
     private DifiKeyStoreUtil difiKeyStoreUtil;
 
-    public DifiKeyStoreUtil getDifiKeyStoreUtil() {
-        return difiKeyStoreUtil;
-    }
-
-    public void setDifiKeyStoreUtil(DifiKeyStoreUtil difiKeyStoreUtil) {
-        this.difiKeyStoreUtil = difiKeyStoreUtil;
-    }
-
     public OCSPStatusValidator(DifiKeyStoreUtil difiKeyStoreUtil) {
         this.difiKeyStoreUtil = difiKeyStoreUtil;
+    }
+
+    public DifiKeyStoreUtil getDifiKeyStoreUtil() {
+        return difiKeyStoreUtil;
     }
 
     @Override
@@ -53,17 +49,14 @@ public class OCSPStatusValidator implements CertificateValidator {
     }
 
     protected X509Certificate getCertsIssuerCertificate(KeyStore ks, X500Principal issuerX500Principal) throws KeyStoreException {
-        X509Certificate issuer = null;
-
         Enumeration<String> aliases = ks.aliases();
-        while(aliases.hasMoreElements() && issuer == null){
-            String alias = aliases.nextElement();
-            X509Certificate possibleIssuer = (X509Certificate) ks.getCertificate(alias);
-            if(possibleIssuer.getSubjectX500Principal().equals(issuerX500Principal)){
-                issuer = possibleIssuer;
+        while (aliases.hasMoreElements()) {
+            X509Certificate possibleIssuer = (X509Certificate) ks.getCertificate(aliases.nextElement());
+            if (possibleIssuer.getSubjectX500Principal().equals(issuerX500Principal)) {
+                return possibleIssuer;
             }
         }
-        return issuer;
+        return null;
     }
 
     public OCSP.RevocationStatus getRevocationStatus(X509Certificate cert, X509Certificate issuer) throws IOException, CertPathValidatorException {

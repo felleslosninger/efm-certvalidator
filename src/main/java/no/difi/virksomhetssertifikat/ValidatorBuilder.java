@@ -26,8 +26,8 @@ public class ValidatorBuilder {
         if (certificateValidators.size() == 1)
             return new ValidatorHelper(certificateValidators.get(0));
 
-        CertificateValidator[] vals = new CertificateValidator[certificateValidators.size()];
-        certificateValidators.toArray(vals);
-        return new ValidatorHelper(new SuiteValidator(vals));
+        return new ValidatorHelper(
+                new SuiteValidator(certificateValidators.toArray(
+                        new CertificateValidator[certificateValidators.size()])));
     }
 }

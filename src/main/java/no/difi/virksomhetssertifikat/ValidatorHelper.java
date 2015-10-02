@@ -74,11 +74,11 @@ public class ValidatorHelper implements CertificateValidator {
         }
     }
 
-    protected X509Certificate getCertificate(byte[] cert) throws CertificateValidationException {
+    public static X509Certificate getCertificate(byte[] cert) throws CertificateValidationException {
         return getCertificate(new ByteArrayInputStream(cert));
     }
 
-    protected X509Certificate getCertificate(InputStream inputStream) throws CertificateValidationException {
+    public static X509Certificate getCertificate(InputStream inputStream) throws CertificateValidationException {
         try {
             return (X509Certificate) certFactory.generateCertificate(inputStream);
         } catch (CertificateException e) {
