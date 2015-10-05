@@ -13,14 +13,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Implementerer uthenting av orgnumber basert på http://www.regjeringen.no/upload/FAD/Vedlegg/IKT-politikk/SEID_Leveranse_1_-_v1.02.pdf side 24
+ * Implementation of fetching of Norwegian organization number from certificates.
+ *
+ * Use of organization numbers in certificates is defines here:
+ * http://www.regjeringen.no/upload/FAD/Vedlegg/IKT-politikk/SEID_Leveranse_1_-_v1.02.pdf (page 24)
  */
 public class NorwegianOrganizationNumberValidator extends PrincipalNameValidator {
 
-    private static Logger logger = LoggerFactory.getLogger(NorwegianOrganizationNumberValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(NorwegianOrganizationNumberValidator.class);
 
-    private static Pattern patternSerialnumber = Pattern.compile("^[0-9]{9}$");
-    private static Pattern patternOrganizationName = Pattern.compile("^.+\\-\\W*([0-9]{9})$");
+    private static final Pattern patternSerialnumber = Pattern.compile("^[0-9]{9}$");
+    private static final Pattern patternOrganizationName = Pattern.compile("^.+\\-\\W*([0-9]{9})$");
 
     public NorwegianOrganizationNumberValidator(PrincipalNameProvider provider) {
         super(provider);

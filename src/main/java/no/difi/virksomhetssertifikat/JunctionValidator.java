@@ -10,9 +10,12 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Allows combining instances of validators using a limited set of logic.
+ */
 public class JunctionValidator implements CertificateValidator {
 
-    private static Logger logger = LoggerFactory.getLogger(JunctionValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(JunctionValidator.class);
 
     private Kind kind;
     private CertificateValidator[] certificateValidators;
@@ -94,6 +97,9 @@ public class JunctionValidator implements CertificateValidator {
         }
     }
 
+    /**
+     * Defines what kind of logic to use in JunctionValidator.
+     */
     public enum Kind {
         AND, OR, XOR
     }

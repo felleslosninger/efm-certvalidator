@@ -16,7 +16,7 @@ import java.security.cert.X509Certificate;
  */
 public class ValidatorHelper implements CertificateValidator {
 
-    private static Logger logger = LoggerFactory.getLogger(ValidatorHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(ValidatorHelper.class);
 
     private static CertificateFactory certFactory;
 

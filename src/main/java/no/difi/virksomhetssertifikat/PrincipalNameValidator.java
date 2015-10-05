@@ -18,9 +18,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Validator using defined logic to validate content in principal name of subject or issuer.
+ */
 public class PrincipalNameValidator implements CertificateValidator {
 
-    private static Logger logger = LoggerFactory.getLogger(PrincipalNameValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(PrincipalNameValidator.class);
 
     protected String field;
     protected PrincipalNameProvider provider;

@@ -12,10 +12,17 @@ import java.security.cert.X509Certificate;
 public class DummyValidator implements CertificateValidator {
     private String message;
 
+    /**
+     * Defines an instance always having successful validations.
+     */
     public DummyValidator() {
         this(null);
     }
 
+    /**
+     * Defines as instance always having failing validations, given message is not null.
+     * @param message Message used when failing validation.
+     */
     public DummyValidator(String message) {
         this.message = message;
     }

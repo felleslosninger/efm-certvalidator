@@ -4,6 +4,9 @@ import javax.security.auth.x500.X500Principal;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
 
+/**
+ * Defines bucket for certificate allowing customized storage of certificates.
+ */
 public interface CertificateBucket extends Iterable<X509Certificate> {
     /**
      * Find certificate by subject.

@@ -12,9 +12,12 @@ import java.io.IOException;
 import java.security.cert.CertPathValidatorException;
 import java.security.cert.X509Certificate;
 
+/**
+ * Validation of certificate using OCSP. Requires intermediate certificates.
+ */
 public class OCSPValidator implements CertificateValidator {
 
-    private static Logger logger = LoggerFactory.getLogger(OCSPValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(OCSPValidator.class);
 
     private CertificateBucket intermediateCertificates;
 

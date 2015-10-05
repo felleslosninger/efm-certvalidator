@@ -12,9 +12,12 @@ import java.security.cert.*;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Validator checking validity of chain using root certificates and intermediate certificates.
+ */
 public class ChainValidator implements CertificateValidator {
 
-    private static Logger logger = LoggerFactory.getLogger(ChainValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(ChainValidator.class);
 
     /* static {
         Security.addProvider(new BouncyCastleProvider());
@@ -24,8 +27,7 @@ public class ChainValidator implements CertificateValidator {
     private CertificateBucket intermediateCertificates;
 
     /**
-     *
-     * @param rootCertificates Trusted root certificates.
+     * @param rootCertificates         Trusted root certificates.
      * @param intermediateCertificates Trusted intermediate certificates.
      */
     public ChainValidator(CertificateBucket rootCertificates, CertificateBucket intermediateCertificates) {

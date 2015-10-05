@@ -2,7 +2,6 @@ package no.difi.virksomhetssertifikat.util;
 
 import no.difi.virksomhetssertifikat.api.CertificateBucket;
 import no.difi.virksomhetssertifikat.api.CertificateBucketException;
-import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 
 import javax.security.auth.x500.X500Principal;
 import java.io.InputStream;

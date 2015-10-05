@@ -15,7 +15,7 @@ import java.util.Date;
  */
 public class ExpirationValidator implements CertificateValidator {
 
-    private static Logger logger = LoggerFactory.getLogger(ExpirationValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(ExpirationValidator.class);
 
     /**
      * {@inheritDoc}
