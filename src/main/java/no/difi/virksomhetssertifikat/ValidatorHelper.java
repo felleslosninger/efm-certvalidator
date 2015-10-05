@@ -20,14 +20,6 @@ public class ValidatorHelper implements CertificateValidator {
 
     private static CertificateFactory certFactory;
 
-    static {
-        try {
-            certFactory = CertificateFactory.getInstance("X.509");
-        } catch (CertificateException e) {
-            throw new RuntimeException("Unable to load certificate factory.", e);
-        }
-    }
-
     private CertificateValidator certificateValidator;
 
     public ValidatorHelper(CertificateValidator certificateValidator) {
@@ -84,6 +76,9 @@ public class ValidatorHelper implements CertificateValidator {
 
     public static X509Certificate getCertificate(InputStream inputStream) throws CertificateValidationException {
         try {
+            if (certFactory == null)
+                certFactory = CertificateFactory.getInstance("X.509");
+
             return (X509Certificate) certFactory.generateCertificate(inputStream);
         } catch (CertificateException e) {
             throw new CertificateValidationException(e.getMessage(), e);

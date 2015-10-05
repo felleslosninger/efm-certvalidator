@@ -53,16 +53,11 @@ public class PrincipalNameValidator implements CertificateValidator {
     @Override
     public void validate(X509Certificate certificate) throws CertificateValidationException {
         try {
-            X500Name current = null;
-            switch (principal) {
-                case SUBJECT:
-                    current = getSubject(certificate);
-                    break;
-
-                case ISSUER:
-                    current = getIssuer(certificate);
-                    break;
-            }
+            X500Name current;
+            if (principal.equals(Principal.SUBJECT))
+                current = getSubject(certificate);
+            else
+                current = getIssuer(certificate);
 
             for (String value : extract(current, field))
                 if (provider.validate(value))

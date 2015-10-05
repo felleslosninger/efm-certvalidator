@@ -38,8 +38,9 @@ public class CriticalOidValidator implements CertificateValidator {
         }
     }
 
-    @Deprecated
+    /*
     public String faultMessage() {
         return "Certificate has critical extentions that isnt handled";
     }
+    */
 }

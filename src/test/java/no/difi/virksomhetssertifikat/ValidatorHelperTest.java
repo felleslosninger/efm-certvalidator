@@ -38,5 +38,8 @@ public class ValidatorHelperTest {
         } catch (FailedValidationException e) {
             // Expected
         }
+
+        validatorHelper = new ValidatorHelper(new DummyValidator());
+        validatorHelper.validate(byteArrayOutputStream.toByteArray());
     }
 }
