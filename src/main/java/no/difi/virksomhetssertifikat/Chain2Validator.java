@@ -3,6 +3,7 @@ package no.difi.virksomhetssertifikat;
 import no.difi.virksomhetssertifikat.api.CertificateBucket;
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import no.difi.virksomhetssertifikat.api.CertificateValidator;
+import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +18,9 @@ public class Chain2Validator implements CertificateValidator {
 
     private static Logger logger = LoggerFactory.getLogger(Chain2Validator.class);
 
-    static {
+    /* static {
         Security.addProvider(new BouncyCastleProvider());
-    }
+    } */
 
     private CertificateBucket rootCertificates;
     private CertificateBucket intermediateCertificates;
@@ -45,7 +46,7 @@ public class Chain2Validator implements CertificateValidator {
                 logger.debug("({}) | {}", certificate.getSerialNumber(), ((X509Certificate) c).getSubjectX500Principal().getName());
         } catch (GeneralSecurityException e) {
             logger.debug("({}) {}", certificate.getSerialNumber(), e.getMessage());
-            // TODO throw new FailedValidationException(e.getMessage(), e);
+            throw new FailedValidationException(e.getMessage(), e);
         }
     }
 
@@ -79,10 +80,10 @@ public class Chain2Validator implements CertificateValidator {
             trustedIntermediateCert.add(certificate);
         }
         pkixParams.addCertStore(CertStore.getInstance("Collection",
-                new CollectionCertStoreParameters(trustedIntermediateCert), BouncyCastleProvider.PROVIDER_NAME));
+                new CollectionCertStoreParameters(trustedIntermediateCert))); //, BouncyCastleProvider.PROVIDER_NAME));
 
         // Build and verify the certification chain
-        CertPathBuilder builder = CertPathBuilder.getInstance("PKIX", BouncyCastleProvider.PROVIDER_NAME);
+        CertPathBuilder builder = CertPathBuilder.getInstance("PKIX"); // , BouncyCastleProvider.PROVIDER_NAME);
         return (PKIXCertPathBuilderResult) builder.build(pkixParams);
     }
 }
