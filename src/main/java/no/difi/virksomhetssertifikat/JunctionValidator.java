@@ -2,6 +2,7 @@ package no.difi.virksomhetssertifikat;
 
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import no.difi.virksomhetssertifikat.api.CertificateValidator;
+import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +36,9 @@ public class JunctionValidator implements CertificateValidator {
             case XOR:
                 validateXOR(certificate);
                 break;
+
+            default:
+                throw new CertificateValidationException("Kind of junction not found.");
         }
     }
 
@@ -61,7 +65,7 @@ public class JunctionValidator implements CertificateValidator {
             stringBuilder.append("\n* ").append(e.getMessage());
 
         logger.debug("{}\n({})", stringBuilder.toString(), certificate.getSerialNumber());
-        throw new CertificateValidationException(stringBuilder.toString());
+        throw new FailedValidationException(stringBuilder.toString());
     }
 
     private void validateXOR(X509Certificate certificate) throws CertificateValidationException {
@@ -70,8 +74,8 @@ public class JunctionValidator implements CertificateValidator {
         for (CertificateValidator certificateValidator : certificateValidators) {
             try {
                 certificateValidator.validate(certificate);
-                return;
             } catch (CertificateValidationException e) {
+                logger.debug(e.getMessage());
                 exceptions.add(e);
             }
         }
@@ -83,7 +87,7 @@ public class JunctionValidator implements CertificateValidator {
                 stringBuilder.append("\n* ").append(e.getMessage());
 
             logger.debug("{}\n({})", stringBuilder.toString(), certificate.getSerialNumber());
-            throw new CertificateValidationException(stringBuilder.toString());
+            throw new FailedValidationException(stringBuilder.toString());
         }
     }
 

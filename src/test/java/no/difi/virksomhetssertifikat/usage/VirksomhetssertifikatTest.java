@@ -6,7 +6,7 @@ import no.difi.virksomhetssertifikat.api.PrincipalNameProvider;
 import no.difi.virksomhetssertifikat.extras.NorwegianOrganizationNumberValidator;
 import org.junit.Test;
 
-public class Virksomhetssertifikat {
+public class VirksomhetssertifikatTest {
 
     @Test
     public void simple() {

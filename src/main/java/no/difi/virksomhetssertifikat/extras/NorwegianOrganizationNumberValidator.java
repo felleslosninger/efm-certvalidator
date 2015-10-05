@@ -50,11 +50,11 @@ public class NorwegianOrganizationNumberValidator extends PrincipalNameValidator
                 if (matcher.matches())
                     return matcher.group(1);
             }
+
+            return null;
         } catch (CertificateEncodingException e) {
             logger.debug(e.getMessage());
             throw new CertificateValidationException(e.getMessage(), e);
         }
-
-        return null;
     }
 }

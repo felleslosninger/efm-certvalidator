@@ -1,7 +1,6 @@
-package no.difi.virksomhetssertifikat;
+package no.difi.virksomhetssertifikat.util;
 
 
-import no.difi.virksomhetssertifikat.util.DifiKeyStoreUtil;
 import org.junit.Test;
 
 import java.io.IOException;

@@ -12,6 +12,7 @@ import java.security.cert.*;
 import java.util.*;
 
 
+@Deprecated
 public class ChainValidator implements CertificateValidator {
     private DifiKeyStoreUtil difiKeystoreUtil;
     private AcceptedCertificatePolicyProvider policyProvider;

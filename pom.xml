@@ -19,7 +19,6 @@
     <properties>
         <java.encoding>UTF-8</java.encoding>
         <java.version>1.7</java.version>
-        <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.12</slf4j.version>
     </properties>
 
@@ -42,7 +41,7 @@
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcpkix-jdk15on</artifactId>
-            <version>1.51</version>
+            <version>1.52</version>
         </dependency>
 
         <!-- Testing -->

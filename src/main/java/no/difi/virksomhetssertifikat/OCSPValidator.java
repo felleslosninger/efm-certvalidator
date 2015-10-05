@@ -16,16 +16,16 @@ public class OCSPValidator implements CertificateValidator {
 
     private static Logger logger = LoggerFactory.getLogger(OCSPValidator.class);
 
-    private CertificateBucket certificateBucket;
+    private CertificateBucket intermediateCertificates;
 
-    public OCSPValidator(CertificateBucket certificateBucket) {
-        this.certificateBucket = certificateBucket;
+    public OCSPValidator(CertificateBucket intermediateCertificates) {
+        this.intermediateCertificates = intermediateCertificates;
     }
 
     @Override
     public void validate(X509Certificate certificate) throws CertificateValidationException {
         try {
-            X509Certificate issuer = certificateBucket.findBySubject(certificate.getIssuerX500Principal());
+            X509Certificate issuer = intermediateCertificates.findBySubject(certificate.getIssuerX500Principal());
             if (issuer == null)
                 throw new FailedValidationException(String.format("Unable to find issuer certificate '%s'", certificate.getIssuerX500Principal().getName()));
 
@@ -38,7 +38,7 @@ public class OCSPValidator implements CertificateValidator {
             throw e;
         } catch (Exception e) {
             logger.debug("{} ({})", e.getMessage(), certificate.getSerialNumber());
-            throw new FailedValidationException(e.getMessage(), e);
+            throw new CertificateValidationException(e.getMessage(), e);
         }
     }
 

@@ -20,7 +20,8 @@ import java.util.Date;
 import java.util.Map;
 
 
-public class OCSPStatusValidatorTests extends X509TestGenerator {
+@Deprecated
+public class OCSPStatusValidatorTest extends X509TestGenerator {
 
     @Test
     public void shouldValidateACertificateIfItIsntRevoced() throws CertificateValidationException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, IOException, CertPathValidatorException, CertificateException, KeyStoreException, OperatorCreationException {

@@ -16,6 +16,7 @@ import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.HashSet;
 
+@Deprecated
 public class ChainValidatorTests extends X509TestGenerator {
 
     @Test(expected = CertificateValidationException.class)

@@ -1,10 +1,12 @@
 package no.difi.virksomhetssertifikat.extras;
 
 
+import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import no.difi.virksomhetssertifikat.api.PrincipalNameProvider;
 import no.difi.virksomhetssertifikat.testutil.X509TestGenerator;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +27,22 @@ public class NorwegianOrganizationNumberValidatorTest extends X509TestGenerator 
             public boolean validate(String value) {
                 logger.info(value);
                 Assert.assertEquals(ORGNR, value);
+                return true;
+            }
+        }).validate(cert);
+    }
+
+    @Test(expected = FailedValidationException.class)
+    public void invalidOrgnumberFromCertBasedOnSerialnumber() throws Exception {
+        final String ORGNR = "123 456 789";
+        X509Certificate cert = createX509Certificate("CN=name, OU=None, O=None L=None, C=None, serialNumber=" + ORGNR);
+        logger.debug(cert.getSubjectDN().toString());
+
+        new NorwegianOrganizationNumberValidator(new PrincipalNameProvider() {
+            @Override
+            public boolean validate(String value) {
+                logger.info(value);
+                Assert.fail("Number not expected.");
                 return true;
             }
         }).validate(cert);
@@ -58,6 +76,36 @@ public class NorwegianOrganizationNumberValidatorTest extends X509TestGenerator 
                 logger.info(value);
                 Assert.assertEquals(ORGNR, value);
                 return true;
+            }
+        }).validate(cert);
+    }
+
+    @Test(expected = FailedValidationException.class)
+    public void attributesNotFound() throws Exception {
+        X509Certificate cert = createX509Certificate("CN=name");
+        logger.debug(cert.getSubjectDN().toString());
+
+        new NorwegianOrganizationNumberValidator(new PrincipalNameProvider() {
+            @Override
+            public boolean validate(String value) {
+                logger.info(value);
+                Assert.fail("Number not expected.");
+                return true;
+            }
+        }).validate(cert);
+    }
+
+    @Test(expected = FailedValidationException.class)
+    public void notAcceptedOrgnumberFromCertBasedOnSerialnumber() throws Exception {
+        final String ORGNR = "123456789";
+        X509Certificate cert = createX509Certificate("CN=name, OU=None, O=None L=None, C=None, serialNumber=" + ORGNR);
+        logger.debug(cert.getSubjectDN().toString());
+
+        new NorwegianOrganizationNumberValidator(new PrincipalNameProvider() {
+            @Override
+            public boolean validate(String value) {
+                logger.info(value);
+                return false;
             }
         }).validate(cert);
     }

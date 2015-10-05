@@ -16,6 +16,7 @@ import java.security.cert.CertPathValidatorException;
 import java.security.cert.X509Certificate;
 import java.util.Enumeration;
 
+@Deprecated
 public class OCSPStatusValidator implements CertificateValidator {
 
     private static Logger logger = LoggerFactory.getLogger(OCSPStatusValidator.class);
