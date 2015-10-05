@@ -17,6 +17,10 @@ public class FileKeystoreCertificateBucket extends KeystoreCertificateBucket {
     private String path;
     private String password;
 
+    public FileKeystoreCertificateBucket(String path, String password) {
+        this("JKS", path, password);
+    }
+
     public FileKeystoreCertificateBucket(String type, String path, String password) {
         super(null);
 

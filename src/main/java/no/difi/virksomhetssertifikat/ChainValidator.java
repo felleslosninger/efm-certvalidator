@@ -12,9 +12,9 @@ import java.security.cert.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Chain2Validator implements CertificateValidator {
+public class ChainValidator implements CertificateValidator {
 
-    private static Logger logger = LoggerFactory.getLogger(Chain2Validator.class);
+    private static Logger logger = LoggerFactory.getLogger(ChainValidator.class);
 
     /* static {
         Security.addProvider(new BouncyCastleProvider());
@@ -28,7 +28,7 @@ public class Chain2Validator implements CertificateValidator {
      * @param rootCertificates Trusted root certificates.
      * @param intermediateCertificates Trusted intermediate certificates.
      */
-    public Chain2Validator(CertificateBucket rootCertificates, CertificateBucket intermediateCertificates) {
+    public ChainValidator(CertificateBucket rootCertificates, CertificateBucket intermediateCertificates) {
         this.rootCertificates = rootCertificates;
         this.intermediateCertificates = intermediateCertificates;
     }
@@ -72,7 +72,7 @@ public class Chain2Validator implements CertificateValidator {
         // Set<String> initialPolicies = new HashSet<String>();
         // initialPolicies.addAll(policyProvider.getApproprovedPolicyOids());
         // pkixParams.setInitialPolicies(initialPolicies);
-        // spkixParams.setExplicitPolicyRequired(true);
+        // pkixParams.setExplicitPolicyRequired(true);
 
         // Disable CRL checks (this is done manually as additional step)
         pkixParams.setRevocationEnabled(false);

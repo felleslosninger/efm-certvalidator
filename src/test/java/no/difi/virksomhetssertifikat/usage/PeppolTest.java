@@ -10,14 +10,14 @@ public class PeppolTest {
 
     @Test
     public void simpleTestAp() throws Exception {
-        KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket("JKS", getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
+        KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket(getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
         CertificateBucket rootCertificates = keystoreCertificateBucket.toSimple("peppol-root");
         CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
 
         ValidatorBuilder.newInstance()
                 .append(new ExpirationValidator())
                 .append(new PrincipalNameValidator("CN", new SimplePrincipalNameProvider("PEPPOL ACCESS POINT TEST CA"), PrincipalNameValidator.Principal.ISSUER))
-                .append(new Chain2Validator(rootCertificates, intermediateCertificates))
+                .append(new ChainValidator(rootCertificates, intermediateCertificates))
                 // .append(new OCSPValidator(intermediateCertificates))
                 .append(new CRLValidator())
                 .build()
@@ -26,14 +26,14 @@ public class PeppolTest {
 
     @Test
     public void simpleTestSmp() throws Exception {
-        KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket("JKS", getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
+        KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket(getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
         CertificateBucket rootCertificates = keystoreCertificateBucket.toSimple("peppol-root");
         CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
 
         ValidatorBuilder.newInstance()
                 .append(new ExpirationValidator())
                 .append(new PrincipalNameValidator("CN", new SimplePrincipalNameProvider("PEPPOL SERVICE METADATA PUBLISHER TEST CA"), PrincipalNameValidator.Principal.ISSUER))
-                .append(new Chain2Validator(rootCertificates, intermediateCertificates))
+                .append(new ChainValidator(rootCertificates, intermediateCertificates))
                 // .append(new OCSPValidator(intermediateCertificates))
                 .append(new CRLValidator())
                 .build()
@@ -42,14 +42,14 @@ public class PeppolTest {
 
     @Test
     public void simpleProdAp() throws Exception {
-        KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket("JKS", getClass().getResourceAsStream("/peppol-prod.jks"), "peppol");
+        KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket(getClass().getResourceAsStream("/peppol-prod.jks"), "peppol");
         CertificateBucket rootCertificates = keystoreCertificateBucket.toSimple("peppol-root");
         CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
 
         ValidatorBuilder.newInstance()
                 .append(new ExpirationValidator())
                 .append(new PrincipalNameValidator("CN", new SimplePrincipalNameProvider("PEPPOL ACCESS POINT CA"), PrincipalNameValidator.Principal.ISSUER))
-                .append(new Chain2Validator(rootCertificates, intermediateCertificates))
+                .append(new ChainValidator(rootCertificates, intermediateCertificates))
                 // .append(new OCSPValidator(intermediateCertificates))
                 .append(new CRLValidator())
                 .build()
@@ -58,14 +58,14 @@ public class PeppolTest {
 
     @Test
     public void simpleProdSmp() throws Exception {
-        KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket("JKS", getClass().getResourceAsStream("/peppol-prod.jks"), "peppol");
+        KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket(getClass().getResourceAsStream("/peppol-prod.jks"), "peppol");
         CertificateBucket rootCertificates = keystoreCertificateBucket.toSimple("peppol-root");
         CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
 
         ValidatorBuilder.newInstance()
                 .append(new ExpirationValidator())
                 .append(new PrincipalNameValidator("CN", new SimplePrincipalNameProvider("PEPPOL SERVICE METADATA PUBLISHER CA"), PrincipalNameValidator.Principal.ISSUER))
-                .append(new Chain2Validator(rootCertificates, intermediateCertificates))
+                .append(new ChainValidator(rootCertificates, intermediateCertificates))
                 // .append(new OCSPValidator(intermediateCertificates))
                 .append(new CRLValidator())
                 .build()

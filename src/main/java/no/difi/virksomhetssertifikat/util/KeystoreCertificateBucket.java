@@ -25,13 +25,17 @@ public class KeystoreCertificateBucket implements CertificateBucket {
         this.keyStore = keyStore;
     }
 
-    public KeystoreCertificateBucket(String type, InputStream inputStream, String password) throws CertificateValidationException {
+    public KeystoreCertificateBucket(InputStream inputStream, String password) throws CertificateBucketException {
+        this("JKS", inputStream, password);
+    }
+
+    public KeystoreCertificateBucket(String type, InputStream inputStream, String password) throws CertificateBucketException {
         try {
             keyStore = KeyStore.getInstance(type);
             keyStore.load(inputStream, password.toCharArray());
             inputStream.close();
         } catch (Exception e) {
-            throw new CertificateValidationException(e.getMessage(), e);
+            throw new CertificateBucketException(e.getMessage(), e);
         }
     }
 

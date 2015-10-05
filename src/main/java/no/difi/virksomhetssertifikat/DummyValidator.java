@@ -3,6 +3,7 @@ package no.difi.virksomhetssertifikat;
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import no.difi.virksomhetssertifikat.api.CertificateValidator;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
+
 import java.security.cert.X509Certificate;
 
 /**

@@ -68,7 +68,7 @@ public class PrincipalNameValidator implements CertificateValidator {
             logger.debug("Validation of subject principal({}) failed. ({})", field, certificate.getSerialNumber());
             throw new FailedValidationException(String.format("Validation of subject principal(%s) failed.", field));
         } catch (CertificateEncodingException e) {
-            logger.debug("Unable to fetch principal. ({])", certificate.getSerialNumber());
+            logger.debug("Unable to fetch principal. ({})", certificate.getSerialNumber());
             throw new FailedValidationException("Unable to fetch principal.", e);
         }
     }
@@ -91,7 +91,7 @@ public class PrincipalNameValidator implements CertificateValidator {
         List<String> values = new ArrayList<>();
         for (RDN rdn : principal.getRDNs(RFC4519Style.INSTANCE.attrNameToOID(field)))
             for (AttributeTypeAndValue value : rdn.getTypesAndValues())
-                    values.add(value.getValue().toString());
+                values.add(value.getValue().toString());
 
         return values;
     }
