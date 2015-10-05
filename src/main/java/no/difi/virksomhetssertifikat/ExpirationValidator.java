@@ -17,6 +17,9 @@ public class ExpirationValidator implements CertificateValidator {
 
     private static Logger logger = LoggerFactory.getLogger(ExpirationValidator.class);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate(X509Certificate certificate) throws FailedValidationException {
         try{

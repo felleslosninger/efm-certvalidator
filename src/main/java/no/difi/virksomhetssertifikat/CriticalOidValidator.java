@@ -21,6 +21,9 @@ public class CriticalOidValidator implements CertificateValidator {
         this.approvedOids = Arrays.asList(approvedOids);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate(X509Certificate certificate) throws CertificateValidationException {
         // TODO Burde ikke mangel på oids ende med feilet test?

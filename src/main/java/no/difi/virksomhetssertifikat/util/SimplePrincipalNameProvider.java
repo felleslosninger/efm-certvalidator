@@ -16,6 +16,9 @@ public class SimplePrincipalNameProvider implements PrincipalNameProvider {
         this.expected = Arrays.asList(expected);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean validate(String value) {
         return expected.contains(value);

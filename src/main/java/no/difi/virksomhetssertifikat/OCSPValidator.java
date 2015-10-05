@@ -22,6 +22,9 @@ public class OCSPValidator implements CertificateValidator {
         this.intermediateCertificates = intermediateCertificates;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate(X509Certificate certificate) throws CertificateValidationException {
         try {

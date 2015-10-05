@@ -26,6 +26,9 @@ public class NorwegianOrganizationNumberValidator extends PrincipalNameValidator
         super(provider);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate(X509Certificate certificate) throws CertificateValidationException {
         String value = extractNumber(certificate);
@@ -37,6 +40,13 @@ public class NorwegianOrganizationNumberValidator extends PrincipalNameValidator
         throw new FailedValidationException("Organization number not detected.");
     }
 
+    /**
+     * Extracts organization number using functionality provided by PrincipalNameValidator.
+     *
+     * @param certificate Certificate subject to validation.
+     * @return Organization number found in certificate, null if not found.
+     * @throws CertificateValidationException
+     */
     protected String extractNumber(X509Certificate certificate) throws CertificateValidationException {
         try {
             //matches "C=NO,ST=AKERSHUS,L=FORNEBUVEIEN 1\\, 1366 LYSAKER,O=RF Commfides,SERIALNUMBER=399573952,CN=RF Commfides"

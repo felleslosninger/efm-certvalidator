@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -35,6 +34,9 @@ public class ValidatorHelper implements CertificateValidator {
         this.certificateValidator = certificateValidator;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate(X509Certificate certificate) throws CertificateValidationException {
         certificateValidator.validate(certificate);
@@ -85,26 +87,6 @@ public class ValidatorHelper implements CertificateValidator {
             return (X509Certificate) certFactory.generateCertificate(inputStream);
         } catch (CertificateException e) {
             throw new CertificateValidationException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Checks whether given X.509 certificate is self-signed.
-     *
-     * Source: http://www.nakov.com/blog/2009/12/01/x509-certificate-validation-in-java-build-and-verify-chain-and-verify-clr-with-bouncy-castle/
-     */
-    public static boolean isSelfSigned(X509Certificate cert) throws CertificateException, NoSuchAlgorithmException, NoSuchProviderException {
-        try {
-            // Try to verify certificate signature with its own public key
-            PublicKey key = cert.getPublicKey();
-            cert.verify(key);
-            return true;
-        } catch (SignatureException sigEx) {
-            // Invalid signature --> not self-signed
-            return false;
-        } catch (InvalidKeyException keyEx) {
-            // Invalid key --> not self-signed
-            return false;
         }
     }
 }

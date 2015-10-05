@@ -7,6 +7,9 @@ import java.security.cert.X509Certificate;
 
 public class CRLValidator implements CertificateValidator {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate(X509Certificate certificate) throws CertificateValidationException {
 

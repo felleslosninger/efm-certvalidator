@@ -31,6 +31,9 @@ public class OCSPStatusValidator implements CertificateValidator {
         return difiKeyStoreUtil;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate(X509Certificate certificate) throws CertificateValidationException {
         try {

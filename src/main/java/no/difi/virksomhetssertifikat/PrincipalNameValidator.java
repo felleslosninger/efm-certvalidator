@@ -44,6 +44,9 @@ public class PrincipalNameValidator implements CertificateValidator {
         this.principal = principal;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate(X509Certificate certificate) throws CertificateValidationException {
         try {

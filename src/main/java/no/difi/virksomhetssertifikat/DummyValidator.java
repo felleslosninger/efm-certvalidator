@@ -19,6 +19,9 @@ public class DummyValidator implements CertificateValidator {
         this.message = message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate(X509Certificate certificate) throws CertificateValidationException {
         if (message != null)

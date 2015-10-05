@@ -93,7 +93,23 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.18.1</version>
                 <configuration>
-                    <testFailureIgnore>true</testFailureIgnore>
+                    <!-- <testFailureIgnore>true</testFailureIgnore> -->
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.3</version>
+                <executions>
+                    <execution>
+                        <id>package-javadoc</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <encoding>${java.encoding}</encoding>
                 </configuration>
             </plugin>
         </plugins>

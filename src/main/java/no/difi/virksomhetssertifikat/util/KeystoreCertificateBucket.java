@@ -35,6 +35,9 @@ public class KeystoreCertificateBucket implements CertificateBucket {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public X509Certificate findBySubject(X500Principal principal) throws CertificateBucketException{
         try {
@@ -52,6 +55,9 @@ public class KeystoreCertificateBucket implements CertificateBucket {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Iterator<X509Certificate> iterator() {
         try {

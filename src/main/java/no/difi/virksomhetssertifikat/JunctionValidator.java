@@ -22,6 +22,9 @@ public class JunctionValidator implements CertificateValidator {
         this.certificateValidators = certificateValidators;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate(X509Certificate certificate) throws CertificateValidationException {
         switch (kind) {

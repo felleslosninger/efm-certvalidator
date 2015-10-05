@@ -20,10 +20,18 @@ public class SimpleCertificateBucket implements CertificateBucket {
         add(certificates);
     }
 
+    /**
+     * Append certificate(s) to bucket.
+     *
+     * @param certificates Certificate(s) to be added.
+     */
     public void add(X509Certificate... certificates) {
         this.certificates.addAll(Arrays.asList(certificates));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public X509Certificate findBySubject(X500Principal principal) {
         for (X509Certificate certificate : certificates)
@@ -32,6 +40,9 @@ public class SimpleCertificateBucket implements CertificateBucket {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Iterator<X509Certificate> iterator() {
         return certificates.iterator();
