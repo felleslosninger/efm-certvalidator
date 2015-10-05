@@ -6,7 +6,7 @@ import no.difi.virksomhetssertifikat.testutil.X509TestGenerator;
 import org.bouncycastle.cert.CertIOException;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.joda.time.DateTime;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -27,7 +27,7 @@ public class ExpirationValidatorTest extends X509TestGenerator {
         validator.validate(cert);
     }
 
-    @Test(expected = FailedValidationException.class)
+    @Test(expectedExceptions = FailedValidationException.class)
     public void shouldInvalidateAExpiredCertificate() throws CertificateValidationException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, CertificateException, CertIOException, OperatorCreationException {
         ExpirationValidator validator = new ExpirationValidator();
 
@@ -36,7 +36,7 @@ public class ExpirationValidatorTest extends X509TestGenerator {
         validator.validate(cert);
     }
 
-    @Test(expected = FailedValidationException.class)
+    @Test(expectedExceptions = FailedValidationException.class)
     public void shouldInvalidateANotNotbeforeCertificate() throws CertificateValidationException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, CertificateException, CertIOException, OperatorCreationException {
         ExpirationValidator validator = new ExpirationValidator();
 

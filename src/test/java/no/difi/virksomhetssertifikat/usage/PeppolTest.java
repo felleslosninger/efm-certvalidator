@@ -4,7 +4,7 @@ import no.difi.virksomhetssertifikat.*;
 import no.difi.virksomhetssertifikat.api.CertificateBucket;
 import no.difi.virksomhetssertifikat.util.KeystoreCertificateBucket;
 import no.difi.virksomhetssertifikat.util.SimplePrincipalNameProvider;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 public class PeppolTest {
 

@@ -5,9 +5,9 @@ import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import no.difi.virksomhetssertifikat.testutil.X509TestGenerator;
 import no.difi.virksomhetssertifikat.util.DifiKeyStoreUtil;
 import org.bouncycastle.operator.OperatorCreationException;
-import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
+import org.testng.annotations.Test;
 import sun.security.provider.certpath.OCSP;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class OCSPStatusValidatorTest extends X509TestGenerator {
         validator.validate(cert);
     }
 
-    @Test(expected = FailedValidationException.class)
+    @Test(expectedExceptions = FailedValidationException.class)
     public void shouldRejectACertificateIfItIsRevoced() throws CertificateValidationException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, IOException, CertPathValidatorException, CertificateException, OperatorCreationException {
         X509Certificate cert = createX509Certificate();
         OCSPStatusValidator validator = getVirksomhetRevocationStatusValidatorStub(cert, OCSP.RevocationStatus.CertStatus.REVOKED);
@@ -41,7 +41,7 @@ public class OCSPStatusValidatorTest extends X509TestGenerator {
         validator.validate(cert);
     }
 
-    @Test(expected = FailedValidationException.class)
+    @Test(expectedExceptions = FailedValidationException.class)
     public void shouldRejectACertificateIfTheStatusIsUnknown() throws CertificateValidationException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, IOException, CertPathValidatorException, CertificateException, OperatorCreationException {
         X509Certificate cert = createX509Certificate();
         OCSPStatusValidator validator = getVirksomhetRevocationStatusValidatorStub(cert, OCSP.RevocationStatus.CertStatus.UNKNOWN);
@@ -49,7 +49,7 @@ public class OCSPStatusValidatorTest extends X509TestGenerator {
         validator.validate(cert);
     }
 
-    @Test(expected = FailedValidationException.class)
+    @Test(expectedExceptions = FailedValidationException.class)
     public void shouldRejectACertificateIfTheCheckTimesOut() throws CertificateValidationException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, IOException, CertPathValidatorException, CertificateException, OperatorCreationException {
         X509Certificate cert = createX509Certificate();
         OCSPStatusValidator validator = Mockito.mock(OCSPStatusValidator.class);

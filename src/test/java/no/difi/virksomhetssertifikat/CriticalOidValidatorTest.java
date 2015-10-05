@@ -7,7 +7,7 @@ import no.difi.virksomhetssertifikat.testutil.X509TestGenerator;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.cert.CertIOException;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.security.cert.X509Certificate;
 
@@ -32,7 +32,7 @@ public class CriticalOidValidatorTest extends X509TestGenerator {
     }
 
 
-    @Test(expected = FailedValidationException.class)
+    @Test(expectedExceptions = FailedValidationException.class)
     public void shouldInvalidateCertWithACriticalExtentionsThatIsNotApproved() throws Exception {
         String approvedExtentionList = "2.10.2";
         CriticalOidValidator validator = new CriticalOidValidator(approvedExtentionList);

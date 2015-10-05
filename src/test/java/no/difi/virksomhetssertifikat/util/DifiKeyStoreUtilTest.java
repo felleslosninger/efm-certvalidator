@@ -1,14 +1,13 @@
 package no.difi.virksomhetssertifikat.util;
 
-
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
-import static org.junit.Assert.fail;
+import static org.testng.Assert.fail;
 
 public class DifiKeyStoreUtilTest {
 

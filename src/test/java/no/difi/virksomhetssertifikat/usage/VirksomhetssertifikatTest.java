@@ -4,7 +4,7 @@ import no.difi.virksomhetssertifikat.ExpirationValidator;
 import no.difi.virksomhetssertifikat.ValidatorBuilder;
 import no.difi.virksomhetssertifikat.api.PrincipalNameProvider;
 import no.difi.virksomhetssertifikat.extras.NorwegianOrganizationNumberValidator;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 public class VirksomhetssertifikatTest {
 

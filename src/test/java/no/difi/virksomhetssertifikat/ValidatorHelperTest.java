@@ -2,8 +2,8 @@ package no.difi.virksomhetssertifikat;
 
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;

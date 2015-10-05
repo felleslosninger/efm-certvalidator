@@ -4,11 +4,10 @@ package no.difi.virksomhetssertifikat.extras;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import no.difi.virksomhetssertifikat.api.PrincipalNameProvider;
 import no.difi.virksomhetssertifikat.testutil.X509TestGenerator;
-import org.junit.Assert;
-import org.junit.Test;
-import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import java.security.cert.X509Certificate;
 
@@ -32,7 +31,7 @@ public class NorwegianOrganizationNumberValidatorTest extends X509TestGenerator 
         }).validate(cert);
     }
 
-    @Test(expected = FailedValidationException.class)
+    @Test(expectedExceptions = FailedValidationException.class)
     public void invalidOrgnumberFromCertBasedOnSerialnumber() throws Exception {
         final String ORGNR = "123 456 789";
         X509Certificate cert = createX509Certificate("CN=name, OU=None, O=None L=None, C=None, serialNumber=" + ORGNR);
@@ -80,7 +79,7 @@ public class NorwegianOrganizationNumberValidatorTest extends X509TestGenerator 
         }).validate(cert);
     }
 
-    @Test(expected = FailedValidationException.class)
+    @Test(expectedExceptions = FailedValidationException.class)
     public void attributesNotFound() throws Exception {
         X509Certificate cert = createX509Certificate("CN=name");
         logger.debug(cert.getSubjectDN().toString());
@@ -95,7 +94,7 @@ public class NorwegianOrganizationNumberValidatorTest extends X509TestGenerator 
         }).validate(cert);
     }
 
-    @Test(expected = FailedValidationException.class)
+    @Test(expectedExceptions = FailedValidationException.class)
     public void notAcceptedOrgnumberFromCertBasedOnSerialnumber() throws Exception {
         final String ORGNR = "123456789";
         X509Certificate cert = createX509Certificate("CN=name, OU=None, O=None L=None, C=None, serialNumber=" + ORGNR);

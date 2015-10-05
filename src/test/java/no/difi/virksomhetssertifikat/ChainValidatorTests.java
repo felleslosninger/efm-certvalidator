@@ -3,10 +3,10 @@ package no.difi.virksomhetssertifikat;
 
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import org.bouncycastle.operator.OperatorCreationException;
-import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import no.difi.virksomhetssertifikat.testutil.X509TestGenerator;
+import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.security.*;
@@ -19,7 +19,7 @@ import java.util.HashSet;
 @Deprecated
 public class ChainValidatorTests extends X509TestGenerator {
 
-    @Test(expected = CertificateValidationException.class)
+    @Test(expectedExceptions = CertificateValidationException.class)
     public void shouldRejectACertificateThatIsntSigned() throws NoSuchAlgorithmException, SignatureException, InvalidKeyException, CertificateException, KeyStoreException, IOException, OperatorCreationException, CertificateValidationException {
         X509Certificate issuer = createX509Certificate();
 
