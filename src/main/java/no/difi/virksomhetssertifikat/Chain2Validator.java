@@ -4,12 +4,10 @@ import no.difi.virksomhetssertifikat.api.CertificateBucket;
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import no.difi.virksomhetssertifikat.api.CertificateValidator;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.security.GeneralSecurityException;
-import java.security.Security;
 import java.security.cert.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -69,6 +67,12 @@ public class Chain2Validator implements CertificateValidator {
 
         // Configure the PKIX certificate builder algorithm parameters
         PKIXBuilderParameters pkixParams = new PKIXBuilderParameters(trustAnchors, selector);
+
+        // From old validator. Needed?
+        // Set<String> initialPolicies = new HashSet<String>();
+        // initialPolicies.addAll(policyProvider.getApproprovedPolicyOids());
+        // pkixParams.setInitialPolicies(initialPolicies);
+        // spkixParams.setExplicitPolicyRequired(true);
 
         // Disable CRL checks (this is done manually as additional step)
         pkixParams.setRevocationEnabled(false);

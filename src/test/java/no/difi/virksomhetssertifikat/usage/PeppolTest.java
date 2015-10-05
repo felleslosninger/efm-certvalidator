@@ -12,7 +12,7 @@ public class PeppolTest {
     public void simpleTestAp() throws Exception {
         KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket("JKS", getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
         CertificateBucket rootCertificates = keystoreCertificateBucket.toSimple("peppol-root");
-        CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-ap");
+        CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
 
         ValidatorBuilder.newInstance()
                 .append(new ExpirationValidator())
@@ -28,7 +28,7 @@ public class PeppolTest {
     public void simpleTestSmp() throws Exception {
         KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket("JKS", getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
         CertificateBucket rootCertificates = keystoreCertificateBucket.toSimple("peppol-root");
-        CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-smp");
+        CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
 
         ValidatorBuilder.newInstance()
                 .append(new ExpirationValidator())
@@ -44,7 +44,7 @@ public class PeppolTest {
     public void simpleProdAp() throws Exception {
         KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket("JKS", getClass().getResourceAsStream("/peppol-prod.jks"), "peppol");
         CertificateBucket rootCertificates = keystoreCertificateBucket.toSimple("peppol-root");
-        CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-ap");
+        CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
 
         ValidatorBuilder.newInstance()
                 .append(new ExpirationValidator())
@@ -60,7 +60,7 @@ public class PeppolTest {
     public void simpleProdSmp() throws Exception {
         KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket("JKS", getClass().getResourceAsStream("/peppol-prod.jks"), "peppol");
         CertificateBucket rootCertificates = keystoreCertificateBucket.toSimple("peppol-root");
-        CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-smp");
+        CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
 
         ValidatorBuilder.newInstance()
                 .append(new ExpirationValidator())

@@ -40,19 +40,11 @@ public class KeystoreCertificateBucket implements CertificateBucket {
      */
     @Override
     public X509Certificate findBySubject(X500Principal principal) throws CertificateBucketException{
-        try {
-            KeyStore keyStore = getKeyStore();
-            Enumeration<String> aliases = keyStore.aliases();
-            while (aliases.hasMoreElements()) {
-                X509Certificate possibleIssuer = (X509Certificate) keyStore.getCertificate(aliases.nextElement());
-                if (possibleIssuer.getSubjectX500Principal().equals(principal)) {
-                    return possibleIssuer;
-                }
-            }
-            return null;
-        } catch (Exception e) {
-            throw new CertificateBucketException(e.getMessage(), e);
-        }
+        for (X509Certificate certificate : this)
+            if (certificate.getSubjectX500Principal().equals(principal))
+                return certificate;
+
+        return null;
     }
 
     /**
