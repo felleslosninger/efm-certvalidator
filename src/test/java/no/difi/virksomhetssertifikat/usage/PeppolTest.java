@@ -2,11 +2,15 @@ package no.difi.virksomhetssertifikat.usage;
 
 import no.difi.virksomhetssertifikat.*;
 import no.difi.virksomhetssertifikat.api.CertificateBucket;
+import no.difi.virksomhetssertifikat.api.CrlCache;
 import no.difi.virksomhetssertifikat.util.KeystoreCertificateBucket;
+import no.difi.virksomhetssertifikat.util.SimpleCrlCache;
 import no.difi.virksomhetssertifikat.util.SimplePrincipalNameProvider;
 import org.testng.annotations.Test;
 
 public class PeppolTest {
+
+    private CrlCache crlCache = new SimpleCrlCache();
 
     @Test
     public void simpleTestAp() throws Exception {
@@ -19,7 +23,7 @@ public class PeppolTest {
                 .append(new PrincipalNameValidator("CN", new SimplePrincipalNameProvider("PEPPOL ACCESS POINT TEST CA"), PrincipalNameValidator.Principal.ISSUER))
                 .append(new ChainValidator(rootCertificates, intermediateCertificates))
                 //.append(new OCSPValidator(intermediateCertificates))
-                .append(new CRLValidator())
+                .append(new CRLValidator(crlCache))
                 .build()
                 .validate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"));
     }
@@ -35,7 +39,7 @@ public class PeppolTest {
                 .append(new PrincipalNameValidator("CN", new SimplePrincipalNameProvider("PEPPOL SERVICE METADATA PUBLISHER TEST CA"), PrincipalNameValidator.Principal.ISSUER))
                 .append(new ChainValidator(rootCertificates, intermediateCertificates))
                 //.append(new OCSPValidator(intermediateCertificates))
-                .append(new CRLValidator())
+                .append(new CRLValidator(crlCache))
                 .build()
                 .validate(getClass().getResourceAsStream("/peppol-test-smp-difi.cer"));
     }
@@ -51,7 +55,7 @@ public class PeppolTest {
                 .append(new PrincipalNameValidator("CN", new SimplePrincipalNameProvider("PEPPOL ACCESS POINT CA"), PrincipalNameValidator.Principal.ISSUER))
                 .append(new ChainValidator(rootCertificates, intermediateCertificates))
                 .append(new OCSPValidator(intermediateCertificates))
-                .append(new CRLValidator())
+                .append(new CRLValidator(crlCache))
                 .build()
                 .validate(getClass().getResourceAsStream("/peppol-prod-ap-difi.cer"));
     }
@@ -67,7 +71,7 @@ public class PeppolTest {
                 .append(new PrincipalNameValidator("CN", new SimplePrincipalNameProvider("PEPPOL SERVICE METADATA PUBLISHER CA"), PrincipalNameValidator.Principal.ISSUER))
                 .append(new ChainValidator(rootCertificates, intermediateCertificates))
                 .append(new OCSPValidator(intermediateCertificates))
-                .append(new CRLValidator())
+                .append(new CRLValidator(crlCache))
                 .build()
                 .validate(getClass().getResourceAsStream("/peppol-prod-smp-difi.cer"));
     }
