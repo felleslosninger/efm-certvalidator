@@ -62,6 +62,16 @@ public class CertificateBucketWrapperTest {
         validator.validate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"));
         // Validate!
         validator.validate(getClass().getResourceAsStream("/peppol-test-smp-difi.cer"));
+
+        // Find issuer certificate
+        Assert.assertNotNull(intermediateCertificates.findBySubject(
+                ValidatorHelper.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")).getIssuerX500Principal()));
+        Assert.assertNotNull(intermediateCertificates.findBySubject(
+                ValidatorHelper.getCertificate(getClass().getResourceAsStream("/peppol-test-smp-difi.cer")).getIssuerX500Principal()));
+        Assert.assertNull(intermediateCertificates.findBySubject(
+                ValidatorHelper.getCertificate(getClass().getResourceAsStream("/peppol-prod-ap-difi.cer")).getIssuerX500Principal()));
+        Assert.assertNull(intermediateCertificates.findBySubject(
+                ValidatorHelper.getCertificate(getClass().getResourceAsStream("/peppol-prod-smp-difi.cer")).getIssuerX500Principal()));
     }
 
 }

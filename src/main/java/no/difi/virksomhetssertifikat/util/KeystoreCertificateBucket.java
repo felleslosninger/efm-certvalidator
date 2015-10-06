@@ -20,7 +20,7 @@ public class KeystoreCertificateBucket implements CertificateBucket {
 
     protected KeyStore keyStore;
 
-    protected KeystoreCertificateBucket(KeyStore keyStore) {
+    public KeystoreCertificateBucket(KeyStore keyStore) {
         this.keyStore = keyStore;
     }
 

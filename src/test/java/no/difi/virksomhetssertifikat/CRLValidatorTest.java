@@ -22,14 +22,22 @@ public class CRLValidatorTest {
         CrlCache crlCache = new SimpleCrlCache();
         crlCache.set(crlUrl, CRLValidator.load(getClass().getResourceAsStream("/peppol-test-ap.crl")));
 
+        ValidatorHelper validatorHelper = ValidatorBuilder.newInstance()
+                .append(new CRLValidator(crlCache))
+                .build();
+
         Assert.assertTrue(crlCache.get(crlUrl).getNextUpdate().getTime() < System.currentTimeMillis());
 
-        ValidatorBuilder.newInstance()
-                .append(new CRLValidator(crlCache))
-                .build()
-                .validate((getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
+        validatorHelper.validate((getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
 
         Assert.assertTrue(crlCache.get(crlUrl).getNextUpdate().getTime() > System.currentTimeMillis());
+
+        crlCache.set(crlUrl, null);
+        Assert.assertNull(crlCache.get(crlUrl));
+
+        validatorHelper.validate((getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
+
+        Assert.assertNotNull(crlCache.get(crlUrl));
     }
 
 }
