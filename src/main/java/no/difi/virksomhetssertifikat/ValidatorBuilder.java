@@ -19,7 +19,7 @@ public class ValidatorBuilder {
         return new ValidatorBuilder();
     }
 
-    private List<CertificateValidator> certificateValidators = new ArrayList<>();
+    private List<CertificateValidator> certificateValidators = new ArrayList<CertificateValidator>();
 
     private ValidatorBuilder() {
         // No action

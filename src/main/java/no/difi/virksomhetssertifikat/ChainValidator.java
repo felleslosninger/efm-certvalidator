@@ -61,7 +61,7 @@ public class ChainValidator implements CertificateValidator {
         selector.setCertificate(cert);
 
         // Create the trust anchors (set of root CA certificates)
-        Set<TrustAnchor> trustAnchors = new HashSet<>();
+        Set<TrustAnchor> trustAnchors = new HashSet<TrustAnchor>();
         for (X509Certificate trustedRootCert : rootCertificates) {
             logger.debug("({}) Trusted: {}", cert.getSerialNumber(), trustedRootCert.getSubjectDN().getName());
             trustAnchors.add(new TrustAnchor(trustedRootCert, null));
@@ -80,7 +80,7 @@ public class ChainValidator implements CertificateValidator {
         pkixParams.setRevocationEnabled(false);
 
         // Specify a list of intermediate certificates
-        Set<X509Certificate> trustedIntermediateCert = new HashSet<>();
+        Set<X509Certificate> trustedIntermediateCert = new HashSet<X509Certificate>();
         for (X509Certificate certificate : intermediateCertificates) {
             logger.debug("({}) Intermediate: {}", cert.getSerialNumber(), certificate.getSubjectDN().getName());
             trustedIntermediateCert.add(certificate);

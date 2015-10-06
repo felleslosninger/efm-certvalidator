@@ -54,7 +54,7 @@ public class JunctionValidator implements CertificateValidator {
     }
 
     private void validateOR(X509Certificate certificate) throws CertificateValidationException {
-        List<CertificateValidationException> exceptions = new ArrayList<>();
+        List<CertificateValidationException> exceptions = new ArrayList<CertificateValidationException>();
 
         for (CertificateValidator certificateValidator : certificateValidators) {
             try {
@@ -75,7 +75,7 @@ public class JunctionValidator implements CertificateValidator {
     }
 
     private void validateXOR(X509Certificate certificate) throws CertificateValidationException {
-        List<CertificateValidationException> exceptions = new ArrayList<>();
+        List<CertificateValidationException> exceptions = new ArrayList<CertificateValidationException>();
 
         for (CertificateValidator certificateValidator : certificateValidators) {
             try {

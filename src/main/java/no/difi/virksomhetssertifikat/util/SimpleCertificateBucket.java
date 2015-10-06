@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class SimpleCertificateBucket implements CertificateBucket {
 
-    private List<X509Certificate> certificates = new ArrayList<>();
+    private List<X509Certificate> certificates = new ArrayList<X509Certificate>();
 
     public SimpleCertificateBucket(X509Certificate... certificates) {
         add(certificates);

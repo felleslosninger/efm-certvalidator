@@ -86,7 +86,7 @@ public class PrincipalNameValidator implements CertificateValidator {
 
         RFC4519Style.INSTANCE.attrNameToOID(field);
 
-        List<String> values = new ArrayList<>();
+        List<String> values = new ArrayList<String>();
         for (RDN rdn : principal.getRDNs(RFC4519Style.INSTANCE.attrNameToOID(field)))
             for (AttributeTypeAndValue value : rdn.getTypesAndValues())
                 values.add(value.getValue().toString());
