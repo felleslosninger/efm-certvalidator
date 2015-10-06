@@ -20,6 +20,7 @@ public class PeppolTest {
 
         ValidatorHelper validatorHelper = ValidatorBuilder.newInstance()
                 .append(new ExpirationValidator())
+                .append(new SelfsignedValidator())
                 .append(new PrincipalNameValidator("CN", new SimplePrincipalNameProvider("PEPPOL ACCESS POINT TEST CA"), PrincipalNameValidator.Principal.ISSUER))
                 .append(new ChainValidator(rootCertificates, intermediateCertificates))
                 .append(new CRLValidator(crlCache))
@@ -38,6 +39,7 @@ public class PeppolTest {
 
         ValidatorBuilder.newInstance()
                 .append(new ExpirationValidator())
+                .append(new SelfsignedValidator())
                 .append(new PrincipalNameValidator("CN", new SimplePrincipalNameProvider("PEPPOL SERVICE METADATA PUBLISHER TEST CA"), PrincipalNameValidator.Principal.ISSUER))
                 .append(new ChainValidator(rootCertificates, intermediateCertificates))
                 .append(new CRLValidator(crlCache))
@@ -54,6 +56,7 @@ public class PeppolTest {
 
         ValidatorBuilder.newInstance()
                 .append(new ExpirationValidator())
+                .append(new SelfsignedValidator())
                 .append(new PrincipalNameValidator("CN", new SimplePrincipalNameProvider("PEPPOL ACCESS POINT CA"), PrincipalNameValidator.Principal.ISSUER))
                 .append(new ChainValidator(rootCertificates, intermediateCertificates))
                 .append(new CRLValidator(crlCache))
@@ -70,6 +73,7 @@ public class PeppolTest {
 
         ValidatorBuilder.newInstance()
                 .append(new ExpirationValidator())
+                .append(new SelfsignedValidator())
                 .append(new PrincipalNameValidator("CN", new SimplePrincipalNameProvider("PEPPOL SERVICE METADATA PUBLISHER CA"), PrincipalNameValidator.Principal.ISSUER))
                 .append(new ChainValidator(rootCertificates, intermediateCertificates))
                 .append(new CRLValidator(crlCache))
