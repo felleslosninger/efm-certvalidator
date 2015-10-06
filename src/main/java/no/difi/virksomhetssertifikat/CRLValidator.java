@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.security.cert.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,18 +46,32 @@ public class CRLValidator implements CertificateValidator {
     public void validate(X509Certificate certificate) throws CertificateValidationException {
         List<String> urls = getCrlDistributionPoints(certificate);
         for (String url : urls) {
-            logger.debug(url);
-
             X509CRL crl = crlCache.get(url);
             if (crl == null || crl.getNextUpdate().getTime() < System.currentTimeMillis()) {
-                // TODO Fetch CRL
-
+                crl = fetch(url);
                 crlCache.set(url, crl);
             }
 
             if (crl != null && crl.isRevoked(certificate))
                 throw new FailedValidationException("Certificate is revoked.");
         }
+    }
+
+    public static X509CRL fetch(String url) throws CertificateValidationException {
+        logger.debug("Fetching {}", url);
+
+        try {
+            if (url.startsWith("http://") || url.startsWith("https://"))
+                return load(URI.create(url).toURL().openStream());
+            else if (url.startsWith("ldap://"))
+                // Currently not supported.
+                return null;
+
+        } catch (Exception e) {
+            throw new CertificateValidationException(e.getMessage(), e);
+        }
+
+        return null;
     }
 
     public static X509CRL load(InputStream inputStream) throws CertificateValidationException {

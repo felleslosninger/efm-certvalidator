@@ -18,14 +18,16 @@ public class PeppolTest {
         CertificateBucket rootCertificates = keystoreCertificateBucket.toSimple("peppol-root");
         CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
 
-        ValidatorBuilder.newInstance()
+        ValidatorHelper validatorHelper = ValidatorBuilder.newInstance()
                 .append(new ExpirationValidator())
                 .append(new PrincipalNameValidator("CN", new SimplePrincipalNameProvider("PEPPOL ACCESS POINT TEST CA"), PrincipalNameValidator.Principal.ISSUER))
                 .append(new ChainValidator(rootCertificates, intermediateCertificates))
-                //.append(new OCSPValidator(intermediateCertificates))
                 .append(new CRLValidator(crlCache))
-                .build()
-                .validate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"));
+                //.append(new OCSPValidator(intermediateCertificates))
+                .build();
+
+        validatorHelper.validate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"));
+        validatorHelper.validate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"));
     }
 
     @Test
@@ -38,8 +40,8 @@ public class PeppolTest {
                 .append(new ExpirationValidator())
                 .append(new PrincipalNameValidator("CN", new SimplePrincipalNameProvider("PEPPOL SERVICE METADATA PUBLISHER TEST CA"), PrincipalNameValidator.Principal.ISSUER))
                 .append(new ChainValidator(rootCertificates, intermediateCertificates))
-                //.append(new OCSPValidator(intermediateCertificates))
                 .append(new CRLValidator(crlCache))
+                //.append(new OCSPValidator(intermediateCertificates))
                 .build()
                 .validate(getClass().getResourceAsStream("/peppol-test-smp-difi.cer"));
     }
@@ -54,8 +56,8 @@ public class PeppolTest {
                 .append(new ExpirationValidator())
                 .append(new PrincipalNameValidator("CN", new SimplePrincipalNameProvider("PEPPOL ACCESS POINT CA"), PrincipalNameValidator.Principal.ISSUER))
                 .append(new ChainValidator(rootCertificates, intermediateCertificates))
-                .append(new OCSPValidator(intermediateCertificates))
                 .append(new CRLValidator(crlCache))
+                .append(new OCSPValidator(intermediateCertificates))
                 .build()
                 .validate(getClass().getResourceAsStream("/peppol-prod-ap-difi.cer"));
     }
@@ -70,8 +72,8 @@ public class PeppolTest {
                 .append(new ExpirationValidator())
                 .append(new PrincipalNameValidator("CN", new SimplePrincipalNameProvider("PEPPOL SERVICE METADATA PUBLISHER CA"), PrincipalNameValidator.Principal.ISSUER))
                 .append(new ChainValidator(rootCertificates, intermediateCertificates))
-                .append(new OCSPValidator(intermediateCertificates))
                 .append(new CRLValidator(crlCache))
+                .append(new OCSPValidator(intermediateCertificates))
                 .build()
                 .validate(getClass().getResourceAsStream("/peppol-prod-smp-difi.cer"));
     }

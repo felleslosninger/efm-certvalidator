@@ -1,5 +1,6 @@
 package no.difi.virksomhetssertifikat.usage;
 
+import no.difi.virksomhetssertifikat.CRLValidator;
 import no.difi.virksomhetssertifikat.ExpirationValidator;
 import no.difi.virksomhetssertifikat.ValidatorBuilder;
 import no.difi.virksomhetssertifikat.api.PrincipalNameProvider;
@@ -18,6 +19,7 @@ public class VirksomhetssertifikatTest {
                         return true;
                     }
                 }))
+                .append(new CRLValidator())
                 .build();
     }
 }
