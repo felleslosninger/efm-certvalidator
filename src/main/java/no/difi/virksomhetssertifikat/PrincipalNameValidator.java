@@ -71,16 +71,16 @@ public class PrincipalNameValidator implements CertificateValidator {
         }
     }
 
-    protected X500Name getIssuer(X509Certificate certificate) throws CertificateEncodingException {
+    protected static X500Name getIssuer(X509Certificate certificate) throws CertificateEncodingException {
         return new JcaX509CertificateHolder(certificate).getIssuer();
     }
 
-    protected X500Name getSubject(X509Certificate certificate) throws CertificateEncodingException {
+    protected static X500Name getSubject(X509Certificate certificate) throws CertificateEncodingException {
         return new JcaX509CertificateHolder(certificate).getSubject();
     }
 
     @SuppressWarnings("all")
-    protected List<String> extract(X500Name principal, String field) {
+    protected static List<String> extract(X500Name principal, String field) {
         if (field == null)
             return Arrays.asList(principal.toString());
 

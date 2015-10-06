@@ -50,7 +50,7 @@ public class NorwegianOrganizationNumberValidator extends PrincipalNameValidator
      * @return Organization number found in certificate, null if not found.
      * @throws CertificateValidationException
      */
-    protected String extractNumber(X509Certificate certificate) throws CertificateValidationException {
+    public static String extractNumber(X509Certificate certificate) throws CertificateValidationException {
         try {
             //matches "C=NO,ST=AKERSHUS,L=FORNEBUVEIEN 1\\, 1366 LYSAKER,O=RF Commfides,SERIALNUMBER=399573952,CN=RF Commfides"
             for (String value : extract(getSubject(certificate), "SERIALNUMBER"))
