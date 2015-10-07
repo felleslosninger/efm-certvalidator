@@ -52,4 +52,9 @@ public class JunctionTest {
             // Expected
         }
     }
+
+    @Test
+    public void simpleConstructor() {
+        new Junction();
+    }
 }

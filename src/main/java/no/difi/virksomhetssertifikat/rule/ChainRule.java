@@ -19,10 +19,6 @@ public class ChainRule implements ValidatorRule {
 
     private static final Logger logger = LoggerFactory.getLogger(ChainRule.class);
 
-    /* static {
-        Security.addProvider(new BouncyCastleProvider());
-    } */
-
     private CertificateBucket rootCertificates;
     private CertificateBucket intermediateCertificates;
 
@@ -85,11 +81,11 @@ public class ChainRule implements ValidatorRule {
             logger.debug("({}) Intermediate: {}", cert.getSerialNumber(), certificate.getSubjectDN().getName());
             trustedIntermediateCert.add(certificate);
         }
-        pkixParams.addCertStore(CertStore.getInstance("Collection",
-                new CollectionCertStoreParameters(trustedIntermediateCert))); //, BouncyCastleProvider.PROVIDER_NAME));
+
+        pkixParams.addCertStore(CertStore.getInstance("Collection", new CollectionCertStoreParameters(trustedIntermediateCert)));
 
         // Build and verify the certification chain
-        CertPathBuilder builder = CertPathBuilder.getInstance("PKIX"); // , BouncyCastleProvider.PROVIDER_NAME);
+        CertPathBuilder builder = CertPathBuilder.getInstance("PKIX");
         return (PKIXCertPathBuilderResult) builder.build(pkixParams);
     }
 }
