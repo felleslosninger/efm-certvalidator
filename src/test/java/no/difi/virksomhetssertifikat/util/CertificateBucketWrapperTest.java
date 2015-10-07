@@ -1,8 +1,8 @@
 package no.difi.virksomhetssertifikat.util;
 
-import no.difi.virksomhetssertifikat.ChainValidator;
+import no.difi.virksomhetssertifikat.ChainRule;
 import no.difi.virksomhetssertifikat.ValidatorBuilder;
-import no.difi.virksomhetssertifikat.ValidatorHelper;
+import no.difi.virksomhetssertifikat.Validator;
 import no.difi.virksomhetssertifikat.api.CertificateBucket;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -22,8 +22,8 @@ public class CertificateBucketWrapperTest {
         CertificateBucketWrapper intermediateCertificates = new CertificateBucketWrapper(null);
 
         // Build the validator
-        ValidatorHelper validator = ValidatorBuilder.newInstance()
-                .append(new ChainValidator(rootCertificates, intermediateCertificates))
+        Validator validator = ValidatorBuilder.newInstance()
+                .addRule(new ChainRule(rootCertificates, intermediateCertificates))
                 .build();
 
         // See, no certificates inside wrapper!
@@ -65,13 +65,13 @@ public class CertificateBucketWrapperTest {
 
         // Find issuer certificate
         Assert.assertNotNull(intermediateCertificates.findBySubject(
-                ValidatorHelper.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")).getIssuerX500Principal()));
+                Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")).getIssuerX500Principal()));
         Assert.assertNotNull(intermediateCertificates.findBySubject(
-                ValidatorHelper.getCertificate(getClass().getResourceAsStream("/peppol-test-smp-difi.cer")).getIssuerX500Principal()));
+                Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-smp-difi.cer")).getIssuerX500Principal()));
         Assert.assertNull(intermediateCertificates.findBySubject(
-                ValidatorHelper.getCertificate(getClass().getResourceAsStream("/peppol-prod-ap-difi.cer")).getIssuerX500Principal()));
+                Validator.getCertificate(getClass().getResourceAsStream("/peppol-prod-ap-difi.cer")).getIssuerX500Principal()));
         Assert.assertNull(intermediateCertificates.findBySubject(
-                ValidatorHelper.getCertificate(getClass().getResourceAsStream("/peppol-prod-smp-difi.cer")).getIssuerX500Principal()));
+                Validator.getCertificate(getClass().getResourceAsStream("/peppol-prod-smp-difi.cer")).getIssuerX500Principal()));
     }
 
 }

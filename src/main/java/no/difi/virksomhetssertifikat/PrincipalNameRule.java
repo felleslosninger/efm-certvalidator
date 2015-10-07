@@ -1,7 +1,7 @@
 package no.difi.virksomhetssertifikat;
 
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
-import no.difi.virksomhetssertifikat.api.CertificateValidator;
+import no.difi.virksomhetssertifikat.api.ValidatorRule;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import no.difi.virksomhetssertifikat.api.PrincipalNameProvider;
 import org.bouncycastle.asn1.x500.AttributeTypeAndValue;
@@ -21,27 +21,27 @@ import java.util.List;
 /**
  * Validator using defined logic to validate content in principal name of subject or issuer.
  */
-public class PrincipalNameValidator implements CertificateValidator {
+public class PrincipalNameRule implements ValidatorRule {
 
-    private static final Logger logger = LoggerFactory.getLogger(PrincipalNameValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(PrincipalNameRule.class);
 
     protected String field;
     protected PrincipalNameProvider provider;
     protected Principal principal;
 
-    public PrincipalNameValidator(PrincipalNameProvider provider) {
+    public PrincipalNameRule(PrincipalNameProvider provider) {
         this(null, provider, Principal.SUBJECT);
     }
 
-    public PrincipalNameValidator(PrincipalNameProvider provider, Principal principal) {
+    public PrincipalNameRule(PrincipalNameProvider provider, Principal principal) {
         this(null, provider, principal);
     }
 
-    public PrincipalNameValidator(String field, PrincipalNameProvider provider) {
+    public PrincipalNameRule(String field, PrincipalNameProvider provider) {
         this(field, provider, Principal.SUBJECT);
     }
 
-    public PrincipalNameValidator(String field, PrincipalNameProvider provider, Principal principal) {
+    public PrincipalNameRule(String field, PrincipalNameProvider provider, Principal principal) {
         this.field = field;
         this.provider = provider;
         this.principal = principal;

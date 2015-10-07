@@ -6,7 +6,7 @@ import no.difi.virksomhetssertifikat.util.KeystoreCertificateBucket;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class ChainValidatorTest {
+public class ChainRuleTest {
 
     @Test
     public void simple() throws Exception {
@@ -14,8 +14,8 @@ public class ChainValidatorTest {
         CertificateBucket rootCertificates = keystoreCertificateBucket.toSimple("peppol-root");
         CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
 
-        ValidatorHelper validator = ValidatorBuilder.newInstance()
-                .append(new ChainValidator(rootCertificates, intermediateCertificates))
+        Validator validator = ValidatorBuilder.newInstance()
+                .addRule(new ChainRule(rootCertificates, intermediateCertificates))
                 .build();
 
         validator.validate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"));

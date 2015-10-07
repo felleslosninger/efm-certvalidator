@@ -11,17 +11,17 @@ import org.testng.annotations.Test;
 
 import java.security.cert.X509Certificate;
 
-public class CriticalOidValidatorTest extends X509TestGenerator {
+public class CriticalOidRuleTest extends X509TestGenerator {
     @Test
     public void shouldValidateCertWithOutAnyCriticalExtentions() throws Exception {
-        CriticalOidValidator validator = new CriticalOidValidator("2");
+        CriticalOidRule validator = new CriticalOidRule("2");
         X509Certificate cert = createX509Certificate();
         validator.validate(cert);
     }
 
     @Test
     public void shouldValidateCertWithApprovedCriticalExtentions() throws Exception {
-        CriticalOidValidator validator = new CriticalOidValidator("2.10.2");
+        CriticalOidRule validator = new CriticalOidRule("2.10.2");
         X509Certificate cert = createX509Certificate(new X509ExtensionCustom() {
             public void setup(X509v3CertificateBuilder v3CertGen) throws CertIOException {
                 v3CertGen.addExtension(new ASN1ObjectIdentifier("2.10.2"), true, new byte[3]);
@@ -35,7 +35,7 @@ public class CriticalOidValidatorTest extends X509TestGenerator {
     @Test(expectedExceptions = FailedValidationException.class)
     public void shouldInvalidateCertWithACriticalExtentionsThatIsNotApproved() throws Exception {
         String approvedExtentionList = "2.10.2";
-        CriticalOidValidator validator = new CriticalOidValidator(approvedExtentionList);
+        CriticalOidRule validator = new CriticalOidRule(approvedExtentionList);
         X509Certificate cert = createX509Certificate(new X509ExtensionCustom() {
             public void setup(X509v3CertificateBuilder v3CertGen) throws CertIOException {
                 String notApprovedExtention = "2.10.6";

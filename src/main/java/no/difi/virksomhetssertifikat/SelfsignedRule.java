@@ -1,22 +1,22 @@
 package no.difi.virksomhetssertifikat;
 
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
-import no.difi.virksomhetssertifikat.api.CertificateValidator;
+import no.difi.virksomhetssertifikat.api.ValidatorRule;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-public class SelfsignedValidator implements CertificateValidator {
+public class SelfSignedRule implements ValidatorRule {
 
     private Kind kind;
 
-    public SelfsignedValidator() {
+    public SelfSignedRule() {
         this(Kind.PUBLIC_SIGNED_ONLY);
     }
 
-    public SelfsignedValidator(Kind kind) {
+    public SelfSignedRule(Kind kind) {
         this.kind = kind;
     }
 

@@ -11,9 +11,9 @@ import org.testng.annotations.Test;
 
 import java.security.cert.X509Certificate;
 
-public class NorwegianOrganizationNumberValidatorTest extends X509TestGenerator {
+public class NorwegianOrganizationNumberRuleTest extends X509TestGenerator {
 
-    private static Logger logger = LoggerFactory.getLogger(NorwegianOrganizationNumberValidatorTest.class);
+    private static Logger logger = LoggerFactory.getLogger(NorwegianOrganizationNumberRuleTest.class);
 
     @Test
     public void shouldExtractOrgnumberFromCertBasedOnSerialnumber() throws Exception {
@@ -21,7 +21,7 @@ public class NorwegianOrganizationNumberValidatorTest extends X509TestGenerator 
         X509Certificate cert = createX509Certificate("CN=name, OU=None, O=None L=None, C=None, serialNumber=" + ORGNR);
         logger.debug(cert.getSubjectDN().toString());
 
-        new NorwegianOrganizationNumberValidator(new PrincipalNameProvider() {
+        new NorwegianOrganizationNumberRule(new PrincipalNameProvider() {
             @Override
             public boolean validate(String value) {
                 logger.info(value);
@@ -37,7 +37,7 @@ public class NorwegianOrganizationNumberValidatorTest extends X509TestGenerator 
         X509Certificate cert = createX509Certificate("CN=name, OU=None, O=None L=None, C=None, serialNumber=" + ORGNR);
         logger.debug(cert.getSubjectDN().toString());
 
-        new NorwegianOrganizationNumberValidator(new PrincipalNameProvider() {
+        new NorwegianOrganizationNumberRule(new PrincipalNameProvider() {
             @Override
             public boolean validate(String value) {
                 logger.info(value);
@@ -53,7 +53,7 @@ public class NorwegianOrganizationNumberValidatorTest extends X509TestGenerator 
         X509Certificate cert = createX509Certificate("CN=name, OU=None, O=organisasjon - " + ORGNR + ", L=None, C=None");
         logger.debug(cert.getSubjectDN().toString());
 
-        new NorwegianOrganizationNumberValidator(new PrincipalNameProvider() {
+        new NorwegianOrganizationNumberRule(new PrincipalNameProvider() {
             @Override
             public boolean validate(String value) {
                 logger.info(value);
@@ -69,7 +69,7 @@ public class NorwegianOrganizationNumberValidatorTest extends X509TestGenerator 
         X509Certificate cert = createX509Certificate("C=NO,ST=AKERSHUS,L=FORNEBUVEIEN 1\\, 1366 LYSAKER,O=RF Commfides,SERIALNUMBER=399573952,CN=RF Commfides");
         logger.debug(cert.getSubjectDN().toString());
 
-        new NorwegianOrganizationNumberValidator(new PrincipalNameProvider() {
+        new NorwegianOrganizationNumberRule(new PrincipalNameProvider() {
             @Override
             public boolean validate(String value) {
                 logger.info(value);
@@ -84,7 +84,7 @@ public class NorwegianOrganizationNumberValidatorTest extends X509TestGenerator 
         X509Certificate cert = createX509Certificate("CN=name");
         logger.debug(cert.getSubjectDN().toString());
 
-        new NorwegianOrganizationNumberValidator(new PrincipalNameProvider() {
+        new NorwegianOrganizationNumberRule(new PrincipalNameProvider() {
             @Override
             public boolean validate(String value) {
                 logger.info(value);
@@ -100,7 +100,7 @@ public class NorwegianOrganizationNumberValidatorTest extends X509TestGenerator 
         X509Certificate cert = createX509Certificate("CN=name, OU=None, O=None L=None, C=None, serialNumber=" + ORGNR);
         logger.debug(cert.getSubjectDN().toString());
 
-        new NorwegianOrganizationNumberValidator(new PrincipalNameProvider() {
+        new NorwegianOrganizationNumberRule(new PrincipalNameProvider() {
             @Override
             public boolean validate(String value) {
                 logger.info(value);

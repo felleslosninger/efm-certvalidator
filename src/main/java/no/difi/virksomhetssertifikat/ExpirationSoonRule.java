@@ -1,7 +1,7 @@
 package no.difi.virksomhetssertifikat;
 
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
-import no.difi.virksomhetssertifikat.api.CertificateValidator;
+import no.difi.virksomhetssertifikat.api.ValidatorRule;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 
 import java.security.cert.X509Certificate;
@@ -9,11 +9,11 @@ import java.security.cert.X509Certificate;
 /**
  * Validation making sure certificate doesn't expire in n milliseconds.
  */
-public class ExpirationSoonValidator implements CertificateValidator {
+public class ExpirationSoonRule implements ValidatorRule {
 
     private long millis;
 
-    public ExpirationSoonValidator(long millis) {
+    public ExpirationSoonRule(long millis) {
         this.millis = millis;
     }
 

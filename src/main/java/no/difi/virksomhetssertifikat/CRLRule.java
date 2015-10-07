@@ -1,7 +1,7 @@
 package no.difi.virksomhetssertifikat;
 
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
-import no.difi.virksomhetssertifikat.api.CertificateValidator;
+import no.difi.virksomhetssertifikat.api.ValidatorRule;
 import no.difi.virksomhetssertifikat.api.CrlCache;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import no.difi.virksomhetssertifikat.util.SimpleCrlCache;
@@ -21,9 +21,9 @@ import java.security.cert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CRLValidator implements CertificateValidator {
+public class CRLRule implements ValidatorRule {
 
-    private static final Logger logger = LoggerFactory.getLogger(CRLValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(CRLRule.class);
 
     private static final String CRL_EXTENSION = "2.5.29.31";
 
@@ -31,11 +31,11 @@ public class CRLValidator implements CertificateValidator {
 
     private CrlCache crlCache;
 
-    public CRLValidator(CrlCache crlCache) {
+    public CRLRule(CrlCache crlCache) {
         this.crlCache = crlCache;
     }
 
-    public CRLValidator() {
+    public CRLRule() {
         this(new SimpleCrlCache());
     }
 

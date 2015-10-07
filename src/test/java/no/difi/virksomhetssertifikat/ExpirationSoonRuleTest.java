@@ -5,11 +5,11 @@ import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class ExpirationSoonValidatorTest extends X509TestGenerator {
+public class ExpirationSoonRuleTest extends X509TestGenerator {
 
     @Test
     public void simple() throws Exception {
-        ValidatorHelper validatorHelper = new ValidatorHelper(new ExpirationSoonValidator(5 * 24 * 60 * 60 * 1000));
+        Validator validatorHelper = new Validator(new ExpirationSoonRule(5 * 24 * 60 * 60 * 1000));
 
         Assert.assertTrue(validatorHelper.isValid(createX509Certificate(DateTime.now().plusDays(1).toDate(), DateTime.now().plusDays(10).toDate())));
         Assert.assertTrue(validatorHelper.isValid(createX509Certificate(DateTime.now().plusDays(1).toDate(), DateTime.now().plusDays(6).toDate())));

@@ -1,7 +1,7 @@
 package no.difi.virksomhetssertifikat;
 
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
-import no.difi.virksomhetssertifikat.api.CertificateValidator;
+import no.difi.virksomhetssertifikat.api.ValidatorRule;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,16 +13,16 @@ import java.util.List;
 /**
  * Allows combining instances of validators using a limited set of logic.
  */
-public class JunctionValidator implements CertificateValidator {
+public class JunctionRule implements ValidatorRule {
 
-    private static final Logger logger = LoggerFactory.getLogger(JunctionValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(JunctionRule.class);
 
     private Kind kind;
-    private CertificateValidator[] certificateValidators;
+    private ValidatorRule[] validatorRules;
 
-    public JunctionValidator(Kind kind, CertificateValidator... certificateValidators) {
+    public JunctionRule(Kind kind, ValidatorRule... validatorRules) {
         this.kind = kind;
-        this.certificateValidators = certificateValidators;
+        this.validatorRules = validatorRules;
     }
 
     /**
@@ -49,16 +49,16 @@ public class JunctionValidator implements CertificateValidator {
     }
 
     private void validateAND(X509Certificate certificate) throws CertificateValidationException {
-        for (CertificateValidator certificateValidator : certificateValidators)
-            certificateValidator.validate(certificate);
+        for (ValidatorRule validatorRule : validatorRules)
+            validatorRule.validate(certificate);
     }
 
     private void validateOR(X509Certificate certificate) throws CertificateValidationException {
         List<CertificateValidationException> exceptions = new ArrayList<CertificateValidationException>();
 
-        for (CertificateValidator certificateValidator : certificateValidators) {
+        for (ValidatorRule validatorRule : validatorRules) {
             try {
-                certificateValidator.validate(certificate);
+                validatorRule.validate(certificate);
                 return;
             } catch (CertificateValidationException e) {
                 exceptions.add(e);
@@ -77,18 +77,18 @@ public class JunctionValidator implements CertificateValidator {
     private void validateXOR(X509Certificate certificate) throws CertificateValidationException {
         List<CertificateValidationException> exceptions = new ArrayList<CertificateValidationException>();
 
-        for (CertificateValidator certificateValidator : certificateValidators) {
+        for (ValidatorRule validatorRule : validatorRules) {
             try {
-                certificateValidator.validate(certificate);
+                validatorRule.validate(certificate);
             } catch (CertificateValidationException e) {
                 logger.debug(e.getMessage());
                 exceptions.add(e);
             }
         }
 
-        if (exceptions.size() != certificateValidators.length - 1) {
+        if (exceptions.size() != validatorRules.length - 1) {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(String.format("Xor-junction failed with results (%s of %s):", exceptions.size(), certificateValidators.length));
+            stringBuilder.append(String.format("Xor-junction failed with results (%s of %s):", exceptions.size(), validatorRules.length));
             for (Exception e : exceptions)
                 stringBuilder.append("\n* ").append(e.getMessage());
 

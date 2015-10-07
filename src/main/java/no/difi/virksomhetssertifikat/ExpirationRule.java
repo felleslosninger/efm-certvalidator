@@ -1,6 +1,6 @@
 package no.difi.virksomhetssertifikat;
 
-import no.difi.virksomhetssertifikat.api.CertificateValidator;
+import no.difi.virksomhetssertifikat.api.ValidatorRule;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +13,9 @@ import java.util.Date;
 /**
  * Validate validity of certificate.
  */
-public class ExpirationValidator implements CertificateValidator {
+public class ExpirationRule implements ValidatorRule {
 
-    private static final Logger logger = LoggerFactory.getLogger(ExpirationValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(ExpirationRule.class);
 
     /**
      * {@inheritDoc}

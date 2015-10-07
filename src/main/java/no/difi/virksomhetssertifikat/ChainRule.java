@@ -2,7 +2,7 @@ package no.difi.virksomhetssertifikat;
 
 import no.difi.virksomhetssertifikat.api.CertificateBucket;
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
-import no.difi.virksomhetssertifikat.api.CertificateValidator;
+import no.difi.virksomhetssertifikat.api.ValidatorRule;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +15,9 @@ import java.util.Set;
 /**
  * Validator checking validity of chain using root certificates and intermediate certificates.
  */
-public class ChainValidator implements CertificateValidator {
+public class ChainRule implements ValidatorRule {
 
-    private static final Logger logger = LoggerFactory.getLogger(ChainValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(ChainRule.class);
 
     /* static {
         Security.addProvider(new BouncyCastleProvider());
@@ -30,7 +30,7 @@ public class ChainValidator implements CertificateValidator {
      * @param rootCertificates         Trusted root certificates.
      * @param intermediateCertificates Trusted intermediate certificates.
      */
-    public ChainValidator(CertificateBucket rootCertificates, CertificateBucket intermediateCertificates) {
+    public ChainRule(CertificateBucket rootCertificates, CertificateBucket intermediateCertificates) {
         this.rootCertificates = rootCertificates;
         this.intermediateCertificates = intermediateCertificates;
     }

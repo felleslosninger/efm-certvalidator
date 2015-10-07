@@ -1,6 +1,6 @@
 package no.difi.virksomhetssertifikat;
 
-import no.difi.virksomhetssertifikat.api.CertificateValidator;
+import no.difi.virksomhetssertifikat.api.ValidatorRule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class ValidatorBuilder {
         return new ValidatorBuilder();
     }
 
-    private List<CertificateValidator> certificateValidators = new ArrayList<CertificateValidator>();
+    private List<ValidatorRule> validatorRules = new ArrayList<ValidatorRule>();
 
     private ValidatorBuilder() {
         // No action
@@ -28,11 +28,11 @@ public class ValidatorBuilder {
     /**
      * Append validator instance to validator.
      *
-     * @param certificateValidator Configured validator.
+     * @param validatorRule Configured validator.
      * @return Builder instance.
      */
-    public ValidatorBuilder append(CertificateValidator certificateValidator) {
-        certificateValidators.add(certificateValidator);
+    public ValidatorBuilder addRule(ValidatorRule validatorRule) {
+        validatorRules.add(validatorRule);
         return this;
     }
 
@@ -41,12 +41,12 @@ public class ValidatorBuilder {
      *
      * @return Validator ready for use.
      */
-    public ValidatorHelper build() {
-        if (certificateValidators.size() == 1)
-            return new ValidatorHelper(certificateValidators.get(0));
+    public Validator build() {
+        if (validatorRules.size() == 1)
+            return new Validator(validatorRules.get(0));
 
-        return new ValidatorHelper(
-                new SuiteValidator(certificateValidators.toArray(
-                        new CertificateValidator[certificateValidators.size()])));
+        return new Validator(
+                new JunctionRule(JunctionRule.Kind.AND, validatorRules.toArray(
+                        new ValidatorRule[validatorRules.size()])));
     }
 }

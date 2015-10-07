@@ -5,12 +5,12 @@ import no.difi.virksomhetssertifikat.util.SimpleCrlCache;
 import org.junit.Assert;
 import org.testng.annotations.Test;
 
-public class CRLValidatorTest {
+public class CRLRuleTest {
 
     @Test
     public void simple() throws Exception {
         ValidatorBuilder.newInstance()
-                .append(new CRLValidator())
+                .addRule(new CRLRule())
                 .build()
                 .validate((getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
     }
@@ -20,10 +20,10 @@ public class CRLValidatorTest {
         String crlUrl = "http://pilotonsitecrl.verisign.com/DigitaliseringsstyrelsenPilotOpenPEPPOLACCESSPOINTCA/LatestCRL.crl";
 
         CrlCache crlCache = new SimpleCrlCache();
-        crlCache.set(crlUrl, CRLValidator.load(getClass().getResourceAsStream("/peppol-test-ap.crl")));
+        crlCache.set(crlUrl, CRLRule.load(getClass().getResourceAsStream("/peppol-test-ap.crl")));
 
-        ValidatorHelper validatorHelper = ValidatorBuilder.newInstance()
-                .append(new CRLValidator(crlCache))
+        Validator validatorHelper = ValidatorBuilder.newInstance()
+                .addRule(new CRLRule(crlCache))
                 .build();
 
         Assert.assertTrue(crlCache.get(crlUrl).getNextUpdate().getTime() < System.currentTimeMillis());

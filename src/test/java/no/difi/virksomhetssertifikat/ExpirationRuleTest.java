@@ -16,11 +16,11 @@ import java.security.cert.X509Certificate;
 
 
 
-public class ExpirationValidatorTest extends X509TestGenerator {
+public class ExpirationRuleTest extends X509TestGenerator {
 
     @Test
     public void shouldValidateAValidCertificate() throws CertificateValidationException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, CertificateException, CertIOException, OperatorCreationException {
-        ExpirationValidator validator = new ExpirationValidator();
+        ExpirationRule validator = new ExpirationRule();
 
         X509Certificate cert = createX509Certificate(DateTime.now().minusDays(10).toDate(), DateTime.now().plusDays(10).toDate());
 
@@ -29,7 +29,7 @@ public class ExpirationValidatorTest extends X509TestGenerator {
 
     @Test(expectedExceptions = FailedValidationException.class)
     public void shouldInvalidateAExpiredCertificate() throws CertificateValidationException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, CertificateException, CertIOException, OperatorCreationException {
-        ExpirationValidator validator = new ExpirationValidator();
+        ExpirationRule validator = new ExpirationRule();
 
         X509Certificate cert = createX509Certificate(DateTime.now().minusDays(10).toDate(), DateTime.now().minusDays(2).toDate());
 
@@ -38,7 +38,7 @@ public class ExpirationValidatorTest extends X509TestGenerator {
 
     @Test(expectedExceptions = FailedValidationException.class)
     public void shouldInvalidateANotNotbeforeCertificate() throws CertificateValidationException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, CertificateException, CertIOException, OperatorCreationException {
-        ExpirationValidator validator = new ExpirationValidator();
+        ExpirationRule validator = new ExpirationRule();
 
         X509Certificate cert = createX509Certificate(DateTime.now().plusDays(10).toDate(), DateTime.now().plusDays(20).toDate());
 

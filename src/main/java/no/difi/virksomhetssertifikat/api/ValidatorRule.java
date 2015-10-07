@@ -3,9 +3,10 @@ package no.difi.virksomhetssertifikat.api;
 import java.security.cert.X509Certificate;
 
 /**
- * Defines a validator instance. Made as simple as possible by purpose.
+ * Defines a validator rule. Made as simple as possible by purpose.
  */
-public interface CertificateValidator {
+public interface ValidatorRule {
+
     /**
      * Validate certificate.
      * @param certificate Certificate subject to validation.

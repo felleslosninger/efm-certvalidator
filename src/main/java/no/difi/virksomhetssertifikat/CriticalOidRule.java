@@ -1,7 +1,7 @@
 package no.difi.virksomhetssertifikat;
 
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
-import no.difi.virksomhetssertifikat.api.CertificateValidator;
+import no.difi.virksomhetssertifikat.api.ValidatorRule;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,13 +11,13 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class CriticalOidValidator implements CertificateValidator {
+public class CriticalOidRule implements ValidatorRule {
 
-    private static Logger logger = LoggerFactory.getLogger(CriticalOidValidator.class);
+    private static Logger logger = LoggerFactory.getLogger(CriticalOidRule.class);
 
     private List<String> approvedOids;
 
-    public CriticalOidValidator(String... approvedOids) {
+    public CriticalOidRule(String... approvedOids) {
         this.approvedOids = Arrays.asList(approvedOids);
     }
 

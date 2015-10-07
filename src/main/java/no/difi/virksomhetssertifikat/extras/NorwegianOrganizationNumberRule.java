@@ -1,6 +1,6 @@
 package no.difi.virksomhetssertifikat.extras;
 
-import no.difi.virksomhetssertifikat.PrincipalNameValidator;
+import no.difi.virksomhetssertifikat.PrincipalNameRule;
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import no.difi.virksomhetssertifikat.api.PrincipalNameProvider;
@@ -18,14 +18,14 @@ import java.util.regex.Pattern;
  * Use of organization numbers in certificates is defines here:
  * http://www.regjeringen.no/upload/FAD/Vedlegg/IKT-politikk/SEID_Leveranse_1_-_v1.02.pdf (page 24)
  */
-public class NorwegianOrganizationNumberValidator extends PrincipalNameValidator {
+public class NorwegianOrganizationNumberRule extends PrincipalNameRule {
 
-    private static final Logger logger = LoggerFactory.getLogger(NorwegianOrganizationNumberValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(NorwegianOrganizationNumberRule.class);
 
     private static final Pattern patternSerialnumber = Pattern.compile("^[0-9]{9}$");
     private static final Pattern patternOrganizationName = Pattern.compile("^.+\\-\\W*([0-9]{9})$");
 
-    public NorwegianOrganizationNumberValidator(PrincipalNameProvider provider) {
+    public NorwegianOrganizationNumberRule(PrincipalNameProvider provider) {
         super(provider);
     }
 

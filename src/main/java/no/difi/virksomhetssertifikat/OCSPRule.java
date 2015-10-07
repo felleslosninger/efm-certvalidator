@@ -2,7 +2,7 @@ package no.difi.virksomhetssertifikat;
 
 import no.difi.virksomhetssertifikat.api.CertificateBucket;
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
-import no.difi.virksomhetssertifikat.api.CertificateValidator;
+import no.difi.virksomhetssertifikat.api.ValidatorRule;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,13 +15,13 @@ import java.security.cert.X509Certificate;
 /**
  * Validation of certificate using OCSP. Requires intermediate certificates.
  */
-public class OCSPValidator implements CertificateValidator {
+public class OCSPRule implements ValidatorRule {
 
-    private static final Logger logger = LoggerFactory.getLogger(OCSPValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(OCSPRule.class);
 
     private CertificateBucket intermediateCertificates;
 
-    public OCSPValidator(CertificateBucket intermediateCertificates) {
+    public OCSPRule(CertificateBucket intermediateCertificates) {
         this.intermediateCertificates = intermediateCertificates;
     }
 

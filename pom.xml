@@ -11,6 +11,18 @@
     <description>Certificate validator</description>
     <url>https://github.com/difi/Virksomhetsserifikatvalidator</url>
 
+    <scm>
+        <tag>HEAD</tag>
+        <url>https://github.com/difi/Virksomhetsserifikatvalidator</url>
+        <connection>scm:git:https://github.com/difi/Virksomhetsserifikatvalidator.git</connection>
+        <developerConnection>scm:git:git@github.com:difi/Virksomhetsserifikatvalidator.git</developerConnection>
+    </scm>
+
+    <issueManagement>
+        <url>https://github.com/difi/Virksomhetsserifikatvalidator/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
     <organization>
         <name>Norwegian Agency for Public Management and eGovernment</name>
         <url>http://www.difi.no</url>
@@ -93,22 +105,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.18.1</version>
             </plugin>
-            <plugin>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.3</version>
-                <executions>
-                    <execution>
-                        <id>package-javadoc</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <encoding>${java.encoding}</encoding>
-                </configuration>
-            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
@@ -121,6 +117,22 @@
                             <format>html</format>
                             <format>xml</format>
                         </formats>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.10.3</version>
+                    <executions>
+                        <execution>
+                            <id>package-javadoc</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <encoding>${java.encoding}</encoding>
                     </configuration>
                 </plugin>
             </plugins>

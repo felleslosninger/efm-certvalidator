@@ -8,17 +8,17 @@ import org.testng.annotations.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
-public class ValidatorHelperTest {
+public class ValidatorTest {
 
     @Test
     public void simpleTrue() {
-        ValidatorHelper validatorHelper = ValidatorBuilder.newInstance().append(new DummyValidator()).build();
+        Validator validatorHelper = ValidatorBuilder.newInstance().addRule(new DummyRule()).build();
         Assert.assertTrue(validatorHelper.isValid(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
     }
 
     @Test
     public void simpleFalse() {
-        ValidatorHelper validatorHelper = new ValidatorHelper(new DummyValidator("FAIL!"));
+        Validator validatorHelper = new Validator(new DummyRule("FAIL!"));
         Assert.assertFalse(validatorHelper.isValid(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
         Assert.assertFalse(validatorHelper.isValid((InputStream) null));
     }
@@ -28,7 +28,7 @@ public class ValidatorHelperTest {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         IOUtils.copy(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"), byteArrayOutputStream);
 
-        ValidatorHelper validatorHelper = new ValidatorHelper(new DummyValidator("FAIL!"));
+        Validator validatorHelper = new Validator(new DummyRule("FAIL!"));
         Assert.assertFalse(validatorHelper.isValid(byteArrayOutputStream.toByteArray()));
         Assert.assertFalse(validatorHelper.isValid(new byte[] {}));
 
@@ -39,7 +39,7 @@ public class ValidatorHelperTest {
             // Expected
         }
 
-        validatorHelper = new ValidatorHelper(new DummyValidator());
+        validatorHelper = new Validator(new DummyRule());
         validatorHelper.validate(byteArrayOutputStream.toByteArray());
     }
 }
