@@ -23,7 +23,7 @@ Create your own validator(s):
 // Generic validator
 Validator validator = ValidatorBuilder.newInstace()
     .addRule(new ExpirationRule())
-    .addRule(new SelfSignedRule())
+    .addRule(new SigningRule())
     .addRule(new CRLRule())
     .addRule(new OCSPRule())
     .build();
@@ -31,7 +31,7 @@ Validator validator = ValidatorBuilder.newInstace()
 // Accept only non-expired self-signed certificates
 Validator validator = ValidatorBuilder.newInstance()
     .addRule(new ExpirationRule())
-    .addRule(new SelfSignedRule(SelfSignedRule.Kind.SELF_SIGNED_ONLY))
+    .addRule(SigningRule.SelfSignedOnly())
     .build();
 
 // Is the certificate expiring in less than 7 days?
@@ -59,10 +59,14 @@ Validators may not only be used to judge a given certificate when in situation t
 * **DummyRule** - Very simple implementation potentially interesting to use in testing.
 * **ExpirationSoonRule**
 * **ExpirationRule**
-* **JunctionRule** - Combine multiple validators into one validator using ```AND```, ```OR``` and ```XOR```.
 * **OCSPRule**
 * **PrincipalNameRule**
-* **SelfSignedRule**
+* **SigningRule**
+
+
+### Structure
+
+* **Junction** - Combine multiple validators into one validator using 'and', 'or' and 'xor'.
 
 
 ### Extras

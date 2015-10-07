@@ -11,17 +11,17 @@ import java.security.KeyStore;
 /**
  * Reads keystore from file for every access to keystore.
  */
-public class FileKeystoreCertificateBucket extends KeystoreCertificateBucket {
+public class FileKeyStoreCertificateBucket extends KeyStoreCertificateBucket {
 
     private String type;
     private String path;
     private String password;
 
-    public FileKeystoreCertificateBucket(String path, String password) {
+    public FileKeyStoreCertificateBucket(String path, String password) {
         this("JKS", path, password);
     }
 
-    public FileKeystoreCertificateBucket(String type, String path, String password) {
+    public FileKeyStoreCertificateBucket(String type, String path, String password) {
         super(null);
 
         this.type = type;

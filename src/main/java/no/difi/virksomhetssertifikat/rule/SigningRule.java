@@ -1,4 +1,4 @@
-package no.difi.virksomhetssertifikat;
+package no.difi.virksomhetssertifikat.rule;
 
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import no.difi.virksomhetssertifikat.api.ValidatorRule;
@@ -8,15 +8,23 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-public class SelfSignedRule implements ValidatorRule {
+public class SigningRule implements ValidatorRule {
+
+    public static SigningRule PublicSignedOnly() {
+        return new SigningRule(Kind.PUBLIC_SIGNED_ONLY);
+    }
+
+    public static SigningRule SelfSignedOnly() {
+        return new SigningRule(Kind.SELF_SIGNED_ONLY);
+    }
 
     private Kind kind;
 
-    public SelfSignedRule() {
+    public SigningRule() {
         this(Kind.PUBLIC_SIGNED_ONLY);
     }
 
-    public SelfSignedRule(Kind kind) {
+    public SigningRule(Kind kind) {
         this.kind = kind;
     }
 
@@ -58,6 +66,6 @@ public class SelfSignedRule implements ValidatorRule {
     }
 
     public enum Kind {
-        PUBLIC_SIGNED_ONLY, SELF_SIGNED_ONLY, BOTH
+        PUBLIC_SIGNED_ONLY, SELF_SIGNED_ONLY
     }
 }

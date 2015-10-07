@@ -1,5 +1,6 @@
-package no.difi.virksomhetssertifikat;
+package no.difi.virksomhetssertifikat.rule;
 
+import no.difi.virksomhetssertifikat.ValidatorBuilder;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import no.difi.virksomhetssertifikat.api.PrincipalNameProvider;
 import no.difi.virksomhetssertifikat.util.SimplePrincipalNameProvider;

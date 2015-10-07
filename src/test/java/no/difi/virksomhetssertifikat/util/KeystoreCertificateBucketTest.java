@@ -5,11 +5,11 @@ import no.difi.virksomhetssertifikat.api.CertificateBucketException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class KeystoreCertificateBucketTest {
+public class KeyStoreCertificateBucketTest {
 
     @Test
     public void simple() throws Exception {
-        KeystoreCertificateBucket certificateBucket = new KeystoreCertificateBucket(getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
+        KeyStoreCertificateBucket certificateBucket = new KeyStoreCertificateBucket(getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
 
         Assert.assertNotNull(certificateBucket.findBySubject(
                 Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")).getIssuerX500Principal()));
@@ -23,16 +23,16 @@ public class KeystoreCertificateBucketTest {
 
     @Test(expectedExceptions = IllegalStateException.class)
     public void triggerNullPointerInIterator() throws Exception {
-        new KeystoreCertificateBucket(null).iterator();
+        new KeyStoreCertificateBucket(null).iterator();
     }
 
     @Test(expectedExceptions = CertificateBucketException.class)
     public void triggerNullPointerInToSimple() throws Exception {
-        new KeystoreCertificateBucket(null).toSimple();
+        new KeyStoreCertificateBucket(null).toSimple();
     }
 
     @Test(expectedExceptions = CertificateBucketException.class)
     public void triggerNullPointerInConstructor() throws Exception {
-        new KeystoreCertificateBucket(null, "password");
+        new KeyStoreCertificateBucket(null, "password");
     }
 }

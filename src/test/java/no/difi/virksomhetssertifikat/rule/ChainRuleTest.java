@@ -1,8 +1,10 @@
-package no.difi.virksomhetssertifikat;
+package no.difi.virksomhetssertifikat.rule;
 
+import no.difi.virksomhetssertifikat.Validator;
+import no.difi.virksomhetssertifikat.ValidatorBuilder;
 import no.difi.virksomhetssertifikat.api.CertificateBucket;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
-import no.difi.virksomhetssertifikat.util.KeystoreCertificateBucket;
+import no.difi.virksomhetssertifikat.util.KeyStoreCertificateBucket;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -10,9 +12,9 @@ public class ChainRuleTest {
 
     @Test
     public void simple() throws Exception {
-        KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket("JKS", getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
-        CertificateBucket rootCertificates = keystoreCertificateBucket.toSimple("peppol-root");
-        CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
+        KeyStoreCertificateBucket keyStoreCertificateBucket = new KeyStoreCertificateBucket("JKS", getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
+        CertificateBucket rootCertificates = keyStoreCertificateBucket.toSimple("peppol-root");
+        CertificateBucket intermediateCertificates = keyStoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
 
         Validator validator = ValidatorBuilder.newInstance()
                 .addRule(new ChainRule(rootCertificates, intermediateCertificates))

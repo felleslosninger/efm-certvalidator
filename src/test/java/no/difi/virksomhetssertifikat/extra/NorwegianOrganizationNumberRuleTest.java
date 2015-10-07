@@ -1,6 +1,7 @@
-package no.difi.virksomhetssertifikat.extras;
+package no.difi.virksomhetssertifikat.extra;
 
 
+import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import no.difi.virksomhetssertifikat.api.PrincipalNameProvider;
 import no.difi.virksomhetssertifikat.testutil.X509TestGenerator;
@@ -107,5 +108,10 @@ public class NorwegianOrganizationNumberRuleTest extends X509TestGenerator {
                 return false;
             }
         }).validate(cert);
+    }
+
+    @Test(expectedExceptions = CertificateValidationException.class)
+    public void triggerExceptionInExtractNumber() throws Exception {
+        NorwegianOrganizationNumberRule.extractNumber(null);
     }
 }

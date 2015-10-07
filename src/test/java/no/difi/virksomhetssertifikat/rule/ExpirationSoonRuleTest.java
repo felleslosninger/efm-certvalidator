@@ -1,5 +1,6 @@
-package no.difi.virksomhetssertifikat;
+package no.difi.virksomhetssertifikat.rule;
 
+import no.difi.virksomhetssertifikat.Validator;
 import no.difi.virksomhetssertifikat.testutil.X509TestGenerator;
 import org.joda.time.DateTime;
 import org.testng.Assert;

@@ -1,6 +1,7 @@
 package no.difi.virksomhetssertifikat;
 
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
+import no.difi.virksomhetssertifikat.rule.DummyRule;
 import org.apache.commons.io.IOUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;

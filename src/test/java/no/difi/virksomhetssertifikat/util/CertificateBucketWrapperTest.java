@@ -1,6 +1,6 @@
 package no.difi.virksomhetssertifikat.util;
 
-import no.difi.virksomhetssertifikat.ChainRule;
+import no.difi.virksomhetssertifikat.rule.ChainRule;
 import no.difi.virksomhetssertifikat.ValidatorBuilder;
 import no.difi.virksomhetssertifikat.Validator;
 import no.difi.virksomhetssertifikat.api.CertificateBucket;
@@ -15,9 +15,9 @@ public class CertificateBucketWrapperTest {
     @Test
     public void simple() throws Exception {
         // Load keystore
-        KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket(getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
+        KeyStoreCertificateBucket keyStoreCertificateBucket = new KeyStoreCertificateBucket(getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
         // Fetch root certificate from keystore
-        CertificateBucket rootCertificates = keystoreCertificateBucket.toSimple("peppol-root");
+        CertificateBucket rootCertificates = keyStoreCertificateBucket.toSimple("peppol-root");
         // Define a wrapper for intermediate certificates, currently empty
         CertificateBucketWrapper intermediateCertificates = new CertificateBucketWrapper(null);
 
@@ -30,7 +30,7 @@ public class CertificateBucketWrapperTest {
         Assert.assertNull(intermediateCertificates.getCertificateBucket());
 
         // Set intermediate certificate
-        intermediateCertificates.setCertificateBucket(keystoreCertificateBucket.toSimple("peppol-ap"));
+        intermediateCertificates.setCertificateBucket(keyStoreCertificateBucket.toSimple("peppol-ap"));
         // Validate!
         validator.validate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"));
 
@@ -43,7 +43,7 @@ public class CertificateBucketWrapperTest {
         }
 
         // Change intermediate certificate
-        intermediateCertificates.setCertificateBucket(keystoreCertificateBucket.toSimple("peppol-smp"));
+        intermediateCertificates.setCertificateBucket(keyStoreCertificateBucket.toSimple("peppol-smp"));
         // Validate!
         validator.validate(getClass().getResourceAsStream("/peppol-test-smp-difi.cer"));
 
@@ -56,7 +56,7 @@ public class CertificateBucketWrapperTest {
         }
 
         // Add certificate to existing bucket inside wrapper
-        keystoreCertificateBucket.toSimple((SimpleCertificateBucket) intermediateCertificates.getCertificateBucket(), "peppol-ap");
+        keyStoreCertificateBucket.toSimple((SimpleCertificateBucket) intermediateCertificates.getCertificateBucket(), "peppol-ap");
 
         // Validate!
         validator.validate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"));

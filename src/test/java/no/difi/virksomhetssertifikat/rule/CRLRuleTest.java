@@ -1,5 +1,7 @@
-package no.difi.virksomhetssertifikat;
+package no.difi.virksomhetssertifikat.rule;
 
+import no.difi.virksomhetssertifikat.Validator;
+import no.difi.virksomhetssertifikat.ValidatorBuilder;
 import no.difi.virksomhetssertifikat.api.CrlCache;
 import no.difi.virksomhetssertifikat.util.SimpleCrlCache;
 import org.junit.Assert;

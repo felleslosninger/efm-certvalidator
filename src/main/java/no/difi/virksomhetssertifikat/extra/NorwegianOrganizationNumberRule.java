@@ -1,13 +1,12 @@
-package no.difi.virksomhetssertifikat.extras;
+package no.difi.virksomhetssertifikat.extra;
 
-import no.difi.virksomhetssertifikat.PrincipalNameRule;
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import no.difi.virksomhetssertifikat.api.PrincipalNameProvider;
+import no.difi.virksomhetssertifikat.rule.PrincipalNameRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -65,7 +64,7 @@ public class NorwegianOrganizationNumberRule extends PrincipalNameRule {
             }
 
             return null;
-        } catch (CertificateEncodingException e) {
+        } catch (Exception e) {
             logger.debug(e.getMessage());
             throw new CertificateValidationException(e.getMessage(), e);
         }

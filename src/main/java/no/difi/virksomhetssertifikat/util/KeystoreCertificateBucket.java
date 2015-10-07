@@ -16,19 +16,19 @@ import java.util.List;
 /**
  * Reads a keystore from input stream and keeps it in memory.
  */
-public class KeystoreCertificateBucket implements CertificateBucket {
+public class KeyStoreCertificateBucket implements CertificateBucket {
 
     protected KeyStore keyStore;
 
-    public KeystoreCertificateBucket(KeyStore keyStore) {
+    public KeyStoreCertificateBucket(KeyStore keyStore) {
         this.keyStore = keyStore;
     }
 
-    public KeystoreCertificateBucket(InputStream inputStream, String password) throws CertificateBucketException {
+    public KeyStoreCertificateBucket(InputStream inputStream, String password) throws CertificateBucketException {
         this("JKS", inputStream, password);
     }
 
-    public KeystoreCertificateBucket(String type, InputStream inputStream, String password) throws CertificateBucketException {
+    public KeyStoreCertificateBucket(String type, InputStream inputStream, String password) throws CertificateBucketException {
         try {
             keyStore = KeyStore.getInstance(type);
             keyStore.load(inputStream, password.toCharArray());

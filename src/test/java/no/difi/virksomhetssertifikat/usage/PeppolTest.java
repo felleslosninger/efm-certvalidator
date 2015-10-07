@@ -3,7 +3,8 @@ package no.difi.virksomhetssertifikat.usage;
 import no.difi.virksomhetssertifikat.*;
 import no.difi.virksomhetssertifikat.api.CertificateBucket;
 import no.difi.virksomhetssertifikat.api.CrlCache;
-import no.difi.virksomhetssertifikat.util.KeystoreCertificateBucket;
+import no.difi.virksomhetssertifikat.rule.*;
+import no.difi.virksomhetssertifikat.util.KeyStoreCertificateBucket;
 import no.difi.virksomhetssertifikat.util.SimpleCrlCache;
 import no.difi.virksomhetssertifikat.util.SimplePrincipalNameProvider;
 import org.testng.annotations.Test;
@@ -14,13 +15,13 @@ public class PeppolTest {
 
     @Test
     public void simpleTestAp() throws Exception {
-        KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket(getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
-        CertificateBucket rootCertificates = keystoreCertificateBucket.toSimple("peppol-root");
-        CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
+        KeyStoreCertificateBucket keyStoreCertificateBucket = new KeyStoreCertificateBucket(getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
+        CertificateBucket rootCertificates = keyStoreCertificateBucket.toSimple("peppol-root");
+        CertificateBucket intermediateCertificates = keyStoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
 
         Validator validatorHelper = ValidatorBuilder.newInstance()
                 .addRule(new ExpirationRule())
-                .addRule(new SelfSignedRule())
+                .addRule(new SigningRule())
                 .addRule(new PrincipalNameRule("CN", new SimplePrincipalNameProvider("PEPPOL ACCESS POINT TEST CA"), PrincipalNameRule.Principal.ISSUER))
                 .addRule(new ChainRule(rootCertificates, intermediateCertificates))
                 .addRule(new CRLRule(crlCache))
@@ -33,13 +34,13 @@ public class PeppolTest {
 
     @Test
     public void simpleTestSmp() throws Exception {
-        KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket(getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
-        CertificateBucket rootCertificates = keystoreCertificateBucket.toSimple("peppol-root");
-        CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
+        KeyStoreCertificateBucket keyStoreCertificateBucket = new KeyStoreCertificateBucket(getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
+        CertificateBucket rootCertificates = keyStoreCertificateBucket.toSimple("peppol-root");
+        CertificateBucket intermediateCertificates = keyStoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
 
         ValidatorBuilder.newInstance()
                 .addRule(new ExpirationRule())
-                .addRule(new SelfSignedRule())
+                .addRule(new SigningRule())
                 .addRule(new PrincipalNameRule("CN", new SimplePrincipalNameProvider("PEPPOL SERVICE METADATA PUBLISHER TEST CA"), PrincipalNameRule.Principal.ISSUER))
                 .addRule(new ChainRule(rootCertificates, intermediateCertificates))
                 .addRule(new CRLRule(crlCache))
@@ -50,13 +51,13 @@ public class PeppolTest {
 
     @Test
     public void simpleProdAp() throws Exception {
-        KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket(getClass().getResourceAsStream("/peppol-prod.jks"), "peppol");
-        CertificateBucket rootCertificates = keystoreCertificateBucket.toSimple("peppol-root");
-        CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
+        KeyStoreCertificateBucket keyStoreCertificateBucket = new KeyStoreCertificateBucket(getClass().getResourceAsStream("/peppol-prod.jks"), "peppol");
+        CertificateBucket rootCertificates = keyStoreCertificateBucket.toSimple("peppol-root");
+        CertificateBucket intermediateCertificates = keyStoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
 
         ValidatorBuilder.newInstance()
                 .addRule(new ExpirationRule())
-                .addRule(new SelfSignedRule())
+                .addRule(new SigningRule())
                 .addRule(new PrincipalNameRule("CN", new SimplePrincipalNameProvider("PEPPOL ACCESS POINT CA"), PrincipalNameRule.Principal.ISSUER))
                 .addRule(new ChainRule(rootCertificates, intermediateCertificates))
                 .addRule(new CRLRule(crlCache))
@@ -67,13 +68,13 @@ public class PeppolTest {
 
     @Test
     public void simpleProdSmp() throws Exception {
-        KeystoreCertificateBucket keystoreCertificateBucket = new KeystoreCertificateBucket(getClass().getResourceAsStream("/peppol-prod.jks"), "peppol");
-        CertificateBucket rootCertificates = keystoreCertificateBucket.toSimple("peppol-root");
-        CertificateBucket intermediateCertificates = keystoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
+        KeyStoreCertificateBucket keyStoreCertificateBucket = new KeyStoreCertificateBucket(getClass().getResourceAsStream("/peppol-prod.jks"), "peppol");
+        CertificateBucket rootCertificates = keyStoreCertificateBucket.toSimple("peppol-root");
+        CertificateBucket intermediateCertificates = keyStoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
 
         ValidatorBuilder.newInstance()
                 .addRule(new ExpirationRule())
-                .addRule(new SelfSignedRule())
+                .addRule(new SigningRule())
                 .addRule(new PrincipalNameRule("CN", new SimplePrincipalNameProvider("PEPPOL SERVICE METADATA PUBLISHER CA"), PrincipalNameRule.Principal.ISSUER))
                 .addRule(new ChainRule(rootCertificates, intermediateCertificates))
                 .addRule(new CRLRule(crlCache))

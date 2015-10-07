@@ -1,10 +1,10 @@
 package no.difi.virksomhetssertifikat.usage;
 
-import no.difi.virksomhetssertifikat.CRLRule;
-import no.difi.virksomhetssertifikat.ExpirationRule;
+import no.difi.virksomhetssertifikat.rule.CRLRule;
+import no.difi.virksomhetssertifikat.rule.ExpirationRule;
 import no.difi.virksomhetssertifikat.ValidatorBuilder;
 import no.difi.virksomhetssertifikat.api.PrincipalNameProvider;
-import no.difi.virksomhetssertifikat.extras.NorwegianOrganizationNumberRule;
+import no.difi.virksomhetssertifikat.extra.NorwegianOrganizationNumberRule;
 import org.testng.annotations.Test;
 
 public class VirksomhetssertifikatTest {

@@ -1,4 +1,4 @@
-package no.difi.virksomhetssertifikat;
+package no.difi.virksomhetssertifikat.structure;
 
 import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import no.difi.virksomhetssertifikat.api.ValidatorRule;
@@ -13,14 +13,26 @@ import java.util.List;
 /**
  * Allows combining instances of validators using a limited set of logic.
  */
-public class JunctionRule implements ValidatorRule {
+public class Junction implements ValidatorRule {
 
-    private static final Logger logger = LoggerFactory.getLogger(JunctionRule.class);
+    private static final Logger logger = LoggerFactory.getLogger(Junction.class);
+
+    public static Junction and(ValidatorRule... validatorRules) {
+        return new Junction(Kind.AND, validatorRules);
+    }
+
+    public static Junction or(ValidatorRule... validatorRules) {
+        return new Junction(Kind.OR, validatorRules);
+    }
+
+    public static Junction xor(ValidatorRule... validatorRules) {
+        return new Junction(Kind.XOR, validatorRules);
+    }
 
     private Kind kind;
     private ValidatorRule[] validatorRules;
 
-    public JunctionRule(Kind kind, ValidatorRule... validatorRules) {
+    public Junction(Kind kind, ValidatorRule... validatorRules) {
         this.kind = kind;
         this.validatorRules = validatorRules;
     }

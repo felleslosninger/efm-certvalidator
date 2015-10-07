@@ -1,31 +1,29 @@
-package no.difi.virksomhetssertifikat;
+package no.difi.virksomhetssertifikat.structure;
 
+import no.difi.virksomhetssertifikat.Validator;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
+import no.difi.virksomhetssertifikat.rule.DummyRule;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class JunctionRuleTest {
+public class JunctionTest {
 
     @Test
     public void simpleAnd() throws Exception {
-        new JunctionRule(JunctionRule.Kind.AND,
-                new DummyRule(), new DummyRule(), new DummyRule())
+        Junction.and(new DummyRule(), new DummyRule(), new DummyRule())
         .validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
     }
 
     @Test
     public void simpleOr() throws Exception {
-        new JunctionRule(JunctionRule.Kind.OR,
-                new DummyRule(), new DummyRule("FAIL!"))
+        Junction.or(new DummyRule(), new DummyRule("FAIL!"))
                 .validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
 
-        new JunctionRule(JunctionRule.Kind.OR,
-                new DummyRule("FAIL!"), new DummyRule())
+        Junction.or(new DummyRule("FAIL!"), new DummyRule())
                 .validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
 
         try {
-            new JunctionRule(JunctionRule.Kind.OR,
-                    new DummyRule("FAIL!"), new DummyRule("FAIL!"))
+            Junction.or(new DummyRule("FAIL!"), new DummyRule("FAIL!"))
                     .validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
             Assert.fail("Expected exception");
         } catch (FailedValidationException e) {
@@ -35,13 +33,11 @@ public class JunctionRuleTest {
 
     @Test
     public void simpleXor() throws Exception {
-        new JunctionRule(JunctionRule.Kind.XOR,
-                new DummyRule(), new DummyRule("FAIL!"))
+        Junction.xor(new DummyRule(), new DummyRule("FAIL!"))
                 .validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
 
         try {
-            new JunctionRule(JunctionRule.Kind.XOR,
-                    new DummyRule(), new DummyRule())
+            Junction.xor(new DummyRule(), new DummyRule())
                     .validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
             Assert.fail("Expected exception");
         } catch (FailedValidationException e) {
@@ -49,8 +45,7 @@ public class JunctionRuleTest {
         }
 
         try {
-            new JunctionRule(JunctionRule.Kind.XOR,
-                    new DummyRule("FAIL"), new DummyRule("FAIL"))
+            Junction.xor(new DummyRule("FAIL"), new DummyRule("FAIL"))
                     .validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
             Assert.fail("Expected exception");
         } catch (FailedValidationException e) {

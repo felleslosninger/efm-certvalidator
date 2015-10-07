@@ -1,44 +1,39 @@
-package no.difi.virksomhetssertifikat;
+package no.difi.virksomhetssertifikat.rule;
 
 
+import no.difi.virksomhetssertifikat.Validator;
+import no.difi.virksomhetssertifikat.api.CertificateValidationException;
 import no.difi.virksomhetssertifikat.api.FailedValidationException;
 import org.testng.annotations.Test;
 
-public class SelfSignedRuleTest {
+public class SigningRuleTest {
 
     @Test
     public void publiclySignedExpectedWithPubliclySigned() throws Exception {
-        new SelfSignedRule()
+        SigningRule.PublicSignedOnly()
                 .validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
     }
 
     @Test(expectedExceptions = FailedValidationException.class)
     public void selfSignedExpectedWithPubliclySigned() throws Exception {
-        new SelfSignedRule(SelfSignedRule.Kind.SELF_SIGNED_ONLY)
-                .validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
-    }
-
-    @Test
-    public void bothExpectedWithPubliclySigned() throws Exception {
-        new SelfSignedRule(SelfSignedRule.Kind.BOTH)
+        SigningRule.SelfSignedOnly()
                 .validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
     }
 
     @Test(expectedExceptions = FailedValidationException.class)
     public void publiclySignedExpectedWithSelfSigned() throws Exception {
-        new SelfSignedRule()
+        SigningRule.PublicSignedOnly()
                 .validate(Validator.getCertificate(getClass().getResourceAsStream("/selfsigned.cer")));
     }
 
     @Test
     public void selfSignedExpectedWithSelfSigned() throws Exception {
-        new SelfSignedRule(SelfSignedRule.Kind.SELF_SIGNED_ONLY)
+        SigningRule.SelfSignedOnly()
                 .validate(Validator.getCertificate(getClass().getResourceAsStream("/selfsigned.cer")));
     }
 
-    @Test
-    public void bothExpectedWithSelfSigned() throws Exception {
-        new SelfSignedRule(SelfSignedRule.Kind.BOTH)
-                .validate(Validator.getCertificate(getClass().getResourceAsStream("/selfsigned.cer")));
+    @Test(expectedExceptions = CertificateValidationException.class)
+    public void triggerException() throws Exception {
+        SigningRule.PublicSignedOnly().validate(null);
     }
 }

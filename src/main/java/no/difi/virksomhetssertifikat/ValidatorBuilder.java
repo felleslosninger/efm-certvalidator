@@ -1,6 +1,7 @@
 package no.difi.virksomhetssertifikat;
 
 import no.difi.virksomhetssertifikat.api.ValidatorRule;
+import no.difi.virksomhetssertifikat.structure.Junction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +46,6 @@ public class ValidatorBuilder {
         if (validatorRules.size() == 1)
             return new Validator(validatorRules.get(0));
 
-        return new Validator(
-                new JunctionRule(JunctionRule.Kind.AND, validatorRules.toArray(
-                        new ValidatorRule[validatorRules.size()])));
+        return new Validator(Junction.and(validatorRules.toArray(new ValidatorRule[validatorRules.size()])));
     }
 }
