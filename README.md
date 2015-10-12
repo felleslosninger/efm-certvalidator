@@ -13,7 +13,7 @@ Include dependency in your pom.xml:
 <dependency>
     <groupId>no.difi.commons</groupId>
     <artifactId>commons-certvalidator</artifactId>
-    <version>1.2.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
@@ -21,7 +21,7 @@ Create your own validator(s):
 
 ```java
 // Generic validator
-Validator validator = ValidatorBuilder.newInstace()
+Validator validator = ValidatorBuilder.newInstance()
     .addRule(new ExpirationRule())
     .addRule(new SigningRule())
     .addRule(new CRLRule())

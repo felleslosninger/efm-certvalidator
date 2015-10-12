@@ -2,31 +2,85 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>no.difi</groupId>
-    <artifactId>Virksomhetssertifikatvalidator</artifactId>
+    <groupId>no.difi.commons</groupId>
+    <artifactId>commons-certvalidator</artifactId>
     <packaging>jar</packaging>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
 
-    <name>Virksomhetssertifikatvalidator</name>
-    <description>Certificate validator</description>
+    <name>Certificate validator</name>
+    <description>Rule engine for creation of certificate validator.</description>
     <url>https://github.com/difi/Virksomhetsserifikatvalidator</url>
 
     <scm>
         <tag>HEAD</tag>
-        <url>https://github.com/difi/Virksomhetsserifikatvalidator</url>
-        <connection>scm:git:https://github.com/difi/Virksomhetsserifikatvalidator.git</connection>
-        <developerConnection>scm:git:git@github.com:difi/Virksomhetsserifikatvalidator.git</developerConnection>
+        <url>https://github.com/difi/certvalidator</url>
+        <connection>scm:git:https://github.com/difi/certvalidator.git</connection>
+        <developerConnection>scm:git:git@github.com:difi/certvalidator.git</developerConnection>
     </scm>
 
     <issueManagement>
-        <url>https://github.com/difi/Virksomhetsserifikatvalidator/issues</url>
+        <url>https://github.com/difi/certvalidator/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
     <organization>
-        <name>Norwegian Agency for Public Management and eGovernment</name>
+        <name>Norwegian Agency for Public Management and eGovernment (Difi)</name>
         <url>http://www.difi.no</url>
     </organization>
+
+    <developers>
+        <developer>
+            <name>Aslak Os</name>
+            <email>aslak@rocketfarm.no</email>
+            <organization>Rocketfarm</organization>
+            <organizationUrl>http://www.rocketfarm.no/</organizationUrl>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Erlend Klakegg Bergheim</name>
+            <email>erlend.klakegg.bergheim@difi.no</email>
+            <organization>Difi</organization>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>glenn.bech</id>
+            <name>Glenn Bech</name>
+            <email>glenn.bech@inmeta.com</email>
+            <organization>Inmeta Consulting</organization>
+            <organizationUrl>http://www.inmeta.no</organizationUrl>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <properties>
+                <picUrl>http://www.gravatar.com/avatar/0335ace39946d72354bd085c499cae12.jpg</picUrl>
+            </properties>
+        </developer>
+        <developer>
+            <name>Thomas Reppesgård</name>
+            <email>thomas.reppesgard@difi.no</email>
+            <organization>Difi</organization>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>European Union Public Licence (EUPL v.1.1)</name>
+            <url>https://joinup.ec.europa.eu/community/eupl/og_page/european-union-public-licence-eupl-v11</url>
+            <distribution>repo</distribution>
+        </license>
+        <license>
+            <name>Mozilla Public License, Version 2.0</name>
+            <url>https://www.mozilla.org/en-US/MPL/2.0/</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <properties>
         <java.encoding>UTF-8</java.encoding>
@@ -49,7 +103,7 @@
             <version>${slf4j.version}</version>
         </dependency>
 
-        <!-- Bouncycastle -->
+        <!-- BouncyCastle -->
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcpkix-jdk15on</artifactId>
@@ -138,4 +192,78 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <version>2.5.2</version>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.4</version>
+                        <executions>
+                            <execution>
+                                <id>package-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.10.3</version>
+                        <executions>
+                            <execution>
+                                <id>package-javadoc</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <encoding>${java.encoding}</encoding>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>
