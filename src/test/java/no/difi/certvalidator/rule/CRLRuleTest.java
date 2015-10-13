@@ -9,19 +9,20 @@ import org.testng.annotations.Test;
 
 public class CRLRuleTest {
 
+    private CrlCache crlCache = new SimpleCrlCache();
+
     @Test
     public void simple() throws Exception {
         ValidatorBuilder.newInstance()
-                .addRule(new CRLRule())
+                .addRule(new CRLRule(crlCache))
                 .build()
                 .validate((getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
     }
 
-    @Test
+    @Test(enabled = false)
     public void updateCrl() throws Exception {
         String crlUrl = "http://pilotonsitecrl.verisign.com/DigitaliseringsstyrelsenPilotOpenPEPPOLACCESSPOINTCA/LatestCRL.crl";
 
-        CrlCache crlCache = new SimpleCrlCache();
         crlCache.set(crlUrl, CRLRule.load(getClass().getResourceAsStream("/peppol-test-ap.crl")));
 
         Validator validatorHelper = ValidatorBuilder.newInstance()
