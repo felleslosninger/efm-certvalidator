@@ -33,9 +33,9 @@ public class NorwegianOrganizationNumberRule extends PrincipalNameRule {
      */
     @Override
     public void validate(X509Certificate certificate) throws CertificateValidationException {
-        String value = extractNumber(certificate);
-        if (value != null)
-            if (provider.validate(value))
+        NorwegianOrganization organization = extractNumber(certificate);
+        if (organization != null)
+            if (provider.validate(organization.getNumber()))
                 return;
 
         logger.debug("Organization number not detected. ({})", certificate.getSerialNumber());
@@ -49,24 +49,42 @@ public class NorwegianOrganizationNumberRule extends PrincipalNameRule {
      * @return Organization number found in certificate, null if not found.
      * @throws CertificateValidationException
      */
-    public static String extractNumber(X509Certificate certificate) throws CertificateValidationException {
+    public static NorwegianOrganization extractNumber(X509Certificate certificate) throws CertificateValidationException {
         try {
             //matches "C=NO,ST=AKERSHUS,L=FORNEBUVEIEN 1\\, 1366 LYSAKER,O=RF Commfides,SERIALNUMBER=399573952,CN=RF Commfides"
             for (String value : extract(getSubject(certificate), "SERIALNUMBER"))
                 if (patternSerialnumber.matcher(value).matches())
-                    return value;
+                    return new NorwegianOrganization(value, null);
 
             //matches "CN=name, OU=None, O=organisasjon - 123456789, L=None, C=None"
             for (String value : extract(getSubject(certificate), "O")) {
                 Matcher matcher = patternOrganizationName.matcher(value);
                 if (matcher.matches())
-                    return matcher.group(1);
+                    return new NorwegianOrganization(matcher.group(1), null);
             }
 
             return null;
         } catch (Exception e) {
             logger.debug(e.getMessage());
             throw new CertificateValidationException(e.getMessage(), e);
+        }
+    }
+
+    public static class NorwegianOrganization {
+        private String number;
+        private String name;
+
+        public NorwegianOrganization(String number, String name) {
+            this.number = number;
+            this.name = name;
+        }
+
+        public String getNumber() {
+            return number;
+        }
+
+        public String getName() {
+            return name;
         }
     }
 }

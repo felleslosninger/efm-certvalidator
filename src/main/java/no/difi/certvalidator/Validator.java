@@ -49,12 +49,16 @@ public class Validator implements ValidatorRule {
         validatorRule.validate(certificate);
     }
 
-    public void validate(InputStream inputStream) throws CertificateValidationException {
-        validate(getCertificate(inputStream));
+    public X509Certificate validate(InputStream inputStream) throws CertificateValidationException {
+        X509Certificate certificate = getCertificate(inputStream);
+        validate(certificate);
+        return certificate;
     }
 
-    public void validate(byte[] certificate) throws CertificateValidationException {
-        validate(getCertificate(certificate));
+    public X509Certificate validate(byte[] bytes) throws CertificateValidationException {
+        X509Certificate certificate = getCertificate(bytes);
+        validate(certificate);
+        return certificate;
     }
 
     public boolean isValid(X509Certificate certificate) {
@@ -76,9 +80,9 @@ public class Validator implements ValidatorRule {
         }
     }
 
-    public boolean isValid(byte[] certificate) {
+    public boolean isValid(byte[] bytes) {
         try {
-            return isValid(getCertificate(certificate));
+            return isValid(getCertificate(bytes));
         } catch (CertificateValidationException e) {
             logger.debug(e.getMessage(), e);
             return false;
