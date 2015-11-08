@@ -88,11 +88,11 @@
     </properties>
 
     <dependencies>
-        <!-- Commons -->
+        <!-- BouncyCastle -->
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.4</version>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk15on</artifactId>
+            <version>1.53</version>
         </dependency>
 
         <!-- Logging -->
@@ -101,12 +101,11 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-
-        <!-- BouncyCastle -->
         <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcpkix-jdk15on</artifactId>
-            <version>1.53</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- Testing -->
@@ -122,18 +121,23 @@
             <version>1.10.19</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Joda -->
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>2.9</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Commons -->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>
