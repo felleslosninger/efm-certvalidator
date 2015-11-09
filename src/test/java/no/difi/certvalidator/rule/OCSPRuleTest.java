@@ -27,7 +27,5 @@ public class OCSPRuleTest {
         KeyStoreCertificateBucket keyStoreCertificateBucket = new KeyStoreCertificateBucket("JKS", getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
         ValidatorRule rule = new OCSPRule(keyStoreCertificateBucket.toSimple("peppol-ap", "peppol-smp"));
         rule.validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-smp-difi.cer")));
-
     }
-
 }
