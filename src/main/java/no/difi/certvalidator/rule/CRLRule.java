@@ -47,9 +47,11 @@ public class CRLRule implements ValidatorRule {
         List<String> urls = getCrlDistributionPoints(certificate);
         for (String url : urls) {
             X509CRL crl = crlCache.get(url);
-            if (crl == null || crl.getNextUpdate().getTime() < System.currentTimeMillis()) {
+            if (crl == null || (crl.getNextUpdate() != null && crl.getNextUpdate().getTime() < System.currentTimeMillis())) {
                 crl = fetch(url);
                 crlCache.set(url, crl);
+            } else if (crl.getNextUpdate() == null) {
+                logger.warn("Next update not set for CRL with URL \"{}\"", url);
             }
 
             if (crl != null && crl.isRevoked(certificate))
