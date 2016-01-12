@@ -1,8 +1,8 @@
 package no.difi.certvalidator;
 
+import com.google.common.io.ByteStreams;
 import no.difi.certvalidator.api.FailedValidationException;
 import no.difi.certvalidator.rule.DummyRule;
-import org.apache.commons.io.IOUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -27,7 +27,7 @@ public class ValidatorTest {
     @Test
     public void simpleByteArray() throws Exception {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        IOUtils.copy(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"), byteArrayOutputStream);
+        ByteStreams.copy(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"), byteArrayOutputStream);
 
         Validator validatorHelper = new Validator(new DummyRule("FAIL!"));
         Assert.assertFalse(validatorHelper.isValid(byteArrayOutputStream.toByteArray()));

@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Set;
 
 
-public class CriticalOidRule implements ValidatorRule {
+public class CriticalExtensionRequiredRule implements ValidatorRule {
 
-    private static Logger logger = LoggerFactory.getLogger(CriticalOidRule.class);
+    private static Logger logger = LoggerFactory.getLogger(CriticalExtensionRequiredRule.class);
 
     private List<String> approvedOids;
 
-    public CriticalOidRule(String... approvedOids) {
+    public CriticalExtensionRequiredRule(String... approvedOids) {
         this.approvedOids = Arrays.asList(approvedOids);
     }
 
@@ -32,8 +32,8 @@ public class CriticalOidRule implements ValidatorRule {
         if(oids == null)
             throw new FailedValidationException("Certificate doesn't contain critical OIDs.");
 
-        for(String oid : oids){
-            if(!approvedOids.contains(oid)) {
+        for (String oid : approvedOids) {
+            if (!oids.contains(oid)) {
                 logger.debug("Certificate doesn't contain critical OID '{}'. ({})", oid, certificate.getSerialNumber());
                 throw new FailedValidationException(String.format("Certificate doesn't contain critical OID '%s'.", oid));
             }
