@@ -10,7 +10,7 @@ public class JunctionTest {
 
     @Test
     public void simpleAnd() throws Exception {
-        Junction.and(new DummyRule(), new DummyRule(), new DummyRule())
+        Junction.and(DummyRule.alwaysSuccess(), DummyRule.alwaysSuccess(), DummyRule.alwaysSuccess())
         .validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
     }
 
@@ -19,11 +19,11 @@ public class JunctionTest {
         Junction.or(new DummyRule(), new DummyRule("FAIL!"))
                 .validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
 
-        Junction.or(new DummyRule("FAIL!"), new DummyRule())
+        Junction.or(DummyRule.alwaysFail("FAIL!"), DummyRule.alwaysSuccess())
                 .validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
 
         try {
-            Junction.or(new DummyRule("FAIL!"), new DummyRule("FAIL!"))
+            Junction.or(DummyRule.alwaysFail("FAIL!"), DummyRule.alwaysFail("FAIL!"))
                     .validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
             Assert.fail("Expected exception");
         } catch (FailedValidationException e) {

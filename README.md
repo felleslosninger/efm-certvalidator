@@ -56,7 +56,7 @@ Validators may not only be used to judge a given certificate when in situation t
 ## Available building blocks
 
 * **ChainRule** - Validates chain of trust of certificate given access to root certificates and intermediate certificates.
-* **CriticalOidRule**
+* **CriticalExtensionRule** - Validates required or recognized extensions.
 * **CRLRule** - Use information regarding Certificate Revocation List (CRL) in certificate to validate certificate.
 * **DummyRule** - Very simple implementation potentially interesting to use in testing.
 * **ExpirationSoonRule**

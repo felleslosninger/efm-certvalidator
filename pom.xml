@@ -8,7 +8,7 @@
 
     <name>Certificate validator</name>
     <description>Rule engine for creation of certificate validator.</description>
-    <url>https://github.com/difi/Virksomhetsserifikatvalidator</url>
+    <url>https://github.com/difi/certvalidator</url>
 
     <scm>
         <tag>HEAD</tag>

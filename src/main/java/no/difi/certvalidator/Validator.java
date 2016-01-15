@@ -66,7 +66,7 @@ public class Validator implements ValidatorRule {
             validatorRule.validate(certificate);
             return true;
         } catch (CertificateValidationException e) {
-            logger.info(e.getMessage());
+            logger.debug(e.getMessage());
             return false;
         }
     }

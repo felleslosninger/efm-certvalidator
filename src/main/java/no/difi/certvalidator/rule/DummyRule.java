@@ -10,6 +10,15 @@ import java.security.cert.X509Certificate;
  * Throws an exception on validation if message is set.
  */
 public class DummyRule implements ValidatorRule {
+
+    public static DummyRule alwaysSuccess() {
+        return new DummyRule();
+    }
+
+    public static DummyRule alwaysFail(String message) {
+        return new DummyRule(message);
+    }
+
     private String message;
 
     /**
