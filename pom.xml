@@ -66,6 +66,15 @@
                 <role>Developer</role>
             </roles>
         </developer>
+        <developer>
+            <name>Thomas Johansen</name>
+            <email>thomas@thomasjohansen.it</email>
+            <organization>Thomas Johansen Consulting</organization>
+            <organizationUrl>https://thomasjohansen.it</organizationUrl>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
     </developers>
 
     <licenses>

@@ -7,6 +7,9 @@ import no.difi.certvalidator.util.SimpleCrlCache;
 import org.junit.Assert;
 import org.testng.annotations.Test;
 
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509CRL;
+
 public class CRLRuleTest {
 
     private CrlCache crlCache = new SimpleCrlCache();
@@ -23,7 +26,7 @@ public class CRLRuleTest {
     public void updateCrl() throws Exception {
         String crlUrl = "http://pilotonsitecrl.verisign.com/DigitaliseringsstyrelsenPilotOpenPEPPOLACCESSPOINTCA/LatestCRL.crl";
 
-        crlCache.set(crlUrl, CRLRule.load(getClass().getResourceAsStream("/peppol-test-ap.crl")));
+        crlCache.set(crlUrl, (X509CRL) CertificateFactory.getInstance("X509").generateCRL(getClass().getResourceAsStream("/peppol-test-ap.crl")));
 
         Validator validatorHelper = ValidatorBuilder.newInstance()
                 .addRule(new CRLRule(crlCache))
