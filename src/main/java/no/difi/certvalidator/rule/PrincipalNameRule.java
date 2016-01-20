@@ -63,7 +63,6 @@ public class PrincipalNameRule implements ValidatorRule {
                 if (provider.validate(value))
                     return;
 
-            logger.debug("Validation of subject principal({}) failed. ({})", field, certificate.getSerialNumber());
             throw new FailedValidationException(String.format("Validation of subject principal(%s) failed.", field));
         } catch (CertificateEncodingException e) {
             logger.debug("Unable to fetch principal. ({})", certificate.getSerialNumber());

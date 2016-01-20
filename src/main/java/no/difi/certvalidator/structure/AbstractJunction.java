@@ -18,5 +18,4 @@ public abstract class AbstractJunction implements ValidatorRule {
         this.validatorRules.addAll(Arrays.asList(validatorRules));
         return this;
     }
-
 }
