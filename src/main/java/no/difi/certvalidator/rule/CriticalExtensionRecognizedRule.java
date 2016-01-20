@@ -23,8 +23,10 @@ public class CriticalExtensionRecognizedRule implements ValidatorRule {
     @Override
     public void validate(X509Certificate certificate) throws CertificateValidationException {
         Set<String> oids = certificate.getCriticalExtensionOIDs();
+
         if (oids == null)
             return;
+
         for (String oid : oids) {
             if (!recognizedExtensions.contains(oid)) {
                 throw new FailedValidationException(String.format(
@@ -34,6 +36,5 @@ public class CriticalExtensionRecognizedRule implements ValidatorRule {
                 ));
             }
         }
-
     }
 }

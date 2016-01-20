@@ -13,19 +13,15 @@ import java.util.TreeMap;
  */
 public class SimpleCrlCache implements CrlCache {
 
-    private static final Logger logger = LoggerFactory.getLogger(SimpleCrlCache.class);
-
     private Map<String, X509CRL> storage = new TreeMap<String, X509CRL>();
 
     @Override
     public X509CRL get(String url) {
-        logger.debug("get: {}", url);
         return storage.get(url);
     }
 
     @Override
     public void set(String url, X509CRL crl) {
-        logger.debug("set: {}", url);
         if (crl == null)
             storage.remove(url);
         else

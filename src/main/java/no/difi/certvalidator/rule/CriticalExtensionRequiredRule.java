@@ -1,10 +1,8 @@
 package no.difi.certvalidator.rule;
 
 import no.difi.certvalidator.api.CertificateValidationException;
-import no.difi.certvalidator.api.ValidatorRule;
 import no.difi.certvalidator.api.FailedValidationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import no.difi.certvalidator.api.ValidatorRule;
 
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
@@ -14,12 +12,10 @@ import java.util.Set;
 
 public class CriticalExtensionRequiredRule implements ValidatorRule {
 
-    private static Logger logger = LoggerFactory.getLogger(CriticalExtensionRequiredRule.class);
+    private List<String> requiredExtensions;
 
-    private List<String> approvedOids;
-
-    public CriticalExtensionRequiredRule(String... approvedOids) {
-        this.approvedOids = Arrays.asList(approvedOids);
+    public CriticalExtensionRequiredRule(String... requiredExtensions) {
+        this.requiredExtensions = Arrays.asList(requiredExtensions);
     }
 
     /**
@@ -32,11 +28,8 @@ public class CriticalExtensionRequiredRule implements ValidatorRule {
         if(oids == null)
             throw new FailedValidationException("Certificate doesn't contain critical OIDs.");
 
-        for (String oid : approvedOids) {
-            if (!oids.contains(oid)) {
-                logger.debug("Certificate doesn't contain critical OID '{}'. ({})", oid, certificate.getSerialNumber());
+        for (String oid : requiredExtensions)
+            if (!oids.contains(oid))
                 throw new FailedValidationException(String.format("Certificate doesn't contain critical OID '%s'.", oid));
-            }
-        }
     }
  }

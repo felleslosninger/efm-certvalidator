@@ -61,7 +61,7 @@ Validators may not only be used to judge a given certificate when in situation t
 * **DummyRule** - Very simple implementation potentially interesting to use in testing.
 * **ExpirationSoonRule**
 * **ExpirationRule**
-* **OCSPRule**
+* **OCSPRule** - Use information regarding Online Certificate Status Protocol (OCSP) in certificate to validate certificate.
 * **PrincipalNameRule**
 * **SigningRule**
 

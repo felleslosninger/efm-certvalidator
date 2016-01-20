@@ -54,13 +54,13 @@ public class NorwegianOrganizationNumberRule extends PrincipalNameRule {
             //matches "C=NO,ST=AKERSHUS,L=FORNEBUVEIEN 1\\, 1366 LYSAKER,O=RF Commfides,SERIALNUMBER=399573952,CN=RF Commfides"
             for (String value : extract(getSubject(certificate), "SERIALNUMBER"))
                 if (patternSerialnumber.matcher(value).matches())
-                    return new NorwegianOrganization(value, null);
+                    return new NorwegianOrganization(value, extract(getSubject(certificate), "O").get(0));
 
             //matches "CN=name, OU=None, O=organisasjon - 123456789, L=None, C=None"
             for (String value : extract(getSubject(certificate), "O")) {
                 Matcher matcher = patternOrganizationName.matcher(value);
                 if (matcher.matches())
-                    return new NorwegianOrganization(matcher.group(1), null);
+                    return new NorwegianOrganization(matcher.group(1), extract(getSubject(certificate), "O").get(0));
             }
 
             return null;

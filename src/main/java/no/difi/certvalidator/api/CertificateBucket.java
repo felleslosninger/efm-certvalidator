@@ -7,6 +7,7 @@ import java.security.cert.X509Certificate;
  * Defines bucket for certificate allowing customized storage of certificates.
  */
 public interface CertificateBucket extends Iterable<X509Certificate> {
+
     /**
      * Find certificate by subject.
      *

@@ -10,18 +10,26 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
 
+/**
+ * Simple implementation of CRL updater. Used as default implementation.
+ */
 public class SimpleCrlUpdater implements CrlUpdater {
 
     private static final Logger logger = LoggerFactory.getLogger(CrlUpdater.class);
-    private CertificateFactory certificateFactory;
-    private CrlCache crlCache;
 
-    public SimpleCrlUpdater(CrlCache crlCache) {
+    private static CertificateFactory certificateFactory;
+
+    static {
         try {
-            this.certificateFactory = CertificateFactory.getInstance("X.509");
+            certificateFactory = CertificateFactory.getInstance("X.509");
         } catch (CertificateException e) {
             throw new RuntimeException("Failed to create X.509 certificate factory", e);
         }
+    }
+
+    private CrlCache crlCache;
+
+    public SimpleCrlUpdater(CrlCache crlCache) {
         this.crlCache = crlCache;
     }
 
@@ -36,11 +44,11 @@ public class SimpleCrlUpdater implements CrlUpdater {
     }
 
     protected X509CRL doUpdate(String url) throws CrlUpdateException {
-        if (logger.isDebugEnabled())
-            logger.debug("Downloading CRL from {}...", url);
+        logger.debug("Downloading CRL from {}...", url);
+
         try {
             if (url.startsWith("http://") || url.startsWith("https://")) {
-                X509CRL crl = (X509CRL)certificateFactory.generateCRL(URI.create(url).toURL().openStream());
+                X509CRL crl = (X509CRL) certificateFactory.generateCRL(URI.create(url).toURL().openStream());
                 crlCache.set(url, crl);
                 return crl;
             } else if (url.startsWith("ldap://"))
@@ -54,5 +62,4 @@ public class SimpleCrlUpdater implements CrlUpdater {
         }
         return null;
     }
-
 }
