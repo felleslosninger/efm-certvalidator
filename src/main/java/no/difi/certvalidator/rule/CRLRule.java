@@ -1,42 +1,44 @@
 package no.difi.certvalidator.rule;
 
 import no.difi.certvalidator.api.CertificateValidationException;
-import no.difi.certvalidator.api.ValidatorRule;
 import no.difi.certvalidator.api.CrlCache;
+import no.difi.certvalidator.api.CrlUpdater;
 import no.difi.certvalidator.api.FailedValidationException;
+import no.difi.certvalidator.api.ValidatorRule;
 import no.difi.certvalidator.util.SimpleCrlCache;
+import no.difi.certvalidator.util.SimpleCrlUpdater;
 import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.x509.CRLDistPoint;
 import org.bouncycastle.asn1.x509.DistributionPoint;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.security.cert.*;
+import java.security.cert.X509CRL;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CRLRule implements ValidatorRule {
 
-    private static final Logger logger = LoggerFactory.getLogger(CRLRule.class);
-
     private static final String CRL_EXTENSION = "2.5.29.31";
 
-    private static CertificateFactory certificateFactory;
-
     private CrlCache crlCache;
+    private CrlUpdater crlUpdater;
+
+    public CRLRule(CrlCache crlCache, CrlUpdater crlUpdater) {
+        this.crlCache = crlCache;
+        this.crlUpdater = crlUpdater;
+    }
 
     public CRLRule(CrlCache crlCache) {
-        this.crlCache = crlCache;
+        this(crlCache, new SimpleCrlUpdater(crlCache));
     }
 
     public CRLRule() {
-        this(new SimpleCrlCache());
+        this.crlCache = new SimpleCrlCache();
+        this.crlUpdater = new SimpleCrlUpdater(crlCache);
     }
 
     /**
@@ -47,43 +49,9 @@ public class CRLRule implements ValidatorRule {
         List<String> urls = getCrlDistributionPoints(certificate);
         for (String url : urls) {
             X509CRL crl = crlCache.get(url);
-            if (crl == null || (crl.getNextUpdate() != null && crl.getNextUpdate().getTime() < System.currentTimeMillis())) {
-                crl = fetch(url);
-                crlCache.set(url, crl);
-            } else if (crl.getNextUpdate() == null) {
-                logger.warn("Next update not set for CRL with URL \"{}\"", url);
-            }
-
+            crl = crlUpdater.update(url, crl);
             if (crl != null && crl.isRevoked(certificate))
                 throw new FailedValidationException("Certificate is revoked.");
-        }
-    }
-
-    public static X509CRL fetch(String url) throws CertificateValidationException {
-        logger.debug("Fetching {}", url);
-
-        try {
-            if (url.startsWith("http://") || url.startsWith("https://"))
-                return load(URI.create(url).toURL().openStream());
-            else if (url.startsWith("ldap://"))
-                // Currently not supported.
-                return null;
-
-        } catch (Exception e) {
-            throw new CertificateValidationException(e.getMessage(), e);
-        }
-
-        return null;
-    }
-
-    public static X509CRL load(InputStream inputStream) throws CertificateValidationException {
-        try {
-            if (certificateFactory == null)
-                certificateFactory = CertificateFactory.getInstance("X.509");
-
-            return (X509CRL) certificateFactory.generateCRL(inputStream);
-        } catch (Exception e) {
-            throw new CertificateValidationException(e.getMessage(), e);
         }
     }
 
