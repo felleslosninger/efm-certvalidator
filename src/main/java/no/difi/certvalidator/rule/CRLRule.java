@@ -6,7 +6,7 @@ import no.difi.certvalidator.api.CrlFetcher;
 import no.difi.certvalidator.api.FailedValidationException;
 import no.difi.certvalidator.api.ValidatorRule;
 import no.difi.certvalidator.util.SimpleCrlCache;
-import no.difi.certvalidator.util.CachingCrlFetcher;
+import no.difi.certvalidator.util.SimpleCachingCrlFetcher;
 import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.x509.CRLDistPoint;
 import org.bouncycastle.asn1.x509.DistributionPoint;
@@ -31,11 +31,11 @@ public class CRLRule implements ValidatorRule {
     }
 
     public CRLRule(CrlCache crlCache) {
-        this(new CachingCrlFetcher(crlCache));
+        this(new SimpleCachingCrlFetcher(crlCache));
     }
 
     public CRLRule() {
-        this.crlFetcher = new CachingCrlFetcher(new SimpleCrlCache());
+        this.crlFetcher = new SimpleCachingCrlFetcher(new SimpleCrlCache());
     }
 
     /**

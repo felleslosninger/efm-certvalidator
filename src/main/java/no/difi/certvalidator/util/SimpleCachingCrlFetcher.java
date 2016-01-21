@@ -12,10 +12,10 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
 
 /**
- * Default implementation of CRL fetcher, which caches downloaded CRLs. If a CRL is not cached, or the Next update-
+ * Simple implementation of CRL fetcher, which caches downloaded CRLs. If a CRL is not cached, or the Next update-
  * field of a cached CRL indicates there is an updated CRL available, an updated CRL will immediately be downloaded.
  */
-public class CachingCrlFetcher implements CrlFetcher {
+public class SimpleCachingCrlFetcher implements CrlFetcher {
 
     private static final Logger logger = LoggerFactory.getLogger(CrlFetcher.class);
 
@@ -31,7 +31,7 @@ public class CachingCrlFetcher implements CrlFetcher {
 
     private CrlCache crlCache;
 
-    public CachingCrlFetcher(CrlCache crlCache) {
+    public SimpleCachingCrlFetcher(CrlCache crlCache) {
         this.crlCache = crlCache;
     }
 
