@@ -2,11 +2,11 @@ package no.difi.certvalidator.rule;
 
 import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.CrlCache;
-import no.difi.certvalidator.api.CrlUpdater;
+import no.difi.certvalidator.api.CrlFetcher;
 import no.difi.certvalidator.api.FailedValidationException;
 import no.difi.certvalidator.api.ValidatorRule;
 import no.difi.certvalidator.util.SimpleCrlCache;
-import no.difi.certvalidator.util.SimpleCrlUpdater;
+import no.difi.certvalidator.util.SimpleCrlFetcher;
 import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.x509.CRLDistPoint;
 import org.bouncycastle.asn1.x509.DistributionPoint;
@@ -24,21 +24,18 @@ public class CRLRule implements ValidatorRule {
 
     private static final String CRL_EXTENSION = "2.5.29.31";
 
-    private CrlCache crlCache;
-    private CrlUpdater crlUpdater;
+    private CrlFetcher crlFetcher;
 
-    public CRLRule(CrlCache crlCache, CrlUpdater crlUpdater) {
-        this.crlCache = crlCache;
-        this.crlUpdater = crlUpdater;
+    public CRLRule(CrlFetcher crlFetcher) {
+        this.crlFetcher = crlFetcher;
     }
 
     public CRLRule(CrlCache crlCache) {
-        this(crlCache, new SimpleCrlUpdater(crlCache));
+        this(new SimpleCrlFetcher(crlCache));
     }
 
     public CRLRule() {
-        this.crlCache = new SimpleCrlCache();
-        this.crlUpdater = new SimpleCrlUpdater(crlCache);
+        this.crlFetcher = new SimpleCrlFetcher(new SimpleCrlCache());
     }
 
     /**
@@ -48,8 +45,7 @@ public class CRLRule implements ValidatorRule {
     public void validate(X509Certificate certificate) throws CertificateValidationException {
         List<String> urls = getCrlDistributionPoints(certificate);
         for (String url : urls) {
-            X509CRL crl = crlCache.get(url);
-            crl = crlUpdater.update(url, crl);
+            X509CRL crl = crlFetcher.get(url);
             if (crl != null && crl.isRevoked(certificate))
                 throw new FailedValidationException("Certificate is revoked.");
         }

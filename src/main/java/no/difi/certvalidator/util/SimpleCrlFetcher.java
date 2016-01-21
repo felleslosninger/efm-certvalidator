@@ -1,7 +1,8 @@
 package no.difi.certvalidator.util;
 
+import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.CrlCache;
-import no.difi.certvalidator.api.CrlUpdater;
+import no.difi.certvalidator.api.CrlFetcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,9 +14,9 @@ import java.security.cert.X509CRL;
 /**
  * Simple implementation of CRL updater. Used as default implementation.
  */
-public class SimpleCrlUpdater implements CrlUpdater {
+public class SimpleCrlFetcher implements CrlFetcher {
 
-    private static final Logger logger = LoggerFactory.getLogger(CrlUpdater.class);
+    private static final Logger logger = LoggerFactory.getLogger(CrlFetcher.class);
 
     private static CertificateFactory certificateFactory;
 
@@ -29,12 +30,13 @@ public class SimpleCrlUpdater implements CrlUpdater {
 
     private CrlCache crlCache;
 
-    public SimpleCrlUpdater(CrlCache crlCache) {
+    public SimpleCrlFetcher(CrlCache crlCache) {
         this.crlCache = crlCache;
     }
 
     @Override
-    public X509CRL update(String url, X509CRL crl) {
+    public X509CRL get(String url) throws CertificateValidationException{
+        X509CRL crl = crlCache.get(url);
         if (crl == null || (crl.getNextUpdate() != null && crl.getNextUpdate().getTime() < System.currentTimeMillis())) {
             crl = doUpdate(url);
         } else if (crl.getNextUpdate() == null) {
@@ -43,7 +45,7 @@ public class SimpleCrlUpdater implements CrlUpdater {
         return crl;
     }
 
-    protected X509CRL doUpdate(String url) throws CrlUpdateException {
+    protected X509CRL doUpdate(String url) throws CertificateValidationException {
         logger.debug("Downloading CRL from {}...", url);
 
         try {
@@ -55,7 +57,7 @@ public class SimpleCrlUpdater implements CrlUpdater {
                 // Currently not supported.
                 return null;
         } catch (Exception e) {
-            throw new CrlUpdateException(
+            throw new CertificateValidationException(
                     "Failed to download CRL " + url + (e.getMessage() != null ? (": " + e.getMessage()) : ""),
                     e
             );
