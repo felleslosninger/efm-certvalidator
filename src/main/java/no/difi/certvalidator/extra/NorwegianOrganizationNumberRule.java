@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.security.cert.X509Certificate;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,16 +52,19 @@ public class NorwegianOrganizationNumberRule extends PrincipalNameRule {
      */
     public static NorwegianOrganization extractNumber(X509Certificate certificate) throws CertificateValidationException {
         try {
+            // Fetch organization name.
+            List<String> name = extract(getSubject(certificate), "O");
+
             //matches "C=NO,ST=AKERSHUS,L=FORNEBUVEIEN 1\\, 1366 LYSAKER,O=RF Commfides,SERIALNUMBER=399573952,CN=RF Commfides"
             for (String value : extract(getSubject(certificate), "SERIALNUMBER"))
                 if (patternSerialnumber.matcher(value).matches())
-                    return new NorwegianOrganization(value, extract(getSubject(certificate), "O").get(0));
+                    return new NorwegianOrganization(value, name.isEmpty() ? null : name.get(0));
 
             //matches "CN=name, OU=None, O=organisasjon - 123456789, L=None, C=None"
             for (String value : extract(getSubject(certificate), "O")) {
                 Matcher matcher = patternOrganizationName.matcher(value);
                 if (matcher.matches())
-                    return new NorwegianOrganization(matcher.group(1), extract(getSubject(certificate), "O").get(0));
+                    return new NorwegianOrganization(matcher.group(1), name.isEmpty() ? null : name.get(0));
             }
 
             return null;
