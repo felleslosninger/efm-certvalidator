@@ -139,14 +139,13 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Google -->
+        <!-- Guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>19.0</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>

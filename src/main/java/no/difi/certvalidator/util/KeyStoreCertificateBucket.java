@@ -82,7 +82,7 @@ public class KeyStoreCertificateBucket implements CertificateBucket {
     }
 
     /**
-     * Adding certificates identified by aliases from keystore to a SimpleCertificateBucket.
+     * Adding certificates identified by aliases from key store to a SimpleCertificateBucket.
      */
     public void toSimple(SimpleCertificateBucket certificates, String... aliases) throws CertificateBucketException {
         try {
@@ -110,16 +110,17 @@ public class KeyStoreCertificateBucket implements CertificateBucket {
     }
 
     /**
-     * Adding certificates identified by prefix from keystore to a SimpleCertificateBucket.
+     * Adding certificates identified by prefix(es) from key store to a SimpleCertificateBucket.
      */
-    public void startsWith(SimpleCertificateBucket certificates, String prefix) throws CertificateBucketException {
+    public void startsWith(SimpleCertificateBucket certificates, String... prefix) throws CertificateBucketException {
         try {
             KeyStore keyStore = getKeyStore();
             Enumeration<String> aliasesEnumeration = keyStore.aliases();
             while (aliasesEnumeration.hasMoreElements()) {
                 String alias = aliasesEnumeration.nextElement();
-                if (alias.startsWith(prefix))
-                    certificates.add((X509Certificate) keyStore.getCertificate(alias));
+                for (String p : prefix)
+                    if (alias.startsWith(p))
+                        certificates.add((X509Certificate) keyStore.getCertificate(alias));
             }
         } catch (Exception e) {
             throw new CertificateBucketException(e.getMessage(), e);
@@ -127,16 +128,16 @@ public class KeyStoreCertificateBucket implements CertificateBucket {
     }
 
     /**
-     * Create a new SimpleCertificateBucket and adding certificates based on prefix.
+     * Create a new SimpleCertificateBucket and adding certificates based on prefix(es).
      */
-    public SimpleCertificateBucket startsWith(String prefix) throws CertificateBucketException {
+    public SimpleCertificateBucket startsWith(String... prefix) throws CertificateBucketException {
         SimpleCertificateBucket certificates = new SimpleCertificateBucket();
         startsWith(certificates, prefix);
         return certificates;
     }
 
     /**
-     * Allows for overriding method of fetching keystore when used.
+     * Allows for overriding method of fetching key store when used.
      */
     protected KeyStore getKeyStore() throws CertificateBucketException {
         return keyStore;
