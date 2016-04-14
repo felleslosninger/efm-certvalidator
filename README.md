@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/difi/certvalidator.svg?branch=master)](https://travis-ci.org/difi/certvalidator)
+[![Maven Central](https://img.shields.io/maven-central/v/no.difi.commons/commons-certvalidator.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22no.difi.commons%22%20AND%20a%3A%22commons-certvalidator%22)
 
 # Certificate validator for X.509 certificates
 
@@ -15,7 +16,7 @@ Include dependency in your pom.xml:
 <dependency>
     <groupId>no.difi.commons</groupId>
     <artifactId>commons-certvalidator</artifactId>
-    <version>2.0.3</version>
+    <version>2.0.4</version>
 </dependency>
 ```
 
