@@ -1,9 +1,14 @@
 package no.difi.certvalidator.extra;
 
 
+import no.difi.certvalidator.Validator;
+import no.difi.certvalidator.ValidatorBuilder;
 import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.FailedValidationException;
 import no.difi.certvalidator.api.PrincipalNameProvider;
+import no.difi.certvalidator.rule.CriticalExtensionRule;
+import no.difi.certvalidator.rule.ExpirationRule;
+import no.difi.certvalidator.rule.SigningRule;
 import no.difi.certvalidator.testutil.X509TestGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -113,5 +118,27 @@ public class NorwegianOrganizationNumberRuleTest extends X509TestGenerator {
     @Test(expectedExceptions = CertificateValidationException.class)
     public void triggerExceptionInExtractNumber() throws Exception {
         NorwegianOrganizationNumberRule.extractNumber(null);
+    }
+
+    @Test
+    public void testingMoveCertificate() throws Exception {
+        X509Certificate certificate = Validator.getCertificate(getClass().getResourceAsStream("/difi-move-test.cer"));
+
+        Validator validator = ValidatorBuilder.newInstance()
+                .addRule(new ExpirationRule())
+                .addRule(SigningRule.PublicSignedOnly())
+                .addRule(CriticalExtensionRule.recognizes("2.5.29.15", "2.5.29.19"))
+                .addRule(CriticalExtensionRule.requires("2.5.29.15"))
+                .addRule(new NorwegianOrganizationNumberRule(new PrincipalNameProvider() {
+                    @Override
+                    public boolean validate(String s) {
+                        // Accept all organization numbers.
+                        logger.debug(s);
+                        return true;
+                    }
+                }))
+                .build();
+
+        validator.validate(certificate);
     }
 }
