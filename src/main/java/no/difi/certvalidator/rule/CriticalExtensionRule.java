@@ -10,7 +10,7 @@ public class CriticalExtensionRule {
         return new CriticalExtensionRequiredRule(requiredExtensions);
     }
 
-    private CriticalExtensionRule() {
+    CriticalExtensionRule() {
         // No action.
     }
 }

@@ -18,7 +18,7 @@ public class ChainRule implements ValidatorRule {
 
     private CertificateBucket rootCertificates;
     private CertificateBucket intermediateCertificates;
-    private Set<String> policies = new HashSet<String>();
+    private Set<String> policies = new HashSet<>();
 
     /**
      * @param rootCertificates         Trusted root certificates.
@@ -51,7 +51,7 @@ public class ChainRule implements ValidatorRule {
         selector.setCertificate(cert);
 
         // Create the trust anchors (set of root CA certificates)
-        Set<TrustAnchor> trustAnchors = new HashSet<TrustAnchor>();
+        Set<TrustAnchor> trustAnchors = new HashSet<>();
         for (X509Certificate trustedRootCert : rootCertificates) {
             trustAnchors.add(new TrustAnchor(trustedRootCert, null));
         }
@@ -69,7 +69,7 @@ public class ChainRule implements ValidatorRule {
         pkixParams.setRevocationEnabled(false);
 
         // Specify a list of intermediate certificates
-        Set<X509Certificate> trustedIntermediateCert = new HashSet<X509Certificate>();
+        Set<X509Certificate> trustedIntermediateCert = new HashSet<>();
         for (X509Certificate certificate : intermediateCertificates) {
             trustedIntermediateCert.add(certificate);
         }

@@ -20,9 +20,7 @@ public class ExpirationRule implements ValidatorRule {
     public void validate(X509Certificate certificate) throws FailedValidationException {
         try {
             certificate.checkValidity(new Date());
-        } catch (CertificateNotYetValidException e) {
-            throw new FailedValidationException("Certificate does not have a valid expiration date.");
-        } catch (CertificateExpiredException e) {
+        } catch (CertificateNotYetValidException | CertificateExpiredException e) {
             throw new FailedValidationException("Certificate does not have a valid expiration date.");
         }
     }

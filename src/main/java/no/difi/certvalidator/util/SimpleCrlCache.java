@@ -1,8 +1,6 @@
 package no.difi.certvalidator.util;
 
 import no.difi.certvalidator.api.CrlCache;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.security.cert.X509CRL;
 import java.util.Map;
@@ -13,7 +11,7 @@ import java.util.TreeMap;
  */
 public class SimpleCrlCache implements CrlCache {
 
-    private Map<String, X509CRL> storage = new TreeMap<String, X509CRL>();
+    private Map<String, X509CRL> storage = new TreeMap<>();
 
     @Override
     public X509CRL get(String url) {

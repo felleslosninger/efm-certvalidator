@@ -5,6 +5,7 @@ import no.difi.certvalidator.api.FailedValidationException;
 import no.difi.certvalidator.api.PrincipalNameProvider;
 import no.difi.certvalidator.util.SimplePrincipalNameProvider;
 import org.mockito.Mockito;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.security.cert.CertificateEncodingException;
@@ -49,5 +50,11 @@ public class PrincipalNameRuleTest {
                 .addRule(new PrincipalNameRule(provider))
                 .build()
                 .validate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"));
+    }
+
+    @Test
+    public void enumStuff() {
+        for (PrincipalNameRule.Principal principal : PrincipalNameRule.Principal.values())
+            Assert.assertNotNull(PrincipalNameRule.Principal.valueOf(principal.name()));
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class AbstractJunction implements ValidatorRule {
 
-    protected List<ValidatorRule> validatorRules = new ArrayList<ValidatorRule>();
+    protected List<ValidatorRule> validatorRules = new ArrayList<>();
 
     public AbstractJunction(ValidatorRule... validatorRules) {
         addRule(validatorRules);

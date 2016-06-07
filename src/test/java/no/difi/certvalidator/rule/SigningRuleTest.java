@@ -4,6 +4,7 @@ package no.difi.certvalidator.rule;
 import no.difi.certvalidator.Validator;
 import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.FailedValidationException;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class SigningRuleTest {
@@ -35,5 +36,11 @@ public class SigningRuleTest {
     @Test(expectedExceptions = CertificateValidationException.class)
     public void triggerException() throws Exception {
         SigningRule.PublicSignedOnly().validate(null);
+    }
+
+    @Test
+    public void enumStuff() {
+        for (SigningRule.Kind kind : SigningRule.Kind.values())
+            Assert.assertNotNull(SigningRule.Kind.valueOf(kind.name()));
     }
 }
