@@ -7,6 +7,7 @@ import no.difi.certvalidator.rule.PrincipalNameRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -64,11 +65,11 @@ public class NorwegianOrganizationNumberRule extends PrincipalNameRule {
             for (String value : extract(getSubject(certificate), "O")) {
                 Matcher matcher = patternOrganizationName.matcher(value);
                 if (matcher.matches())
-                    return new NorwegianOrganization(matcher.group(1), name.isEmpty() ? null : name.get(0));
+                    return new NorwegianOrganization(matcher.group(1), name.get(0));
             }
 
             return null;
-        } catch (Exception e) {
+        } catch (CertificateEncodingException | NullPointerException e) {
             logger.debug(e.getMessage());
             throw new CertificateValidationException(e.getMessage(), e);
         }

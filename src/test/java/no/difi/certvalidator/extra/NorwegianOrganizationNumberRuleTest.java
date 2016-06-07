@@ -141,4 +141,11 @@ public class NorwegianOrganizationNumberRuleTest extends X509TestGenerator {
 
         validator.validate(certificate);
     }
+
+    @Test
+    public void simpleObjectTest() {
+        NorwegianOrganizationNumberRule.NorwegianOrganization no = new NorwegianOrganizationNumberRule.NorwegianOrganization("123456789", "Test");
+        Assert.assertEquals(no.getNumber(), "123456789");
+        Assert.assertEquals(no.getName(), "Test");
+    }
 }

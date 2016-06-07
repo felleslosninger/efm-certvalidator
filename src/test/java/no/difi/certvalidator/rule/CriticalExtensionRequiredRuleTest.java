@@ -1,6 +1,7 @@
 package no.difi.certvalidator.rule;
 
 
+import no.difi.certvalidator.ValidatorBuilder;
 import no.difi.certvalidator.api.FailedValidationException;
 import no.difi.certvalidator.testutil.X509ExtensionCustom;
 import no.difi.certvalidator.testutil.X509TestGenerator;
@@ -39,10 +40,17 @@ public class CriticalExtensionRequiredRuleTest extends X509TestGenerator {
         X509Certificate cert = createX509Certificate(new X509ExtensionCustom() {
             public void setup(X509v3CertificateBuilder v3CertGen) throws CertIOException {
                 String notApprovedExtention = "2.10.6";
-                boolean CRITICAL = true;
-                v3CertGen.addExtension(new ASN1ObjectIdentifier(notApprovedExtention), CRITICAL, new byte[3]);
+                v3CertGen.addExtension(new ASN1ObjectIdentifier(notApprovedExtention), true, new byte[3]);
             }
         });
         validator.validate(cert);
+    }
+
+    @Test(expectedExceptions = FailedValidationException.class)
+    public void triggerExceptionWhenCertHasNoCriticalOids() throws Exception {
+        ValidatorBuilder.newInstance()
+                .addRule(CriticalExtensionRule.requires("12.0"))
+                .build()
+                .validate(getClass().getResourceAsStream("/nooids.cer"));
     }
 }

@@ -56,10 +56,8 @@ public class SigningRule implements ValidatorRule {
             PublicKey key = cert.getPublicKey();
             cert.verify(key);
             return true;
-        } catch (SignatureException sigEx) {
+        } catch (SignatureException | InvalidKeyException e) {
             // Invalid signature --> not self-signed
-            return false;
-        } catch (InvalidKeyException keyEx) {
             // Invalid key --> not self-signed
             return false;
         }
