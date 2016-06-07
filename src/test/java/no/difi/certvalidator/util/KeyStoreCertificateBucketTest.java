@@ -6,6 +6,9 @@ import no.difi.certvalidator.api.CertificateBucketException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.security.cert.X509Certificate;
+import java.util.Iterator;
+
 public class KeyStoreCertificateBucketTest {
 
     @Test
@@ -48,5 +51,31 @@ public class KeyStoreCertificateBucketTest {
     @SuppressWarnings("all")
     public void triggerNullPointerInStartsWith() throws Exception {
         new KeyStoreCertificateBucket(null).startsWith(null);
+    }
+
+    @Test(expectedExceptions = IllegalStateException.class)
+    public void testingIterator() throws Exception {
+        KeyStoreCertificateBucket certificateBucket = new KeyStoreCertificateBucket(getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
+
+        Iterator<X509Certificate> iterator = certificateBucket.iterator();
+
+        Assert.assertTrue(iterator.hasNext());
+        Assert.assertNotNull(iterator.next());
+        iterator.remove(); // No action
+
+        Assert.assertTrue(iterator.hasNext());
+        Assert.assertNotNull(iterator.next());
+        iterator.remove(); // No action
+
+        Assert.assertTrue(iterator.hasNext());
+        Assert.assertNotNull(iterator.next());
+        iterator.remove(); // No action
+
+        Assert.assertTrue(iterator.hasNext());
+        Assert.assertNotNull(iterator.next());
+        iterator.remove(); // No action
+
+        Assert.assertFalse(iterator.hasNext());
+        Assert.assertNotNull(iterator.next());
     }
 }

@@ -1,8 +1,8 @@
+# Certificate validator for X.509 certificates
+
 [![Build Status](https://travis-ci.org/difi/certvalidator.svg?branch=master)](https://travis-ci.org/difi/certvalidator)
 [![CodeCov](https://codecov.io/gh/difi/certvalidator/branch/master/graph/badge.svg)](https://codecov.io/gh/difi/certvalidator)
 [![Maven Central](https://img.shields.io/maven-central/v/no.difi.commons/commons-certvalidator.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22no.difi.commons%22%20AND%20a%3A%22commons-certvalidator%22)
-
-# Certificate validator for X.509 certificates
 
 This validator is not a single validator, it is set of rules to build the certificate validator (using X.509 certificates) fitting the needs of your business case.
 

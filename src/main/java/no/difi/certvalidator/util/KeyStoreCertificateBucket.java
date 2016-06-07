@@ -66,7 +66,7 @@ public class KeyStoreCertificateBucket implements CertificateBucket {
                 public X509Certificate next() {
                     try {
                         return (X509Certificate) keyStore.getCertificate(aliases.nextElement());
-                    } catch (KeyStoreException e) {
+                    } catch (KeyStoreException | NoSuchElementException e) {
                         throw new IllegalStateException(e.getMessage(), e);
                     }
                 }

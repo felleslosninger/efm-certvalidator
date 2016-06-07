@@ -2,13 +2,18 @@ package no.difi.certvalidator.rule;
 
 import no.difi.certvalidator.Validator;
 import no.difi.certvalidator.ValidatorBuilder;
+import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.CrlCache;
+import no.difi.certvalidator.api.FailedValidationException;
 import no.difi.certvalidator.util.SimpleCrlCache;
-import org.junit.Assert;
+import org.mockito.Mockito;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
+import java.security.cert.X509Certificate;
+import java.util.Collections;
 
 public class CRLRuleTest {
 
@@ -17,12 +22,12 @@ public class CRLRuleTest {
     @Test
     public void simple() throws Exception {
         ValidatorBuilder.newInstance()
-                .addRule(new CRLRule(crlCache))
+                .addRule(new CRLRule())
                 .build()
                 .validate((getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
     }
 
-    @Test(enabled = false)
+    @Test
     public void updateCrl() throws Exception {
         String crlUrl = "http://pilotonsitecrl.verisign.com/DigitaliseringsstyrelsenPilotOpenPEPPOLACCESSPOINTCA/LatestCRL.crl";
 
@@ -46,4 +51,30 @@ public class CRLRuleTest {
         Assert.assertNotNull(crlCache.get(crlUrl));
     }
 
+    @Test(expectedExceptions = CertificateValidationException.class)
+    public void noUrlsSet() throws Exception {
+        Assert.assertEquals(CRLRule.getCrlDistributionPoints(Validator.getCertificate(getClass().getResourceAsStream("/nooids.cer"))).size(), 0);
+    }
+
+    @Test
+    public void noUrlsInSet() throws Exception {
+        X509Certificate certificate = Mockito.mock(X509Certificate.class);
+        Mockito.doReturn(Collections.emptySet()).when(certificate).getNonCriticalExtensionOIDs();
+
+        Assert.assertEquals(CRLRule.getCrlDistributionPoints(certificate).size(), 0);
+    }
+
+    @Test(expectedExceptions = FailedValidationException.class)
+    public void revoked() throws Exception {
+        X509Certificate certificate = Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"));
+
+        X509CRL x509CRL = Mockito.mock(X509CRL.class);
+        Mockito.doReturn(true).when(x509CRL).isRevoked(certificate);
+
+        CrlCache crlCache = new SimpleCrlCache();
+        crlCache.set("http://pilotonsitecrl.verisign.com/DigitaliseringsstyrelsenPilotOpenPEPPOLACCESSPOINTCA/LatestCRL.crl", x509CRL);
+
+        CRLRule rule = new CRLRule(crlCache);
+        rule.validate(certificate);
+    }
 }

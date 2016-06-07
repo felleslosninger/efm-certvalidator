@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
-import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
 
@@ -21,14 +20,6 @@ public class SimpleCachingCrlFetcher implements CrlFetcher {
 
     private static CertificateFactory certificateFactory;
 
-    static {
-        try {
-            certificateFactory = CertificateFactory.getInstance("X.509");
-        } catch (CertificateException e) {
-            throw new RuntimeException("Failed to create X.509 certificate factory", e);
-        }
-    }
-
     private CrlCache crlCache;
 
     public SimpleCachingCrlFetcher(CrlCache crlCache) {
@@ -39,28 +30,25 @@ public class SimpleCachingCrlFetcher implements CrlFetcher {
     public X509CRL get(String url) throws CertificateValidationException{
         X509CRL crl = crlCache.get(url);
         if (crl == null) {
-            crl = notInCache(url);
+            // Not in cache
+            crl = download(url);
         } else if (crl.getNextUpdate() != null && crl.getNextUpdate().getTime() < System.currentTimeMillis()) {
-            crl = outdated(url, crl);
+            // Outdated
+            crl = download(url);
         } else if (crl.getNextUpdate() == null) {
             logger.warn("Next update not set for CRL with URL \"{}\"", url);
         }
         return crl;
     }
 
-    protected X509CRL notInCache(String url) throws CertificateValidationException {
-        return download(url);
-    }
-
-    protected X509CRL outdated(String url, X509CRL outdatedCrl) throws CertificateValidationException {
-        return download(url);
-    }
-
     protected X509CRL download(String url) throws CertificateValidationException {
         logger.debug("Downloading CRL from {}...", url);
 
         try {
-            if (url.startsWith("http://") || url.startsWith("https://")) {
+            if (url.matches("http[s]{0,1}://.*")) {
+                if (certificateFactory == null)
+                    certificateFactory = CertificateFactory.getInstance("X.509");
+
                 X509CRL crl = (X509CRL) certificateFactory.generateCRL(URI.create(url).toURL().openStream());
                 crlCache.set(url, crl);
                 return crl;
@@ -68,10 +56,7 @@ public class SimpleCachingCrlFetcher implements CrlFetcher {
                 // Currently not supported.
                 return null;
         } catch (Exception e) {
-            throw new CertificateValidationException(
-                    "Failed to download CRL " + url + (e.getMessage() != null ? (": " + e.getMessage()) : ""),
-                    e
-            );
+            throw new CertificateValidationException(String.format("Failed to download CRL '%s' (%s)", url, e.getMessage()), e);
         }
         return null;
     }

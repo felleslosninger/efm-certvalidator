@@ -65,7 +65,7 @@ public class CRLRule implements ValidatorRule {
                         urls.add(((DERIA5String) name.getName()).getString());
 
             return urls;
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             throw new CertificateValidationException(e.getMessage(), e);
         }
     }

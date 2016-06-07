@@ -44,7 +44,7 @@ public class OCSPRule implements ValidatorRule {
 
             if (!status.getCertStatus().equals(OCSP.RevocationStatus.CertStatus.GOOD))
                 throw new FailedValidationException("Certificate status is not reported as GOOD by OCSP.");
-        } catch (IOException | CertPathValidatorException e) {
+        } catch (IOException | CertPathValidatorException | NullPointerException e) {
             logger.debug("{} ({})", e.getMessage(), certificate.getSerialNumber());
             throw new CertificateValidationException(e.getMessage(), e);
         }
