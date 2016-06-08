@@ -46,8 +46,9 @@ public class CRLRule implements ValidatorRule {
         List<String> urls = getCrlDistributionPoints(certificate);
         for (String url : urls) {
             X509CRL crl = crlFetcher.get(url);
-            if (crl != null && crl.isRevoked(certificate))
-                throw new FailedValidationException("Certificate is revoked.");
+            if (crl != null)
+                if (crl.isRevoked(certificate))
+                    throw new FailedValidationException("Certificate is revoked.");
         }
     }
 

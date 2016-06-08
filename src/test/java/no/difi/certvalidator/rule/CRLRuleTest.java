@@ -4,6 +4,7 @@ import no.difi.certvalidator.Validator;
 import no.difi.certvalidator.ValidatorBuilder;
 import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.CrlCache;
+import no.difi.certvalidator.api.CrlFetcher;
 import no.difi.certvalidator.api.FailedValidationException;
 import no.difi.certvalidator.util.SimpleCrlCache;
 import org.mockito.Mockito;
@@ -75,6 +76,19 @@ public class CRLRuleTest {
         crlCache.set("http://pilotonsitecrl.verisign.com/DigitaliseringsstyrelsenPilotOpenPEPPOLACCESSPOINTCA/LatestCRL.crl", x509CRL);
 
         CRLRule rule = new CRLRule(crlCache);
+        rule.validate(certificate);
+    }
+
+    @Test
+    public void crlIsNull() throws Exception {
+        X509Certificate certificate = Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"));
+
+        CRLRule rule = new CRLRule(new CrlFetcher() {
+            @Override
+            public X509CRL get(String url) throws CertificateValidationException {
+                return null;
+            }
+        });
         rule.validate(certificate);
     }
 }

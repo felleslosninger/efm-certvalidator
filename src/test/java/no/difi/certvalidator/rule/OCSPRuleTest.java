@@ -8,6 +8,7 @@ import no.difi.certvalidator.util.KeyStoreCertificateBucket;
 import no.difi.certvalidator.util.SimpleCertificateBucket;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
+import sun.security.provider.certpath.OCSP;
 
 import java.security.cert.X509Certificate;
 
@@ -43,5 +44,18 @@ public class OCSPRuleTest {
 
         ValidatorRule validatorRule = new OCSPRule(new SimpleCertificateBucket());
         validatorRule.validate(certificate);
+    }
+
+    @Test(expectedExceptions = FailedValidationException.class)
+    public void triggerExceptionWhenStatusIsNotGood() throws Exception {
+        KeyStoreCertificateBucket keyStoreCertificateBucket = new KeyStoreCertificateBucket("JKS", getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
+
+        OCSP.RevocationStatus revocationStatus = Mockito.mock(OCSP.RevocationStatus.class);
+        Mockito.doReturn(OCSP.RevocationStatus.CertStatus.UNKNOWN).when(revocationStatus).getCertStatus();
+
+        OCSPRule rule = Mockito.spy(new OCSPRule(keyStoreCertificateBucket.toSimple("peppol-ap", "peppol-smp")));
+        Mockito.doReturn(revocationStatus).when(rule).getRevocationStatus(Mockito.any(X509Certificate.class), Mockito.any(X509Certificate.class));
+
+        rule.validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-smp-difi.cer")));
     }
 }

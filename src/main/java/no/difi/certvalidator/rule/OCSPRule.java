@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.security.cert.CertPathValidatorException;
 import java.security.cert.X509Certificate;
 
+import static sun.security.provider.certpath.OCSP.RevocationStatus.CertStatus;
+
 /**
  * Validation of certificate using OCSP. Requires intermediate certificates.
  */
@@ -40,10 +42,9 @@ public class OCSPRule implements ValidatorRule {
             if (issuer == null)
                 throw new FailedValidationException(String.format("Unable to find issuer certificate '%s'", certificate.getIssuerX500Principal().getName()));
 
-            OCSP.RevocationStatus status = getRevocationStatus(certificate, issuer);
-
-            if (!status.getCertStatus().equals(OCSP.RevocationStatus.CertStatus.GOOD))
-                throw new FailedValidationException("Certificate status is not reported as GOOD by OCSP.");
+            CertStatus certStatus = getRevocationStatus(certificate, issuer).getCertStatus();
+            if (!certStatus.equals(CertStatus.GOOD))
+                throw new FailedValidationException(String.format("Certificate status is reported as %s by OCSP.", certStatus.name()));
         } catch (IOException | CertPathValidatorException | NullPointerException e) {
             logger.debug("{} ({})", e.getMessage(), certificate.getSerialNumber());
             throw new CertificateValidationException(e.getMessage(), e);
