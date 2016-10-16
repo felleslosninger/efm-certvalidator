@@ -1,7 +1,6 @@
 package no.difi.certvalidator;
 
 import no.difi.certvalidator.api.*;
-import no.difi.certvalidator.lang.CertificateValidationRuntimeException;
 import no.difi.certvalidator.lang.ValidatorParsingException;
 import no.difi.certvalidator.rule.*;
 import no.difi.certvalidator.structure.Junction;
@@ -27,7 +26,7 @@ class ValidatorLoaderParser {
         try {
             jaxbContext = JAXBContext.newInstance(ValidatorReceipt.class);
         } catch (JAXBException e) {
-            throw new CertificateValidationRuntimeException(e.getMessage(), e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
@@ -83,7 +82,7 @@ class ValidatorLoaderParser {
                     for (X509Certificate certificate :
                             getKeyStore(c.getKeyStore(), objectStorage).toSimple(c.getValue()))
                         certificateBucket.add(certificate);
-                } else if (o instanceof CertificateStartsWithType) {
+                } else /* if (o instanceof CertificateStartsWithType) */ {
                     CertificateStartsWithType c = (CertificateStartsWithType) o;
                     for (X509Certificate certificate :
                             getKeyStore(c.getKeyStore(), objectStorage).startsWith(c.getValue()))

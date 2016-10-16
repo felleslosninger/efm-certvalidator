@@ -28,9 +28,11 @@ public class ValidatorLoader {
     }
 
     public ValidatorGroup build(Path path) throws IOException, ValidatorParsingException {
-        try (InputStream inputStream = Files.newInputStream(path)) {
-            return build(inputStream);
-        }
+        InputStream inputStream = Files.newInputStream(path);
+        ValidatorGroup validatorGroup = build(inputStream);
+        inputStream.close();
+
+        return validatorGroup;
     }
 
     public ValidatorGroup build(InputStream inputStream) throws ValidatorParsingException {
