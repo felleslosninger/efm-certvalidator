@@ -122,7 +122,7 @@ class ValidatorLoaderParser {
                 ruleList.add(parse((RuleReferenceType) rule, objectStorage));
             } else if (rule instanceof SigningType) {
                 ruleList.add(parse((SigningType) rule));
-            } else if (rule instanceof ValidatorReferenceType) {
+            } else /* if (rule instanceof ValidatorReferenceType) */ {
                 ruleList.add(parse((ValidatorReferenceType) rule, objectStorage));
             }
         }

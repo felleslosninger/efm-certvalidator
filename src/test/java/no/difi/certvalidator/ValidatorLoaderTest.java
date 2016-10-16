@@ -5,13 +5,15 @@ import no.difi.certvalidator.util.SimpleCrlCache;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.io.File;
+
 public class ValidatorLoaderTest {
 
     @Test
     public void simple() throws Exception {
         ValidatorGroup validator = ValidatorLoader.newInstance()
                 .put("crlCache", new SimpleCrlCache())
-                .build(getClass().getResourceAsStream("/receipt-peppol-test.xml"));
+                .build(new File(getClass().getResource("/receipt-peppol-test.xml").toURI()).toPath());
 
         Assert.assertEquals(validator.getName(), "peppol-test");
         Assert.assertNotNull(validator.getVersion());
@@ -24,5 +26,10 @@ public class ValidatorLoaderTest {
 
         Assert.assertFalse(validator.isValid(getClass().getResourceAsStream("/peppol-prod-ap-difi.cer")));
         Assert.assertFalse(validator.isValid(getClass().getResourceAsStream("/peppol-prod-smp-difi.cer")));
+    }
+
+    @Test
+    public void simpleConstructorTest() {
+        new ValidatorLoaderParser();
     }
 }

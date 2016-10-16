@@ -54,6 +54,18 @@ public class JunctionTest {
     }
 
     @Test
+    public void simpleOneTest() {
+        Assert.assertTrue(Junction.and(new DummyRule()) instanceof DummyRule);
+        Assert.assertTrue(Junction.and(new DummyRule(), new DummyRule()) instanceof AndJunction);
+
+        Assert.assertTrue(Junction.or(new DummyRule()) instanceof DummyRule);
+        Assert.assertTrue(Junction.or(new DummyRule(), new DummyRule()) instanceof OrJunction);
+
+        Assert.assertTrue(Junction.xor(new DummyRule()) instanceof DummyRule);
+        Assert.assertTrue(Junction.xor(new DummyRule(), new DummyRule()) instanceof XorJunction);
+    }
+
+    @Test
     public void simpleConstructor() {
         new Junction();
     }
