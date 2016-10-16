@@ -19,7 +19,7 @@ public class PeppolTest {
         CertificateBucket rootCertificates = keyStoreCertificateBucket.toSimple("peppol-root");
         CertificateBucket intermediateCertificates = keyStoreCertificateBucket.toSimple("peppol-ap", "peppol-smp");
 
-        Validator validatorHelper = ValidatorBuilder.newInstance()
+        Validator valvalidatordatorHelper = ValidatorBuilder.newInstance()
                 .addRule(new ExpirationRule())
                 .addRule(new SigningRule())
                 .addRule(new PrincipalNameRule("CN", new SimplePrincipalNameProvider("PEPPOL ACCESS POINT TEST CA"), PrincipalNameRule.Principal.ISSUER))
@@ -28,8 +28,8 @@ public class PeppolTest {
                 .addRule(new OCSPRule(intermediateCertificates))
                 .build();
 
-        validatorHelper.validate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"));
-        validatorHelper.validate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"));
+        valvalidatordatorHelper.validate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"));
+        valvalidatordatorHelper.validate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"));
     }
 
     @Test

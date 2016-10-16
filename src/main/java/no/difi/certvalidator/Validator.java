@@ -63,7 +63,7 @@ public class Validator implements ValidatorRule {
 
     public boolean isValid(X509Certificate certificate) {
         try {
-            validatorRule.validate(certificate);
+            validate(certificate);
             return true;
         } catch (CertificateValidationException e) {
             logger.debug(e.getMessage());

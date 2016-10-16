@@ -8,12 +8,16 @@ import java.util.List;
 /**
  * Validate principal name using a static list of values.
  */
-public class SimplePrincipalNameProvider implements PrincipalNameProvider {
+public class SimplePrincipalNameProvider implements PrincipalNameProvider<String> {
 
     private List<String> expected;
 
     public SimplePrincipalNameProvider(String... expected) {
-        this.expected = Arrays.asList(expected);
+        this(Arrays.asList(expected));
+    }
+
+    public SimplePrincipalNameProvider(List<String> expected) {
+        this.expected = expected;
     }
 
     /**

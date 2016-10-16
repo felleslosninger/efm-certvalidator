@@ -26,7 +26,16 @@ public class NorwegianOrganizationNumberRule extends PrincipalNameRule {
     private static final Pattern patternSerialnumber = Pattern.compile("^[0-9]{9}$");
     private static final Pattern patternOrganizationName = Pattern.compile("^.+\\-\\W*([0-9]{9})$");
 
-    public NorwegianOrganizationNumberRule(PrincipalNameProvider provider) {
+    public NorwegianOrganizationNumberRule() {
+        this(new PrincipalNameProvider<String>() {
+            @Override
+            public boolean validate(String value) {
+                return true;
+            }
+        });
+    }
+
+    public NorwegianOrganizationNumberRule(PrincipalNameProvider<String> provider) {
         super(provider);
     }
 

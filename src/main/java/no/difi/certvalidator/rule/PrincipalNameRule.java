@@ -26,22 +26,24 @@ public class PrincipalNameRule implements ValidatorRule {
     private static final Logger logger = LoggerFactory.getLogger(PrincipalNameRule.class);
 
     protected String field;
-    protected PrincipalNameProvider provider;
+
+    protected PrincipalNameProvider<String> provider;
+
     protected Principal principal;
 
-    public PrincipalNameRule(PrincipalNameProvider provider) {
+    public PrincipalNameRule(PrincipalNameProvider<String> provider) {
         this(null, provider, Principal.SUBJECT);
     }
 
-    public PrincipalNameRule(PrincipalNameProvider provider, Principal principal) {
+    public PrincipalNameRule(PrincipalNameProvider<String> provider, Principal principal) {
         this(null, provider, principal);
     }
 
-    public PrincipalNameRule(String field, PrincipalNameProvider provider) {
+    public PrincipalNameRule(String field, PrincipalNameProvider<String> provider) {
         this(field, provider, Principal.SUBJECT);
     }
 
-    public PrincipalNameRule(String field, PrincipalNameProvider provider, Principal principal) {
+    public PrincipalNameRule(String field, PrincipalNameProvider<String> provider, Principal principal) {
         this.field = field;
         this.provider = provider;
         this.principal = principal;
@@ -85,7 +87,7 @@ public class PrincipalNameRule implements ValidatorRule {
 
         RFC4519Style.INSTANCE.attrNameToOID(field);
 
-        List<String> values = new ArrayList<String>();
+        List<String> values = new ArrayList<>();
         for (RDN rdn : principal.getRDNs(RFC4519Style.INSTANCE.attrNameToOID(field)))
             for (AttributeTypeAndValue value : rdn.getTypesAndValues())
                 values.add(value.getValue().toString());

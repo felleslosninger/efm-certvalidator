@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+           targetNamespace="http://difi.no/xsd/certvalidator/1.0" xmlns="http://difi.no/xsd/certvalidator/1.0">
+
+    <!-- Receipt -->
+
+    <xs:element name="ValidatorReceipt">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Validator" type="ValidatorType" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element name="CertificateBucket" type="CertificateBucketType" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="KeyStore" type="KeyStoreType" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string"/>
+            <xs:attribute name="version" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Extensible -->
+
+    <xs:complexType name="ExtensibleType">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="Chain" type="ChainType"/>
+            <xs:element name="Class" type="ClassType"/>
+            <xs:element name="CriticalExtensionRecognized" type="CriticalExtensionRecognizedType"/>
+            <xs:element name="CriticalExtensionRequired" type="CriticalExtensionRequiredType"/>
+            <xs:element name="CRL" type="CRLType"/>
+            <xs:element name="Expiration" type="ExpirationType"/>
+            <xs:element name="Junction" type="JunctionType"/>
+            <xs:element name="OCSP" type="OCSPType"/>
+            <xs:element name="PrincipleName" type="PrincipleNameType"/>
+            <xs:element name="RuleReference" type="RuleReferenceType"/>
+            <xs:element name="Signing" type="SigningType"/>
+            <xs:element name="ValidatorReference" type="ValidatorReferenceType"/>
+        </xs:choice>
+    </xs:complexType>
+
+    <!-- Validator -->
+
+    <xs:complexType name="ValidatorType">
+        <xs:complexContent>
+            <xs:extension base="ExtensibleType">
+                <xs:attribute name="name" type="xs:string"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Rule -->
+
+    <xs:complexType name="ChainType">
+        <xs:sequence>
+            <xs:element name="RootBucketReference" type="CertificateBucketReferenceType"/>
+            <xs:element name="IntermediateBucketReference" type="CertificateBucketReferenceType"/>
+            <xs:element name="Policy" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ClassType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string"/>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="CriticalExtensionRecognizedType">
+        <xs:sequence>
+            <xs:element name="Value" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CriticalExtensionRequiredType">
+        <xs:sequence>
+            <xs:element name="Value" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CRLType"/>
+
+    <xs:complexType name="JunctionType">
+        <xs:complexContent>
+            <xs:extension base="ExtensibleType">
+                <xs:attribute name="type" type="JunctionEnum" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="ExpirationType">
+        <xs:attribute name="millis" type="xs:long"/>
+    </xs:complexType>
+
+    <xs:complexType name="OCSPType">
+        <xs:choice>
+            <xs:element name="IntermediateBucketReference" type="CertificateBucketReferenceType"/>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="PrincipleNameType">
+        <xs:choice>
+            <xs:element name="Value" type="xs:string" maxOccurs="unbounded"/>
+            <xs:element name="Reference" type="ReferenceType"/>
+        </xs:choice>
+        <xs:attribute name="field" type="xs:string"/>
+        <xs:attribute name="principal" type="PrincipalEnum"/>
+    </xs:complexType>
+
+    <xs:complexType name="RuleReferenceType">
+        <xs:complexContent>
+            <xs:extension base="ReferenceType"/>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="SigningType">
+        <xs:attribute name="type" type="SigningEnum" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="ValidatorReferenceType">
+        <xs:complexContent>
+            <xs:extension base="ReferenceType"/>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Certificate Bucket -->
+
+    <xs:complexType name="CertificateBucketReferenceType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string"/>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="CertificateBucketType">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="Certificate" type="CertificateType"/>
+            <xs:element name="CertificateReference" type="CertificateReferenceType"/>
+            <xs:element name="CertificateStartsWith" type="CertificateStartsWithType"/>
+        </xs:choice>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="CertificateType">
+        <xs:simpleContent>
+            <xs:extension base="xs:base64Binary"/>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="CertificateReferenceType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="keyStore" type="xs:string"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="CertificateStartsWithType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="keyStore" type="xs:string"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <!-- Key Store -->
+
+    <xs:complexType name="KeyStoreType">
+        <xs:simpleContent>
+            <xs:extension base="xs:base64Binary">
+                <xs:attribute name="name" type="xs:string"/>
+                <xs:attribute name="password" type="xs:string" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <!-- Utils -->
+
+    <xs:complexType name="ReferenceType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string"/>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <!-- Enums -->
+
+    <xs:simpleType name="JunctionEnum" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="AND"/>
+            <xs:enumeration value="OR"/>
+            <xs:enumeration value="XOR"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="PrincipalEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SUBJECT"/>
+            <xs:enumeration value="ISSUER"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="SigningEnum" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PUBLIC_SIGNED"/>
+            <xs:enumeration value="SELF_SIGNED"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>
