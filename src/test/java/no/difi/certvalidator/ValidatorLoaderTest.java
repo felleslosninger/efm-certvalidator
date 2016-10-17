@@ -51,6 +51,16 @@ public class ValidatorLoaderTest {
     }
 
     @Test
+    public void simpleVirksertTestAlternative() throws Exception {
+        Validator validator = ValidatorLoader.newInstance()
+                .put("crlFetcher", new SimpleCachingCrlFetcher(new SimpleCrlCache()))
+                .build(getClass().getResourceAsStream("/receipt-virksert-test-alt.xml"));
+
+        Assert.assertTrue(validator.isValid(getClass().getResourceAsStream("/virksert-test-difi.cer")));
+        Assert.assertFalse(validator.isValid(getClass().getResourceAsStream("/peppol-prod-ap-difi.cer")));
+    }
+
+    @Test
     public void simpleSelfSigned() throws Exception {
         Validator validator = ValidatorLoader.newInstance()
                 .build(getClass().getResourceAsStream("/receipt-selfsigned.xml"));
@@ -121,15 +131,6 @@ public class ValidatorLoaderTest {
                 .build(new ByteArrayInputStream(
                         ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\">" +
                                 "<Validator><Junction type=\"XOR\"><Dummy/></Junction></Validator>" +
-                                "</ValidatorReceipt>").getBytes()));
-    }
-
-    @Test(expectedExceptions = NullPointerException.class)
-    public void triggerJunctionNone() throws Exception {
-        ValidatorLoader.newInstance()
-                .build(new ByteArrayInputStream(
-                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\">" +
-                                "<Validator><Junction><Dummy/></Junction></Validator>" +
                                 "</ValidatorReceipt>").getBytes()));
     }
 

@@ -128,16 +128,12 @@ class ValidatorLoaderParser {
             }
         }
 
-        switch (junctionEnum) {
-            case AND:
-                return Junction.and(ruleList.toArray(new ValidatorRule[ruleList.size()]));
-            case OR:
-                return Junction.or(ruleList.toArray(new ValidatorRule[ruleList.size()]));
-            case XOR:
-                return Junction.xor(ruleList.toArray(new ValidatorRule[ruleList.size()]));
-            default:
-                return null;
-        }
+        if (junctionEnum == JunctionEnum.AND)
+            return Junction.and(ruleList.toArray(new ValidatorRule[ruleList.size()]));
+        else if (junctionEnum == JunctionEnum.OR)
+            return Junction.or(ruleList.toArray(new ValidatorRule[ruleList.size()]));
+        else // if (junctionEnum == JunctionEnum.XOR)
+            return Junction.xor(ruleList.toArray(new ValidatorRule[ruleList.size()]));
     }
 
     private static ValidatorRule parse(ChainType rule, Map<String, Object> objectStorage) {
