@@ -12,7 +12,7 @@ import java.io.File;
 public class ValidatorLoaderTest {
 
     @Test
-    public void simple() throws Exception {
+    public void simplePeppolTest() throws Exception {
         ValidatorGroup validator = ValidatorLoader.newInstance()
                 .put("crlCache", new SimpleCrlCache())
                 .build(new File(getClass().getResource("/receipt-peppol-test.xml").toURI()).toPath());
@@ -36,6 +36,15 @@ public class ValidatorLoaderTest {
 
         Assert.assertFalse(validator.isValid(getClass().getResourceAsStream("/peppol-prod-smp-difi.cer")));
         Assert.assertFalse(validator.isValid("SMP", getClass().getResourceAsStream("/peppol-prod-smp-difi.cer")));
+    }
+
+    @Test
+    public void simpleVirksertTest() throws Exception {
+        Validator validator = ValidatorLoader.newInstance()
+                .build(getClass().getResourceAsStream("/receipt-virksert-test.xml"));
+
+        Assert.assertTrue(validator.isValid(getClass().getResourceAsStream("/virksert-test-difi.cer")));
+        Assert.assertFalse(validator.isValid(getClass().getResourceAsStream("/peppol-prod-ap-difi.cer")));
     }
 
     @Test(expectedExceptions = ValidatorParsingException.class)
