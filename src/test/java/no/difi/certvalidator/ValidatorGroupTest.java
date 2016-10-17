@@ -15,13 +15,13 @@ public class ValidatorGroupTest {
 
         byte[] cert = ByteStreams.toByteArray(getClass().getResourceAsStream("/selfsigned.cer"));
 
-        Assert.assertTrue(validator.isValid(cert));
-        Assert.assertFalse(validator.isValid(new byte[]{}));
+        Assert.assertTrue(validator.isValid("default", cert));
+        Assert.assertFalse(validator.isValid("default", new byte[]{}));
 
-        Assert.assertTrue(validator.isValid(new ByteArrayInputStream(cert)));
-        Assert.assertFalse(validator.isValid(new ByteArrayInputStream(new byte[]{})));
+        Assert.assertTrue(validator.isValid("default", new ByteArrayInputStream(cert)));
+        Assert.assertFalse(validator.isValid("default", new ByteArrayInputStream(new byte[]{})));
 
-        validator.validate(cert);
-        validator.validate(new ByteArrayInputStream(cert));
+        validator.validate("default", cert);
+        validator.validate("default", new ByteArrayInputStream(cert));
     }
 }

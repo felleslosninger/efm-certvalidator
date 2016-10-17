@@ -12,6 +12,12 @@
         <Chain>
             <RootBucketReference>root</RootBucketReference>
             <IntermediateBucketReference>intermediate</IntermediateBucketReference>
+            <Policy>2.16.578.1.26.1.3.5</Policy>
+            <Policy>2.16.578.1.29.13.1.1.0</Policy>
+            <Policy>2.16.578.1.26.1.3.2</Policy>
+            <Policy>2.16.578.1.26.1.0.3.2</Policy>
+            <Policy>2.16.578.1.29.913.1.1.0</Policy>
+            <Policy>2.16.578.1.1.1.1.100</Policy>
         </Chain>
         <Class>no.difi.certvalidator.extra.NorwegianOrganizationNumberRule</Class>
         <CRL/>
