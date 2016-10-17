@@ -124,6 +124,15 @@ public class ValidatorLoaderTest {
                                 "</ValidatorReceipt>").getBytes()));
     }
 
+    @Test(expectedExceptions = NullPointerException.class)
+    public void triggerJunctionNone() throws Exception {
+        ValidatorLoader.newInstance()
+                .build(new ByteArrayInputStream(
+                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\">" +
+                                "<Validator><Junction><Dummy/></Junction></Validator>" +
+                                "</ValidatorReceipt>").getBytes()));
+    }
+
     @Test
     public void simpleConstructorTest() {
         new ValidatorLoaderParser();

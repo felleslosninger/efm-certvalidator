@@ -25,6 +25,7 @@
             <xs:element name="CriticalExtensionRecognized" type="CriticalExtensionRecognizedType"/>
             <xs:element name="CriticalExtensionRequired" type="CriticalExtensionRequiredType"/>
             <xs:element name="CRL" type="CRLType"/>
+            <xs:element name="Dummy" type="DummyType"/>
             <xs:element name="Expiration" type="ExpirationType"/>
             <xs:element name="Junction" type="JunctionType"/>
             <xs:element name="OCSP" type="OCSPType"/>
