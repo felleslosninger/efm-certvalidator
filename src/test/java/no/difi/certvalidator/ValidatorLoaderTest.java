@@ -2,6 +2,7 @@ package no.difi.certvalidator;
 
 import com.google.common.io.ByteStreams;
 import no.difi.certvalidator.lang.ValidatorParsingException;
+import no.difi.certvalidator.util.SimpleCachingCrlFetcher;
 import no.difi.certvalidator.util.SimpleCrlCache;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -41,10 +42,20 @@ public class ValidatorLoaderTest {
     @Test
     public void simpleVirksertTest() throws Exception {
         Validator validator = ValidatorLoader.newInstance()
+                .put("crlFetcher", new SimpleCachingCrlFetcher(new SimpleCrlCache()))
                 .build(getClass().getResourceAsStream("/receipt-virksert-test.xml"));
 
         Assert.assertTrue(validator.isValid(getClass().getResourceAsStream("/virksert-test-difi.cer")));
         Assert.assertFalse(validator.isValid(getClass().getResourceAsStream("/peppol-prod-ap-difi.cer")));
+    }
+
+    @Test
+    public void simpleSelfSigned() throws Exception {
+        Validator validator = ValidatorLoader.newInstance()
+                .build(getClass().getResourceAsStream("/receipt-selfsigned.xml"));
+
+        Assert.assertTrue(validator.isValid(getClass().getResourceAsStream("/selfsigned.cer")));
+        Assert.assertFalse(validator.isValid(getClass().getResourceAsStream("/virksert-test-difi.cer")));
     }
 
     @Test(expectedExceptions = ValidatorParsingException.class)

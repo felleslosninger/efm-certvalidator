@@ -1,0 +1,6 @@
+<ValidatorReceipt xmlns="http://difi.no/xsd/certvalidator/1.0" name="peppol-test" version="2016-10-16">
+    <Validator>
+        <Expiration/>
+        <Signing type="SELF_SIGNED"/>
+    </Validator>
+</ValidatorReceipt>
