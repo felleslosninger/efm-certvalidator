@@ -109,6 +109,8 @@ class ValidatorLoaderParser {
                 ruleList.add(parse((CriticalExtensionRequiredType) rule));
             } else if (rule instanceof CRLType) {
                 ruleList.add(parse((CRLType) rule, objectStorage));
+            } else if (rule instanceof DummyType) {
+                ruleList.add(parse((DummyType) rule));
             } else if (rule instanceof ExpirationType) {
                 ruleList.add(parse((ExpirationType) rule));
             } else if (rule instanceof JunctionType) {
@@ -170,6 +172,10 @@ class ValidatorLoaderParser {
             objectStorage.put("crlFetcher", new SimpleCachingCrlFetcher((CrlCache) objectStorage.get("crlCache")));
 
         return new CRLRule((CrlFetcher) objectStorage.get("crlFetcher"));
+    }
+
+    private static ValidatorRule parse(DummyType dummyType) {
+        return new DummyRule(dummyType.getValue());
     }
 
     private static ValidatorRule parse(ExpirationType expirationType) {

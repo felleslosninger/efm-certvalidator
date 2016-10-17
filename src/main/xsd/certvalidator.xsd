@@ -75,16 +75,22 @@
 
     <xs:complexType name="CRLType"/>
 
+    <xs:complexType name="DummyType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string"/>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="ExpirationType">
+        <xs:attribute name="millis" type="xs:long"/>
+    </xs:complexType>
+
     <xs:complexType name="JunctionType">
         <xs:complexContent>
             <xs:extension base="ExtensibleType">
                 <xs:attribute name="type" type="JunctionEnum" use="required"/>
             </xs:extension>
         </xs:complexContent>
-    </xs:complexType>
-
-    <xs:complexType name="ExpirationType">
-        <xs:attribute name="millis" type="xs:long"/>
     </xs:complexType>
 
     <xs:complexType name="OCSPType">
