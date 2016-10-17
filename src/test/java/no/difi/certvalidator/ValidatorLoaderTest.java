@@ -73,18 +73,18 @@ public class ValidatorLoaderTest {
     public void triggerParserException() throws Exception {
         ValidatorLoader.newInstance()
                 .build(new ByteArrayInputStream(
-                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\">" +
-                                "<Validator><Class>no.clazz.Here</Class></Validator>" +
-                                "</ValidatorReceipt>").getBytes()));
+                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\"><Validator>" +
+                                "<Class>no.clazz.Here</Class>" +
+                                "</Validator></ValidatorReceipt>").getBytes()));
     }
 
     @Test(expectedExceptions = ValidatorParsingException.class)
     public void triggerReferenceNotFound() throws Exception {
         ValidatorLoader.newInstance()
                 .build(new ByteArrayInputStream(
-                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\">" +
-                                "<Validator><RuleReference>reference</RuleReference></Validator>" +
-                                "</ValidatorReceipt>").getBytes()));
+                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\"><Validator>" +
+                                "<RuleReference>reference</RuleReference><" +
+                                "/Validator></ValidatorReceipt>").getBytes()));
     }
 
     @Test
@@ -92,18 +92,18 @@ public class ValidatorLoaderTest {
         ValidatorLoader.newInstance()
                 .put("reference", new DummyRule())
                 .build(new ByteArrayInputStream(
-                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\">" +
-                                "<Validator><RuleReference>reference</RuleReference></Validator>" +
-                                "</ValidatorReceipt>").getBytes()));
+                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\"><Validator>" +
+                                "<RuleReference>reference</RuleReference>" +
+                                "</Validator></ValidatorReceipt>").getBytes()));
     }
 
     @Test(expectedExceptions = ValidatorParsingException.class)
     public void triggerValidatorReferenceNotFound() throws Exception {
         ValidatorLoader.newInstance()
                 .build(new ByteArrayInputStream(
-                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\">" +
-                                "<Validator><ValidatorReference>reference</ValidatorReference></Validator>" +
-                                "</ValidatorReceipt>").getBytes()));
+                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\"><Validator>" +
+                                "<ValidatorReference>reference</ValidatorReference>" +
+                                "</Validator></ValidatorReceipt>").getBytes()));
     }
 
     @Test
@@ -111,27 +111,27 @@ public class ValidatorLoaderTest {
         ValidatorLoader.newInstance()
                 .put("#validator::reference", new DummyRule())
                 .build(new ByteArrayInputStream(
-                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\">" +
-                                "<Validator><ValidatorReference>reference</ValidatorReference></Validator>" +
-                                "</ValidatorReceipt>").getBytes()));
+                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\"><Validator>" +
+                                "<ValidatorReference>reference</ValidatorReference>" +
+                                "</Validator></ValidatorReceipt>").getBytes()));
     }
 
     @Test
     public void triggerJunctionOr() throws Exception {
         ValidatorLoader.newInstance()
                 .build(new ByteArrayInputStream(
-                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\">" +
-                                "<Validator><Junction type=\"OR\"><Dummy/></Junction></Validator>" +
-                                "</ValidatorReceipt>").getBytes()));
+                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\"><Validator>" +
+                                "<Junction type=\"OR\"><Dummy/></Junction>" +
+                                "</Validator></ValidatorReceipt>").getBytes()));
     }
 
     @Test
     public void triggerJunctionXor() throws Exception {
         ValidatorLoader.newInstance()
                 .build(new ByteArrayInputStream(
-                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\">" +
-                                "<Validator><Junction type=\"XOR\"><Dummy/></Junction></Validator>" +
-                                "</ValidatorReceipt>").getBytes()));
+                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\"><Validator>" +
+                                "<Junction type=\"XOR\"><Dummy/></Junction>" +
+                                "</Validator></ValidatorReceipt>").getBytes()));
     }
 
     @Test
@@ -139,9 +139,18 @@ public class ValidatorLoaderTest {
         ValidatorLoader.newInstance()
                 .put("reference", new SimplePrincipalNameProvider("testing"))
                 .build(new ByteArrayInputStream(
-                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\">" +
-                                "<Validator><PrincipleName><Reference>reference</Reference></PrincipleName></Validator>" +
-                                "</ValidatorReceipt>").getBytes()));
+                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\"><Validator>" +
+                                "<PrincipleName><Reference>reference</Reference></PrincipleName>" +
+                                "</Validator></ValidatorReceipt>").getBytes()));
+    }
+
+    @Test(expectedExceptions = ValidatorParsingException.class)
+    public void triggerTryException() throws Exception {
+        ValidatorLoader.newInstance()
+                .build(new ByteArrayInputStream(
+                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\"><Validator>" +
+                                "<Try></Try>" +
+                                "</Validator></ValidatorReceipt>").getBytes()));
     }
 
     @Test

@@ -32,6 +32,7 @@
             <xs:element name="PrincipleName" type="PrincipleNameType"/>
             <xs:element name="RuleReference" type="RuleReferenceType"/>
             <xs:element name="Signing" type="SigningType"/>
+            <xs:element name="Try" type="TryType"/>
             <xs:element name="ValidatorReference" type="ValidatorReferenceType"/>
         </xs:choice>
     </xs:complexType>
@@ -117,6 +118,12 @@
 
     <xs:complexType name="SigningType">
         <xs:attribute name="type" type="SigningEnum" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="TryType">
+        <xs:complexContent>
+            <xs:extension base="ExtensibleType"/>
+        </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="ValidatorReferenceType">

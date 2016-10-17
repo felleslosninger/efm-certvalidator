@@ -98,35 +98,8 @@ class ValidatorLoaderParser {
                                        JunctionEnum junctionEnum) throws CertificateValidationException {
         List<ValidatorRule> ruleList = new ArrayList<>();
 
-        for (Object rule : rules) {
-            if (rule instanceof ChainType) {
-                ruleList.add(parse((ChainType) rule, objectStorage));
-            } else if (rule instanceof ClassType) {
-                ruleList.add(parse((ClassType) rule));
-            } else if (rule instanceof CriticalExtensionRecognizedType) {
-                ruleList.add(parse((CriticalExtensionRecognizedType) rule));
-            } else if (rule instanceof CriticalExtensionRequiredType) {
-                ruleList.add(parse((CriticalExtensionRequiredType) rule));
-            } else if (rule instanceof CRLType) {
-                ruleList.add(parse((CRLType) rule, objectStorage));
-            } else if (rule instanceof DummyType) {
-                ruleList.add(parse((DummyType) rule));
-            } else if (rule instanceof ExpirationType) {
-                ruleList.add(parse((ExpirationType) rule));
-            } else if (rule instanceof JunctionType) {
-                ruleList.add(parse((JunctionType) rule, objectStorage));
-            } else if (rule instanceof OCSPType) {
-                ruleList.add(parse((OCSPType) rule, objectStorage));
-            } else if (rule instanceof PrincipleNameType) {
-                ruleList.add(parse((PrincipleNameType) rule, objectStorage));
-            } else if (rule instanceof RuleReferenceType) {
-                ruleList.add(parse((RuleReferenceType) rule, objectStorage));
-            } else if (rule instanceof SigningType) {
-                ruleList.add(parse((SigningType) rule));
-            } else /* if (rule instanceof ValidatorReferenceType) */ {
-                ruleList.add(parse((ValidatorReferenceType) rule, objectStorage));
-            }
-        }
+        for (Object rule : rules)
+            ruleList.add(parse(rule, objectStorage));
 
         if (junctionEnum == JunctionEnum.AND)
             return Junction.and(ruleList.toArray(new ValidatorRule[ruleList.size()]));
@@ -134,6 +107,38 @@ class ValidatorLoaderParser {
             return Junction.or(ruleList.toArray(new ValidatorRule[ruleList.size()]));
         else // if (junctionEnum == JunctionEnum.XOR)
             return Junction.xor(ruleList.toArray(new ValidatorRule[ruleList.size()]));
+    }
+
+    private static ValidatorRule parse(Object rule, Map<String, Object> objectStorage)
+            throws CertificateValidationException {
+        if (rule instanceof ChainType)
+            return parse((ChainType) rule, objectStorage);
+        else if (rule instanceof ClassType)
+            return parse((ClassType) rule);
+        else if (rule instanceof CriticalExtensionRecognizedType)
+            return parse((CriticalExtensionRecognizedType) rule);
+        else if (rule instanceof CriticalExtensionRequiredType)
+            return parse((CriticalExtensionRequiredType) rule);
+        else if (rule instanceof CRLType)
+            return parse((CRLType) rule, objectStorage);
+        else if (rule instanceof DummyType)
+            return parse((DummyType) rule);
+        else if (rule instanceof ExpirationType)
+            return parse((ExpirationType) rule);
+        else if (rule instanceof JunctionType)
+            return parse((JunctionType) rule, objectStorage);
+        else if (rule instanceof OCSPType)
+            return parse((OCSPType) rule, objectStorage);
+        else if (rule instanceof PrincipleNameType)
+            return parse((PrincipleNameType) rule, objectStorage);
+        else if (rule instanceof RuleReferenceType)
+            return parse((RuleReferenceType) rule, objectStorage);
+        else if (rule instanceof SigningType)
+            return parse((SigningType) rule);
+        else if (rule instanceof TryType)
+            return parse((TryType) rule, objectStorage);
+        else // if (rule instanceof ValidatorReferenceType)
+            return parse((ValidatorReferenceType) rule, objectStorage);
     }
 
     private static ValidatorRule parse(ChainType rule, Map<String, Object> objectStorage) {
@@ -200,13 +205,6 @@ class ValidatorLoaderParser {
         return (ValidatorRule) objectStorage.get(ruleReferenceType.getValue());
     }
 
-    private static ValidatorRule parse(SigningType signingType) {
-        if (signingType.getType().equals(SigningEnum.SELF_SIGNED))
-            return SigningRule.SelfSignedOnly();
-        else
-            return SigningRule.PublicSignedOnly();
-    }
-
     @SuppressWarnings("unchecked")
     private static ValidatorRule parse(PrincipleNameType principleNameType, Map<String, Object> objectStorage) {
         PrincipalNameProvider<String> principalNameProvider;
@@ -221,6 +219,26 @@ class ValidatorLoaderParser {
                 principleNameType.getPrincipal() != null ?
                         PrincipalNameRule.Principal.valueOf(principleNameType.getPrincipal().toString()) : PrincipalNameRule.Principal.SUBJECT
         );
+    }
+
+    private static ValidatorRule parse(SigningType signingType) {
+        if (signingType.getType().equals(SigningEnum.SELF_SIGNED))
+            return SigningRule.SelfSignedOnly();
+        else
+            return SigningRule.PublicSignedOnly();
+    }
+
+    private static ValidatorRule parse(TryType tryType, Map<String, Object> objectStorage)
+            throws CertificateValidationException {
+        for (Object rule : tryType.getChainOrClazzOrCriticalExtensionRecognized()) {
+            try {
+                return parse(rule, objectStorage);
+            } catch (Exception e) {
+                // No action
+            }
+        }
+
+        throw new CertificateValidationException("Unable to find valid rule in try.");
     }
 
     private static ValidatorRule parse(ValidatorReferenceType validatorReferenceType, Map<String, Object> objectStorage)
