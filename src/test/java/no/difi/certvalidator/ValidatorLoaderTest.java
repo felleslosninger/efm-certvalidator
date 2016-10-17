@@ -5,6 +5,7 @@ import no.difi.certvalidator.lang.ValidatorParsingException;
 import no.difi.certvalidator.rule.DummyRule;
 import no.difi.certvalidator.util.SimpleCachingCrlFetcher;
 import no.difi.certvalidator.util.SimpleCrlCache;
+import no.difi.certvalidator.util.SimplePrincipalNameProvider;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -53,7 +54,6 @@ public class ValidatorLoaderTest {
     @Test
     public void simpleVirksertTestAlternative() throws Exception {
         Validator validator = ValidatorLoader.newInstance()
-                .put("crlFetcher", new SimpleCachingCrlFetcher(new SimpleCrlCache()))
                 .build(getClass().getResourceAsStream("/receipt-virksert-test-alt.xml"));
 
         Assert.assertTrue(validator.isValid(getClass().getResourceAsStream("/virksert-test-difi.cer")));
@@ -131,6 +131,16 @@ public class ValidatorLoaderTest {
                 .build(new ByteArrayInputStream(
                         ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\">" +
                                 "<Validator><Junction type=\"XOR\"><Dummy/></Junction></Validator>" +
+                                "</ValidatorReceipt>").getBytes()));
+    }
+
+    @Test
+    public void triggerPrimaryNameReference() throws Exception {
+        ValidatorLoader.newInstance()
+                .put("reference", new SimplePrincipalNameProvider("testing"))
+                .build(new ByteArrayInputStream(
+                        ("<ValidatorReceipt xmlns=\"http://difi.no/xsd/certvalidator/1.0\">" +
+                                "<Validator><PrincipleName><Reference>reference</Reference></PrincipleName></Validator>" +
                                 "</ValidatorReceipt>").getBytes()));
     }
 
