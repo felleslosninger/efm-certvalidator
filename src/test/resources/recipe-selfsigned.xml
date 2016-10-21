@@ -1,0 +1,6 @@
+<ValidatorRecipe xmlns="http://difi.no/xsd/certvalidator/1.0" name="selfsigned" version="2016-10-17">
+    <Validator>
+        <Expiration/>
+        <Signing type="SELF_SIGNED"/>
+    </Validator>
+</ValidatorRecipe>

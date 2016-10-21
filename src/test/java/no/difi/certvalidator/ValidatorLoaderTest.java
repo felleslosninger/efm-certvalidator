@@ -18,7 +18,7 @@ public class ValidatorLoaderTest {
     public void simplePeppolTest() throws Exception {
         ValidatorGroup validator = ValidatorLoader.newInstance()
                 .put("crlCache", new SimpleCrlCache())
-                .build(new File(getClass().getResource("/receipt-peppol-test.xml").toURI()).toPath());
+                .build(new File(getClass().getResource("/recipe-peppol-test.xml").toURI()).toPath());
 
         Assert.assertEquals(validator.getName(), "peppol-test");
         Assert.assertNotNull(validator.getVersion());
@@ -45,7 +45,7 @@ public class ValidatorLoaderTest {
     public void simpleVirksertTest() throws Exception {
         Validator validator = ValidatorLoader.newInstance()
                 .put("crlFetcher", new SimpleCachingCrlFetcher(new SimpleCrlCache()))
-                .build(getClass().getResourceAsStream("/receipt-virksert-test.xml"));
+                .build(getClass().getResourceAsStream("/recipe-virksert-test.xml"));
 
         Assert.assertTrue(validator.isValid(getClass().getResourceAsStream("/virksert-test-difi.cer")));
         Assert.assertFalse(validator.isValid(getClass().getResourceAsStream("/peppol-prod-ap-difi.cer")));
@@ -54,7 +54,7 @@ public class ValidatorLoaderTest {
     @Test
     public void simpleVirksertTestAlternative() throws Exception {
         Validator validator = ValidatorLoader.newInstance()
-                .build(getClass().getResourceAsStream("/receipt-virksert-test-alt.xml"));
+                .build(getClass().getResourceAsStream("/recipe-virksert-test-alt.xml"));
 
         Assert.assertTrue(validator.isValid(getClass().getResourceAsStream("/virksert-test-difi.cer")));
         Assert.assertFalse(validator.isValid(getClass().getResourceAsStream("/peppol-prod-ap-difi.cer")));
@@ -63,7 +63,7 @@ public class ValidatorLoaderTest {
     @Test
     public void simpleSelfSigned() throws Exception {
         Validator validator = ValidatorLoader.newInstance()
-                .build(getClass().getResourceAsStream("/receipt-selfsigned.xml"));
+                .build(getClass().getResourceAsStream("/recipe-selfsigned.xml"));
 
         Assert.assertTrue(validator.isValid(getClass().getResourceAsStream("/selfsigned.cer")));
         Assert.assertFalse(validator.isValid(getClass().getResourceAsStream("/virksert-test-difi.cer")));

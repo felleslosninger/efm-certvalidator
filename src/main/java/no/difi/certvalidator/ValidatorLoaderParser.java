@@ -24,7 +24,7 @@ class ValidatorLoaderParser {
 
     static {
         try {
-            jaxbContext = JAXBContext.newInstance(ValidatorReceipt.class);
+            jaxbContext = JAXBContext.newInstance(ValidatorRecipe.class);
         } catch (JAXBException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -33,32 +33,35 @@ class ValidatorLoaderParser {
     public static ValidatorGroup parse(InputStream inputStream, Map<String, Object> objectStorage)
             throws ValidatorParsingException {
         try {
-            ValidatorReceipt receipt = jaxbContext.createUnmarshaller()
-                    .unmarshal(new StreamSource(inputStream), ValidatorReceipt.class)
+            ValidatorRecipe recipe = jaxbContext.createUnmarshaller()
+                    .unmarshal(new StreamSource(inputStream), ValidatorRecipe.class)
                     .getValue();
 
-            loadKeyStores(receipt, objectStorage);
-            loadBuckets(receipt, objectStorage);
+            loadKeyStores(recipe, objectStorage);
+            loadBuckets(recipe, objectStorage);
 
             Map<String, ValidatorRule> rulesMap = new HashMap<>();
 
-            for (ValidatorType validatorType : receipt.getValidator()) {
-                ValidatorRule validatorRule = parse(validatorType.getChainOrClazzOrCriticalExtensionRecognized(), objectStorage, JunctionEnum.AND);
+            for (ValidatorType validatorType : recipe.getValidator()) {
+                ValidatorRule validatorRule = parse(validatorType.getCachedOrChainOrClazz(), objectStorage, JunctionEnum.AND);
+
+                if (validatorType.getTimeout() != null)
+                    validatorRule = new CachedValidatorRule(validatorRule, validatorType.getTimeout());
 
                 String name = validatorType.getName() == null ? "default" : validatorType.getName();
                 rulesMap.put(name, validatorRule);
                 objectStorage.put(String.format("#validator::%s", name), validatorRule);
             }
 
-            return new ValidatorGroup(rulesMap, receipt.getName(), receipt.getVersion());
+            return new ValidatorGroup(rulesMap, recipe.getName(), recipe.getVersion());
         } catch (JAXBException | CertificateValidationException e) {
             throw new ValidatorParsingException(e.getMessage(), e);
         }
     }
 
-    private static void loadKeyStores(ValidatorReceipt receipt, Map<String, Object> objectStorage)
+    private static void loadKeyStores(ValidatorRecipe recipe, Map<String, Object> objectStorage)
             throws CertificateValidationException {
-        for (KeyStoreType keyStoreType : receipt.getKeyStore()) {
+        for (KeyStoreType keyStoreType : recipe.getKeyStore()) {
             objectStorage.put(
                     String.format("#keyStore::%s", keyStoreType.getName() == null ? "default" : keyStoreType.getName()),
                     new KeyStoreCertificateBucket(
@@ -69,9 +72,9 @@ class ValidatorLoaderParser {
         }
     }
 
-    private static void loadBuckets(ValidatorReceipt receipt, Map<String, Object> objectStorage)
+    private static void loadBuckets(ValidatorRecipe recipe, Map<String, Object> objectStorage)
             throws CertificateValidationException {
-        for (CertificateBucketType certificateBucketType : receipt.getCertificateBucket()) {
+        for (CertificateBucketType certificateBucketType : recipe.getCertificateBucket()) {
             SimpleCertificateBucket certificateBucket = new SimpleCertificateBucket();
 
             for (Object o : certificateBucketType.getCertificateOrCertificateReferenceOrCertificateStartsWith()) {
@@ -111,7 +114,9 @@ class ValidatorLoaderParser {
 
     private static ValidatorRule parse(Object rule, Map<String, Object> objectStorage)
             throws CertificateValidationException {
-        if (rule instanceof ChainType)
+        if (rule instanceof CachedType)
+            return parse((CachedType) rule, objectStorage);
+        else if (rule instanceof ChainType)
             return parse((ChainType) rule, objectStorage);
         else if (rule instanceof ClassType)
             return parse((ClassType) rule);
@@ -139,6 +144,14 @@ class ValidatorLoaderParser {
             return parse((TryType) rule, objectStorage);
         else // if (rule instanceof ValidatorReferenceType)
             return parse((ValidatorReferenceType) rule, objectStorage);
+    }
+
+    private static ValidatorRule parse(CachedType rule, Map<String, Object> objectStorage) throws
+            CertificateValidationException {
+        return new CachedValidatorRule(
+                parse(rule.getCachedOrChainOrClazz(), objectStorage, JunctionEnum.AND),
+                rule.getTimeout()
+        );
     }
 
     private static ValidatorRule parse(ChainType rule, Map<String, Object> objectStorage) {
@@ -188,7 +201,7 @@ class ValidatorLoaderParser {
 
     private static ValidatorRule parse(JunctionType junctionType, Map<String, Object> objectStorage)
             throws CertificateValidationException {
-        return parse(junctionType.getChainOrClazzOrCriticalExtensionRecognized(),
+        return parse(junctionType.getCachedOrChainOrClazz(),
                 objectStorage, junctionType.getType());
     }
 
@@ -230,7 +243,7 @@ class ValidatorLoaderParser {
 
     private static ValidatorRule parse(TryType tryType, Map<String, Object> objectStorage)
             throws CertificateValidationException {
-        for (Object rule : tryType.getChainOrClazzOrCriticalExtensionRecognized()) {
+        for (Object rule : tryType.getCachedOrChainOrClazz()) {
             try {
                 return parse(rule, objectStorage);
             } catch (Exception e) {

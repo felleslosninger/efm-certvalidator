@@ -4,7 +4,7 @@
 
     <!-- Receipt -->
 
-    <xs:element name="ValidatorReceipt">
+    <xs:element name="ValidatorRecipe">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="Validator" type="ValidatorType" minOccurs="1" maxOccurs="unbounded"/>
@@ -20,6 +20,7 @@
 
     <xs:complexType name="ExtensibleType">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="Cached" type="CachedType"/>
             <xs:element name="Chain" type="ChainType"/>
             <xs:element name="Class" type="ClassType"/>
             <xs:element name="CriticalExtensionRecognized" type="CriticalExtensionRecognizedType"/>
@@ -43,6 +44,7 @@
         <xs:complexContent>
             <xs:extension base="ExtensibleType">
                 <xs:attribute name="name" type="xs:string"/>
+                <xs:attribute name="timeout" type="xs:long"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -169,6 +171,16 @@
                 <xs:attribute name="keyStore" type="xs:string"/>
             </xs:extension>
         </xs:simpleContent>
+    </xs:complexType>
+
+    <!-- Cache -->
+
+    <xs:complexType name="CachedType">
+        <xs:complexContent>
+            <xs:extension base="ExtensibleType">
+                <xs:attribute name="timeout" type="xs:long" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>
 
     <!-- Key Store -->

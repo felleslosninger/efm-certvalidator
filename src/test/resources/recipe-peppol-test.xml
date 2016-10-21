@@ -1,4 +1,4 @@
-<ValidatorReceipt xmlns="http://difi.no/xsd/certvalidator/1.0" name="peppol-test" version="2016-10-16">
+<ValidatorRecipe xmlns="http://difi.no/xsd/certvalidator/1.0" name="peppol-test" version="2016-10-16">
     <Validator>
         <Expiration/>
         <Signing type="PUBLIC_SIGNED"/>
@@ -10,24 +10,26 @@
             <RootBucketReference>root</RootBucketReference>
             <IntermediateBucketReference>intermediate</IntermediateBucketReference>
         </Chain>
-        <CRL/>
-        <OCSP>
-            <IntermediateBucketReference>intermediate</IntermediateBucketReference>
-        </OCSP>
+        <Cached timeout="60">
+            <CRL/>
+            <OCSP>
+                <IntermediateBucketReference>intermediate</IntermediateBucketReference>
+            </OCSP>
+        </Cached>
     </Validator>
-    <Validator name="AP">
+    <Validator name="AP" timeout="10">
         <PrincipleName field="CN" principal="ISSUER">
             <Value>PEPPOL ACCESS POINT TEST CA</Value>
         </PrincipleName>
         <ValidatorReference>default</ValidatorReference>
     </Validator>
-    <Validator name="SMP">
+    <Validator name="SMP" timeout="10">
         <PrincipleName field="CN" principal="ISSUER">
             <Value>PEPPOL SERVICE METADATA PUBLISHER TEST CA</Value>
         </PrincipleName>
         <ValidatorReference>default</ValidatorReference>
     </Validator>
-    <Validator name="ALL">
+    <Validator name="ALL" timeout="10">
         <ValidatorReference>default</ValidatorReference>
     </Validator>
 
@@ -116,4 +118,4 @@
             aJKDCgyOoqIl//8hri15oX7rIFQI
         </Certificate>
     </CertificateBucket>
-</ValidatorReceipt>
+</ValidatorRecipe>

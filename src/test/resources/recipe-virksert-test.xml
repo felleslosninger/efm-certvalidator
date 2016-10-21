@@ -1,4 +1,4 @@
-<ValidatorReceipt xmlns="http://difi.no/xsd/certvalidator/1.0" name="virksert-test" version="2016-10-17">
+<ValidatorRecipe xmlns="http://difi.no/xsd/certvalidator/1.0" name="virksert-test" version="2016-10-17">
     <Validator>
         <Expiration millis="0"/>
         <Signing type="PUBLIC_SIGNED"/>
@@ -139,4 +139,4 @@
         2wHiZ/R8iTB5mp3u2vDObQ0kGHBeRFNmT+gCOYnZn8DwsoGqPdm8Hetf+ySN4tFF+3Cr0kd5dU6T
         tAzjZNbsOE1c+fQqd6HwfBSNwjlwqWfNbvUA76/Ug1fpp5K4uK58JG4r7BYqBhreYDYa2LT7l5Nq
     </KeyStore>
-</ValidatorReceipt>
+</ValidatorRecipe>

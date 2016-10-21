@@ -11,7 +11,7 @@ public class ValidatorGroupTest {
     @Test
     public void simple() throws Exception {
         ValidatorGroup validator = ValidatorLoader.newInstance()
-                .build(getClass().getResourceAsStream("/receipt-selfsigned.xml"));
+                .build(getClass().getResourceAsStream("/recipe-selfsigned.xml"));
 
         byte[] cert = ByteStreams.toByteArray(getClass().getResourceAsStream("/selfsigned.cer"));
 
