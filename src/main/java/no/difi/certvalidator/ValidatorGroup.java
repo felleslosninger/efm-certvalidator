@@ -2,16 +2,12 @@ package no.difi.certvalidator;
 
 import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.ValidatorRule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.security.cert.X509Certificate;
 import java.util.Map;
 
 public class ValidatorGroup extends Validator {
-
-    private static Logger logger = LoggerFactory.getLogger(ValidatorGroup.class);
 
     private Map<String, ValidatorRule> rulesMap;
 
@@ -67,7 +63,6 @@ public class ValidatorGroup extends Validator {
             validate(name, certificate);
             return true;
         } catch (CertificateValidationException e) {
-            logger.debug(e.getMessage());
             return false;
         }
     }
@@ -76,7 +71,6 @@ public class ValidatorGroup extends Validator {
         try {
             return isValid(name, getCertificate(inputStream));
         } catch (CertificateValidationException e) {
-            logger.debug(e.getMessage(), e);
             return false;
         }
     }
@@ -85,7 +79,6 @@ public class ValidatorGroup extends Validator {
         try {
             return isValid(name, getCertificate(bytes));
         } catch (CertificateValidationException e) {
-            logger.debug(e.getMessage(), e);
             return false;
         }
     }

@@ -4,8 +4,6 @@ import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.FailedValidationException;
 import no.difi.certvalidator.api.PrincipalNameProvider;
 import no.difi.certvalidator.rule.PrincipalNameRule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
@@ -15,13 +13,11 @@ import java.util.regex.Pattern;
 
 /**
  * Implementation of fetching of Norwegian organization number from certificates.
- *
+ * <p/>
  * Use of organization numbers in certificates is defines here:
  * http://www.regjeringen.no/upload/FAD/Vedlegg/IKT-politikk/SEID_Leveranse_1_-_v1.02.pdf (page 24)
  */
 public class NorwegianOrganizationNumberRule extends PrincipalNameRule {
-
-    private static final Logger logger = LoggerFactory.getLogger(NorwegianOrganizationNumberRule.class);
 
     private static final Pattern patternSerialnumber = Pattern.compile("^[0-9]{9}$");
     private static final Pattern patternOrganizationName = Pattern.compile("^.+\\-\\W*([0-9]{9})$");
@@ -49,7 +45,6 @@ public class NorwegianOrganizationNumberRule extends PrincipalNameRule {
             if (provider.validate(organization.getNumber()))
                 return;
 
-        logger.debug("Organization number not detected. ({})", certificate.getSerialNumber());
         throw new FailedValidationException("Organization number not detected.");
     }
 
@@ -79,7 +74,6 @@ public class NorwegianOrganizationNumberRule extends PrincipalNameRule {
 
             return null;
         } catch (CertificateEncodingException | NullPointerException e) {
-            logger.debug(e.getMessage());
             throw new CertificateValidationException(e.getMessage(), e);
         }
     }

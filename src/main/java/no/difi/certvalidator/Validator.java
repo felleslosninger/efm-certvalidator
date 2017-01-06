@@ -2,8 +2,6 @@ package no.difi.certvalidator;
 
 import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.ValidatorRule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -15,8 +13,6 @@ import java.security.cert.X509Certificate;
  * Encapsulate validator for a more extensive API.
  */
 public class Validator implements ValidatorRule {
-
-    private static final Logger logger = LoggerFactory.getLogger(Validator.class);
 
     private static CertificateFactory certFactory;
 
@@ -66,7 +62,6 @@ public class Validator implements ValidatorRule {
             validate(certificate);
             return true;
         } catch (CertificateValidationException e) {
-            logger.debug(e.getMessage());
             return false;
         }
     }
@@ -75,7 +70,6 @@ public class Validator implements ValidatorRule {
         try {
             return isValid(getCertificate(inputStream));
         } catch (CertificateValidationException e) {
-            logger.debug(e.getMessage(), e);
             return false;
         }
     }
@@ -84,7 +78,6 @@ public class Validator implements ValidatorRule {
         try {
             return isValid(getCertificate(bytes));
         } catch (CertificateValidationException e) {
-            logger.debug(e.getMessage(), e);
             return false;
         }
     }

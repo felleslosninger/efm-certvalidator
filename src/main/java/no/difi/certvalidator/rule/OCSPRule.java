@@ -5,8 +5,6 @@ import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.FailedValidationException;
 import no.difi.certvalidator.api.ValidatorRule;
 import org.bouncycastle.asn1.x509.Extension;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import sun.security.provider.certpath.OCSP;
 
 import java.io.IOException;
@@ -19,8 +17,6 @@ import static sun.security.provider.certpath.OCSP.RevocationStatus.CertStatus;
  * Validation of certificate using OCSP. Requires intermediate certificates.
  */
 public class OCSPRule implements ValidatorRule {
-
-    private static final Logger logger = LoggerFactory.getLogger(OCSPRule.class);
 
     private CertificateBucket intermediateCertificates;
 
@@ -46,7 +42,6 @@ public class OCSPRule implements ValidatorRule {
             if (!certStatus.equals(CertStatus.GOOD))
                 throw new FailedValidationException(String.format("Certificate status is reported as %s by OCSP.", certStatus.name()));
         } catch (IOException | CertPathValidatorException | NullPointerException e) {
-            logger.debug("{} ({})", e.getMessage(), certificate.getSerialNumber());
             throw new CertificateValidationException(e.getMessage(), e);
         }
     }

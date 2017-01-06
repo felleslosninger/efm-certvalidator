@@ -3,8 +3,6 @@ package no.difi.certvalidator.util;
 import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.CrlCache;
 import no.difi.certvalidator.api.CrlFetcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.security.cert.CertificateFactory;
@@ -16,8 +14,6 @@ import java.security.cert.X509CRL;
  */
 public class SimpleCachingCrlFetcher implements CrlFetcher {
 
-    private static final Logger logger = LoggerFactory.getLogger(CrlFetcher.class);
-
     private static CertificateFactory certificateFactory;
 
     private CrlCache crlCache;
@@ -27,7 +23,7 @@ public class SimpleCachingCrlFetcher implements CrlFetcher {
     }
 
     @Override
-    public X509CRL get(String url) throws CertificateValidationException{
+    public X509CRL get(String url) throws CertificateValidationException {
         X509CRL crl = crlCache.get(url);
         if (crl == null) {
             // Not in cache
@@ -36,14 +32,12 @@ public class SimpleCachingCrlFetcher implements CrlFetcher {
             // Outdated
             crl = download(url);
         } else if (crl.getNextUpdate() == null) {
-            logger.warn("Next update not set for CRL with URL \"{}\"", url);
+            // No action.
         }
         return crl;
     }
 
     protected X509CRL download(String url) throws CertificateValidationException {
-        logger.debug("Downloading CRL from {}...", url);
-
         try {
             if (url.matches("http[s]{0,1}://.*")) {
                 if (certificateFactory == null)
