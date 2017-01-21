@@ -11,7 +11,9 @@
             <IntermediateBucketReference>intermediate</IntermediateBucketReference>
         </Chain>
         <Cached timeout="60">
-            <CRL/>
+            <HandleError>
+                <CRL/>
+            </HandleError>
             <OCSP>
                 <IntermediateBucketReference>intermediate</IntermediateBucketReference>
             </OCSP>

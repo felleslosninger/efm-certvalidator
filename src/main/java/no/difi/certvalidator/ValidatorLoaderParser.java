@@ -134,6 +134,8 @@ class ValidatorLoaderParser {
             return parse((JunctionType) rule, objectStorage);
         else if (rule instanceof OCSPType)
             return parse((OCSPType) rule, objectStorage);
+        else if (rule instanceof HandleErrorType)
+            return parse((HandleErrorType) rule, objectStorage);
         else if (rule instanceof PrincipleNameType)
             return parse((PrincipleNameType) rule, objectStorage);
         else if (rule instanceof RuleReferenceType)
@@ -197,6 +199,15 @@ class ValidatorLoaderParser {
             return new ExpirationRule();
         else
             return new ExpirationSoonRule(expirationType.getMillis());
+    }
+
+    private static ValidatorRule parse(HandleErrorType optionalType, Map<String, Object> objectStorage)
+            throws CertificateValidationException {
+        List<ValidatorRule> validatorRules = new ArrayList<>();
+        for (Object o : optionalType.getCachedOrChainOrClazz())
+            validatorRules.add(parse(o, objectStorage));
+
+        return new HandleErrorRule(validatorRules);
     }
 
     private static ValidatorRule parse(JunctionType junctionType, Map<String, Object> objectStorage)
