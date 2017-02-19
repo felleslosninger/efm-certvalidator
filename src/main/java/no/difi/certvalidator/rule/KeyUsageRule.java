@@ -6,16 +6,22 @@ import no.difi.certvalidator.api.ValidatorRule;
 import no.difi.certvalidator.util.KeyUsage;
 
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author erlend
  */
 public class KeyUsageRule implements ValidatorRule {
 
+    private KeyUsage[] expectedKeyUsages;
+
     private boolean[] expected = new boolean[9];
 
     public KeyUsageRule(KeyUsage... keyUsages) {
+        this.expectedKeyUsages = keyUsages;
+
         for (KeyUsage keyUsage : keyUsages)
             this.expected[keyUsage.getBit()] = true;
     }
@@ -26,6 +32,16 @@ public class KeyUsageRule implements ValidatorRule {
 
         if (!Arrays.equals(expected, found))
             throw new FailedValidationException(String.format("Expected %s, found %s.",
-                    Arrays.toString(this.expected), Arrays.toString(found)));
+                    Arrays.toString(this.expectedKeyUsages), Arrays.toString(prettyprint(found))));
+    }
+
+    private KeyUsage[] prettyprint(boolean[] ku) {
+        List<KeyUsage> keyUsages = new ArrayList<>();
+
+        for (int i = 0; i < ku.length; i++)
+            if (ku[i])
+                keyUsages.add(KeyUsage.of(i));
+
+        return keyUsages.toArray(new KeyUsage[keyUsages.size()]);
     }
 }
