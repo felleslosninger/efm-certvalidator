@@ -1,11 +1,11 @@
 package no.difi.certvalidator;
 
 import no.difi.certvalidator.api.*;
+import no.difi.certvalidator.jaxb.*;
 import no.difi.certvalidator.lang.ValidatorParsingException;
 import no.difi.certvalidator.rule.*;
 import no.difi.certvalidator.structure.Junction;
 import no.difi.certvalidator.util.*;
-import no.difi.xsd.certvalidator._1.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

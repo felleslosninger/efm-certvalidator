@@ -160,25 +160,26 @@
                 <version>2.18.1</version>
             </plugin>
             <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
-                <version>0.13.1</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>1.6</version>
                 <executions>
                     <execution>
-                        <id>xsd</id>
+                        <id>xjc</id>
                         <goals>
-                            <goal>generate</goal>
+                            <goal>xjc</goal>
                         </goals>
-                        <configuration>
-                            <schemaDirectory>src/main/xsd</schemaDirectory>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <target>2.1</target>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.5.201505241946</version>
+                <version>0.7.9</version>
                 <executions>
                     <execution>
                         <goals>
@@ -195,7 +196,7 @@
                 </executions>
                 <configuration>
                     <excludes>
-                        <exclude>no/difi/xsd/**</exclude>
+                        <exclude>no/difi/certvalidator/jaxb/**</exclude>
                     </excludes>
                 </configuration>
             </plugin>
