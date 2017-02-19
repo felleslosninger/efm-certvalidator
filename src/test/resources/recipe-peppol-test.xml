@@ -1,4 +1,4 @@
-<ValidatorRecipe xmlns="http://difi.no/xsd/certvalidator/1.0" name="peppol-test" version="2016-10-16">
+<ValidatorRecipe xmlns="http://difi.no/xsd/certvalidator/1.0" name="peppol-test" version="2017-02-19">
     <Validator>
         <Expiration/>
         <Signing type="PUBLIC_SIGNED"/>
@@ -6,6 +6,12 @@
             <Value>PEPPOL ACCESS POINT TEST CA</Value>
             <Value>PEPPOL SERVICE METADATA PUBLISHER TEST CA</Value>
         </PrincipleName>
+        <KeyUsage>
+            <Identifier>DIGITAL_SIGNATURE</Identifier>
+            <Identifier>KEY_ENCIPHERMENT</Identifier>
+            <Identifier>DATA_ENCIPHERMENT</Identifier>
+            <Identifier>KEY_AGREEMENT</Identifier>
+        </KeyUsage>
         <Chain>
             <RootBucketReference>root</RootBucketReference>
             <IntermediateBucketReference>intermediate</IntermediateBucketReference>

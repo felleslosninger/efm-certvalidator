@@ -132,6 +132,8 @@ class ValidatorLoaderParser {
             return parse((ExpirationType) rule);
         else if (rule instanceof JunctionType)
             return parse((JunctionType) rule, objectStorage);
+        else if (rule instanceof KeyUsageType)
+            return parse((KeyUsageType) rule);
         else if (rule instanceof OCSPType)
             return parse((OCSPType) rule, objectStorage);
         else if (rule instanceof HandleErrorType)
@@ -214,6 +216,16 @@ class ValidatorLoaderParser {
             throws CertificateValidationException {
         return parse(junctionType.getCachedOrChainOrClazz(),
                 objectStorage, junctionType.getType());
+    }
+
+    private static ValidatorRule parse(KeyUsageType keyUsageType) {
+        List<KeyUsageEnum> keyUsages = keyUsageType.getIdentifier();
+        KeyUsage[] result = new KeyUsage[keyUsages.size()];
+
+        for (int i = 0; i < result.length; i++)
+            result[i] = KeyUsage.valueOf(keyUsages.get(i).name());
+
+        return new KeyUsageRule(result);
     }
 
     private static ValidatorRule parse(OCSPType ocspType, Map<String, Object> objectStorage) {

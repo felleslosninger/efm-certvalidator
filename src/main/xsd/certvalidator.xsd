@@ -30,6 +30,7 @@
             <xs:element name="Expiration" type="ExpirationType"/>
             <xs:element name="HandleError" type="HandleErrorType"/>
             <xs:element name="Junction" type="JunctionType"/>
+            <xs:element name="KeyUsage" type="KeyUsageType"/>
             <xs:element name="OCSP" type="OCSPType"/>
             <xs:element name="PrincipleName" type="PrincipleNameType"/>
             <xs:element name="RuleReference" type="RuleReferenceType"/>
@@ -102,6 +103,12 @@
                 <xs:attribute name="type" type="JunctionEnum" use="required"/>
             </xs:extension>
         </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="KeyUsageType">
+        <xs:sequence>
+            <xs:element name="Identifier" type="KeyUsageEnum" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="OCSPType">
@@ -230,6 +237,20 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="PUBLIC_SIGNED"/>
             <xs:enumeration value="SELF_SIGNED"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="KeyUsageEnum" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DIGITAL_SIGNATURE"/>
+            <xs:enumeration value="NON_REPUDIATION"/>
+            <xs:enumeration value="KEY_ENCIPHERMENT"/>
+            <xs:enumeration value="DATA_ENCIPHERMENT"/>
+            <xs:enumeration value="KEY_AGREEMENT"/>
+            <xs:enumeration value="KEY_CERT_SIGN"/>
+            <xs:enumeration value="CRL_SIGN"/>
+            <xs:enumeration value="ENCIPHER_ONLY"/>
+            <xs:enumeration value="DECIPHER_ONLY"/>
         </xs:restriction>
     </xs:simpleType>
 
