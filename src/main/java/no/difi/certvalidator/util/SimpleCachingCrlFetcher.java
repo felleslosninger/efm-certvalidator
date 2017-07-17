@@ -5,7 +5,6 @@ import no.difi.certvalidator.api.CrlCache;
 import no.difi.certvalidator.api.CrlFetcher;
 
 import java.net.URI;
-import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
 
 /**
@@ -13,8 +12,6 @@ import java.security.cert.X509CRL;
  * field of a cached CRL indicates there is an updated CRL available, an updated CRL will immediately be downloaded.
  */
 public class SimpleCachingCrlFetcher implements CrlFetcher {
-
-    private static CertificateFactory certificateFactory;
 
     private CrlCache crlCache;
 
@@ -40,10 +37,7 @@ public class SimpleCachingCrlFetcher implements CrlFetcher {
     protected X509CRL download(String url) throws CertificateValidationException {
         try {
             if (url.matches("http[s]{0,1}://.*")) {
-                if (certificateFactory == null)
-                    certificateFactory = CertificateFactory.getInstance("X.509");
-
-                X509CRL crl = (X509CRL) certificateFactory.generateCRL(URI.create(url).toURL().openStream());
+                X509CRL crl = CrlUtils.load(URI.create(url).toURL().openStream());
                 crlCache.set(url, crl);
                 return crl;
             } else if (url.startsWith("ldap://"))

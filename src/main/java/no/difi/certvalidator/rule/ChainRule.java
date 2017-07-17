@@ -4,6 +4,7 @@ import no.difi.certvalidator.api.CertificateBucket;
 import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.FailedValidationException;
 import no.difi.certvalidator.api.ValidatorRule;
+import no.difi.certvalidator.util.BCHelper;
 
 import java.security.GeneralSecurityException;
 import java.security.cert.*;
@@ -73,11 +74,13 @@ public class ChainRule implements ValidatorRule {
         for (X509Certificate certificate : intermediateCertificates) {
             trustedIntermediateCert.add(certificate);
         }
+        trustedIntermediateCert.add(cert);
 
-        pkixParams.addCertStore(CertStore.getInstance("Collection", new CollectionCertStoreParameters(trustedIntermediateCert)));
+        pkixParams.addCertStore(CertStore.getInstance("Collection",
+                new CollectionCertStoreParameters(trustedIntermediateCert), BCHelper.getProvider()));
 
         // Build and verify the certification chain
-        CertPathBuilder builder = CertPathBuilder.getInstance("PKIX");
+        CertPathBuilder builder = CertPathBuilder.getInstance("PKIX", BCHelper.getProvider());
         return (PKIXCertPathBuilderResult) builder.build(pkixParams);
     }
 }

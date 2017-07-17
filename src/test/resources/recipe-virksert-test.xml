@@ -1,4 +1,7 @@
-<ValidatorRecipe xmlns="http://difi.no/xsd/certvalidator/1.0" name="virksert-test" version="2016-10-17">
+<ValidatorRecipe xmlns="http://difi.no/xsd/certvalidator/1.0" name="virksert-norway-test" version="2017-07-17">
+
+    <!-- Rules for Commfides are degraded to make issued certificates pass. -->
+
     <Validator>
         <Expiration millis="0"/>
         <Signing type="PUBLIC_SIGNED"/>
@@ -9,134 +12,224 @@
         <CriticalExtensionRequired>
             <Value>2.5.29.15</Value>
         </CriticalExtensionRequired>
-        <Chain>
-            <RootBucketReference>root</RootBucketReference>
-            <IntermediateBucketReference>intermediate</IntermediateBucketReference>
-            <Policy>2.16.578.1.26.1.3.5</Policy>
-            <Policy>2.16.578.1.29.13.1.1.0</Policy>
-            <Policy>2.16.578.1.26.1.3.2</Policy>
-            <Policy>2.16.578.1.26.1.0.3.2</Policy>
-            <Policy>2.16.578.1.29.913.1.1.0</Policy>
-            <Policy>2.16.578.1.1.1.1.100</Policy>
-        </Chain>
+        <Junction type="OR">
+            <Junction type="AND">
+                <PrincipleName field="O" principal="ISSUER">
+                    <Value>Commfides Norge AS - 988 312 495</Value>
+                </PrincipleName>
+                <Chain>
+                    <RootBucketReference>root</RootBucketReference>
+                    <IntermediateBucketReference>intermediate</IntermediateBucketReference>
+                </Chain>
+            </Junction>
+            <Chain>
+                <RootBucketReference>root</RootBucketReference>
+                <IntermediateBucketReference>intermediate</IntermediateBucketReference>
+                <Policy>2.16.578.1.26.1.3.5</Policy>
+                <Policy>2.16.578.1.29.13.1.1.0</Policy>
+                <Policy>2.16.578.1.26.1.3.2</Policy>
+                <Policy>2.16.578.1.26.1.0.3.2</Policy>
+                <Policy>2.16.578.1.29.913.1.1.0</Policy>
+                <Policy>2.16.578.1.1.1.1.100</Policy>
+            </Chain>
+        </Junction>
         <Class>no.difi.certvalidator.extra.NorwegianOrganizationNumberRule</Class>
         <CRL/>
-        <OCSP>
-            <IntermediateBucketReference>intermediate</IntermediateBucketReference>
-        </OCSP>
+        <Junction type="OR">
+            <PrincipleName field="O" principal="ISSUER">
+                <Value>Commfides Norge AS - 988 312 495</Value>
+            </PrincipleName>
+            <OCSP>
+                <IntermediateBucketReference>intermediate</IntermediateBucketReference>
+            </OCSP>
+        </Junction>
     </Validator>
 
     <CertificateBucket name="root">
-        <CertificateStartsWith>root-</CertificateStartsWith>
-    </CertificateBucket>
-    <CertificateBucket name="intermediate">
-        <CertificateStartsWith>intermediate-</CertificateStartsWith>
+
+        <!-- CN=Buypass Class 3 Test4 Root CA,O=Buypass AS-983163327,C=NO -->
+        <Certificate>
+            MIIFZTCCA02gAwIBAgIBAjANBgkqhkiG9w0BAQsFADBUMQswCQYDVQQGEwJOTzEd
+            MBsGA1UECgwUQnV5cGFzcyBBUy05ODMxNjMzMjcxJjAkBgNVBAMMHUJ1eXBhc3Mg
+            Q2xhc3MgMyBUZXN0NCBSb290IENBMB4XDTEwMTAwNjIzMDAwMFoXDTQwMTAwNjIz
+            MDAwMFowVDELMAkGA1UEBhMCTk8xHTAbBgNVBAoMFEJ1eXBhc3MgQVMtOTgzMTYz
+            MzI3MSYwJAYDVQQDDB1CdXlwYXNzIENsYXNzIDMgVGVzdDQgUm9vdCBDQTCCAiIw
+            DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAJgn6Yw/uPsQd3hXph48JqWO59Du
+            i15s2J0udgvSnaAx8yIv6GKZlDnYVmUbmeJQxkcnYFoAGessqQfSBi3Wu+JANVHw
+            PnuEGCPTNATGrYTw6Dq6WE0dlNfFlgBgtcT05yCRtQDHchFde1G9wl7mWIdTVx74
+            gIr2ut+YaHd+XJYEvesrETYcp+BA7N8JFCW6I3CSPoZ7NRRxd996on+Vd+Knf37l
+            R3Y+FzSAV6SvjY7jvdlZsMopYxXm3U6noVvc54Q+WO94rxoe8pt7ou/siwBH+fHz
+            J7JMIVNZqP/cJWe6oCEKlh+Od4ctiC9kNKdISE2j7EbhLyHT9SzUOft9oJTnC0S7
+            oWsPMCYhEUpXfVTbs7vWRRF8pS/Kpn8kHGze/RFn/rkKIFOlmr/at4nRwB2jgXeI
+            NKHNULz2bZeSJ/7wCglXIOxgsGeqyYEsILnUsYqV1y9AKWsZdKS+GlGRsHibUYpr
+            739+qN86YayQlMLFD+bVndH200NVoy5f17SuVqtG231VjV2mGIOwPRpq5eLPHqPc
+            NhujkOmXS1HMDJJOL1gOGwvINy1SJU7RTCDA0oc0jNKIqOjJLyiTUwO+kzu6nbY3
+            LqaxhwgCrZGVado0DQWE+wHu0g2O7QwiuNRX5wkraWwPAc5Q0wSaBl/yx158V9hh
+            6GPtjM7QRc/pMn5DAgMBAAGjQjBAMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYE
+            FO20zz97Ixh2OsatsmsAXXrGiNbrMA4GA1UdDwEB/wQEAwIBBjANBgkqhkiG9w0B
+            AQsFAAOCAgEAKMKFZqTVp9hEkqUfQZvxekzD1hGYSf77aj8lwVk/5E1B2lHVotTz
+            kq7kuvFLtFxU6qR6H1Pn5o0BuEVi9S7RpD3TNXQPYVda2ZBOrYgGUKD7NzNPyWW+
+            vDobOKNlLUfwsnjuCXKQSo/t57z5FYLPfOx1gmluIehc2ml3Wf9R+0WTjTSMn0k3
+            Hzy/CqidUJ2vpm/5u5x0wXxrIY3Kg+9IdoWj1aesbLL5sOdvgKDzczDqDmt1uY9C
+            DkXuPD/qGtW0AdVIftmnxb6JTn2wQ6JSMrGnlY6BsUujqNPoeVqy8udQ+ckUgzJz
+            hZ6jpRHqq7aP8JbpVx3KZw7LmSdMrwSZaZZfMa9OK2G1Kb9XPVKPB5/KWS9de+JJ
+            EXVjqgK/2VMU66y/PRZqV2C83xTSZEE47P3b8EU9qyM7Kii/e8UEGRQR2Q2i2tRp
+            1yHBzwekKZgtYzA0poGVj7NWnCAm0OlCWyBP47MyiMS4npqNYf8wMhRy4fTY+yy5
+            ORJp5Fc08/VbTt62CPpwqh06S7H05Z+IzRroG9yp0NBy6Z17/db3JnosbfnHdyFl
+            Zqze2ILjMdBwM/edPQgGqhpgn2UDNTE8SmVLDmnq0hGBR9sAA0XedFjA0Cvxi7Al
+            X4Bb9MuAQzrfTcFikvJmvmUY4+935G70lrW1oSXZugFqgAM8FVJP1pY=
+        </Certificate>
+
+        <!-- C=NO,O=Commfides Norge AS - 988 312 495,OU=CPN Primary Certificate Authority TEST,
+        OU=CPN TEST - For authorized use only,OU=Commfides Trust Environment(C) TEST 2010 Commfides Norge AS,
+        CN=CPN Root SHA256 CA - TEST -->
+        <Certificate>
+            MIIFujCCBKKgAwIBAgIIEVPWTD6qlpowDQYJKoZIhvcNAQELBQAwggEAMSIwIAYD
+            VQQDExlDUE4gUm9vdCBTSEEyNTYgQ0EgLSBURVNUMUQwQgYDVQQLEztDb21tZmlk
+            ZXMgVHJ1c3QgRW52aXJvbm1lbnQoQykgVEVTVCAyMDEwIENvbW1maWRlcyBOb3Jn
+            ZSBBUzErMCkGA1UECxMiQ1BOIFRFU1QgLSBGb3IgYXV0aG9yaXplZCB1c2Ugb25s
+            eTEvMC0GA1UECxMmQ1BOIFByaW1hcnkgQ2VydGlmaWNhdGUgQXV0aG9yaXR5IFRF
+            U1QxKTAnBgNVBAoTIENvbW1maWRlcyBOb3JnZSBBUyAtIDk4OCAzMTIgNDk1MQsw
+            CQYDVQQGEwJOTzAeFw0xMjEwMDIxMjUzNDRaFw0yMjEwMDMxMjUzNDRaMIIBADEi
+            MCAGA1UEAxMZQ1BOIFJvb3QgU0hBMjU2IENBIC0gVEVTVDFEMEIGA1UECxM7Q29t
+            bWZpZGVzIFRydXN0IEVudmlyb25tZW50KEMpIFRFU1QgMjAxMCBDb21tZmlkZXMg
+            Tm9yZ2UgQVMxKzApBgNVBAsTIkNQTiBURVNUIC0gRm9yIGF1dGhvcml6ZWQgdXNl
+            IG9ubHkxLzAtBgNVBAsTJkNQTiBQcmltYXJ5IENlcnRpZmljYXRlIEF1dGhvcml0
+            eSBURVNUMSkwJwYDVQQKEyBDb21tZmlkZXMgTm9yZ2UgQVMgLSA5ODggMzEyIDQ5
+            NTELMAkGA1UEBhMCTk8wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC3
+            3PFTNbpzg1KUaphis0QyJ4e2Ka/o2wzFmCthw46bmx/mMKH7hNxefMX7YU/IHJ4W
+            23izKyxhAqGO2tjNXe/kz2ww9AFJvWKJqiWtBEAGybDQRueCePcmESZJ2nB+YZf3
+            Yl091AjQwD2VZXosCjV73SkBm5hiTalYk0qpsfWq+Q9waXOvQ3uFw2Eg9TQxVAN3
+            h4zgkfpQary0vwBaK2bBBDGi9SNyTEO5YUGPZ+fAvIvCLGzYsvZn22+ZyJXo64jv
+            4m7LfZkp929hRh/F97lAlKaRD/SGuxEo48OVUq4GL1IB9EuUKQfeRyBET4XHq9c0
+            CNoE053Zl/ehM5sAckuzAgMBAAGjggEyMIIBLjBABggrBgEFBQcBAQQ0MDIwMAYI
+            KwYBBQUHMAGGJGh0dHA6Ly9vY3NwMS50ZXN0LmNvbW1maWRlcy5jb20vb2NzcDAd
+            BgNVHQ4EFgQUHpAN9SpjZKZqH0lRW5jPrnwhRHIwDwYDVR0TAQH/BAUwAwEB/zAf
+            BgNVHSMEGDAWgBQekA31KmNkpmofSVFbmM+ufCFEcjCBiAYDVR0fBIGAMH4wPaA7
+            oDmGN2h0dHA6Ly9jcmwxLnRlc3QuY29tbWZpZGVzLmNvbS9Db21tZmlkZXNSb290
+            LVNIQTI1Ni5jcmwwPaA7oDmGN2h0dHA6Ly9jcmwyLnRlc3QuY29tbWZpZGVzLmNv
+            bS9Db21tZmlkZXNSb290LVNIQTI1Ni5jcmwwDgYDVR0PAQH/BAQDAgEGMA0GCSqG
+            SIb3DQEBCwUAA4IBAQB429FURBiQVTJyHLUsEAEAljKO7eyilDSSdBAu0iyIrA+1
+            hXviQhalROsfBas/wZYvDd1xZQ80IlSHKrtqMf2+Jtl/2t2LMwFl+Ml7tA3/VCr2
+            ClDWC2VTjUJxQ75Lo6QyOPqHnUZApWUkxxS03i89GI8XfAvtRU8OwKR8qTuWHLt1
+            6y3dPRtUVu58DGjYCeT97Tx0VnzHNBdWe7LCIms5gvTVZT845zcsedb0EmGo5hJM
+            yhut4o9U9OcDHwoaF6GKPWupCoVxvZlqvSHQElqv2QzA1I8MsEAKDV3cqdJe5v/e
+            L6Cg/qDdraVhCKRCTOefSW2OGfdxRzLzsBYjkCIx
+        </Certificate>
     </CertificateBucket>
 
-    <KeyStore password="changeit">
-        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
-        1nCXY+PZQbAsuQCxub3ZW1rNWZxxezps2ZsNiGhVWlZVy0RoCXpxvyyewjdEgDfRPktr3TOIntQl
-        mh6BvPnj0NJm53lx5SZKyyH9XHvdLOFawWeBkm2zFWNhJhIdIXXCQS+GH2xC1PBxteSNWcrl1kMt
-        1HJ6NLV+Dsi2DQMR7JmLJJjv1jyjBS1ZLa81Of5Yyr3rKawYE9LlcZOpaeMAHkrPNFF8AAAAAgAO
-        cm9vdC1jb21tZmlkZXMAAAFWrgB3fAAFWC41MDkAAAW+MIIFujCCBKKgAwIBAgIIEVPWTD6qlpow
-        DQYJKoZIhvcNAQELBQAwggEAMSIwIAYDVQQDExlDUE4gUm9vdCBTSEEyNTYgQ0EgLSBURVNUMUQw
-        QgYDVQQLEztDb21tZmlkZXMgVHJ1c3QgRW52aXJvbm1lbnQoQykgVEVTVCAyMDEwIENvbW1maWRl
-        cyBOb3JnZSBBUzErMCkGA1UECxMiQ1BOIFRFU1QgLSBGb3IgYXV0aG9yaXplZCB1c2Ugb25seTEv
-        MC0GA1UECxMmQ1BOIFByaW1hcnkgQ2VydGlmaWNhdGUgQXV0aG9yaXR5IFRFU1QxKTAnBgNVBAoT
-        IENvbW1maWRlcyBOb3JnZSBBUyAtIDk4OCAzMTIgNDk1MQswCQYDVQQGEwJOTzAeFw0xMjEwMDIx
-        MjUzNDRaFw0yMjEwMDMxMjUzNDRaMIIBADEiMCAGA1UEAxMZQ1BOIFJvb3QgU0hBMjU2IENBIC0g
-        VEVTVDFEMEIGA1UECxM7Q29tbWZpZGVzIFRydXN0IEVudmlyb25tZW50KEMpIFRFU1QgMjAxMCBD
-        b21tZmlkZXMgTm9yZ2UgQVMxKzApBgNVBAsTIkNQTiBURVNUIC0gRm9yIGF1dGhvcml6ZWQgdXNl
-        IG9ubHkxLzAtBgNVBAsTJkNQTiBQcmltYXJ5IENlcnRpZmljYXRlIEF1dGhvcml0eSBURVNUMSkw
-        JwYDVQQKEyBDb21tZmlkZXMgTm9yZ2UgQVMgLSA5ODggMzEyIDQ5NTELMAkGA1UEBhMCTk8wggEi
-        MA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC33PFTNbpzg1KUaphis0QyJ4e2Ka/o2wzFmCth
-        w46bmx/mMKH7hNxefMX7YU/IHJ4W23izKyxhAqGO2tjNXe/kz2ww9AFJvWKJqiWtBEAGybDQRueC
-        ePcmESZJ2nB+YZf3Yl091AjQwD2VZXosCjV73SkBm5hiTalYk0qpsfWq+Q9waXOvQ3uFw2Eg9TQx
-        VAN3h4zgkfpQary0vwBaK2bBBDGi9SNyTEO5YUGPZ+fAvIvCLGzYsvZn22+ZyJXo64jv4m7LfZkp
-        929hRh/F97lAlKaRD/SGuxEo48OVUq4GL1IB9EuUKQfeRyBET4XHq9c0CNoE053Zl/ehM5sAckuz
-        AgMBAAGjggEyMIIBLjBABggrBgEFBQcBAQQ0MDIwMAYIKwYBBQUHMAGGJGh0dHA6Ly9vY3NwMS50
-        ZXN0LmNvbW1maWRlcy5jb20vb2NzcDAdBgNVHQ4EFgQUHpAN9SpjZKZqH0lRW5jPrnwhRHIwDwYD
-        VR0TAQH/BAUwAwEB/zAfBgNVHSMEGDAWgBQekA31KmNkpmofSVFbmM+ufCFEcjCBiAYDVR0fBIGA
-        MH4wPaA7oDmGN2h0dHA6Ly9jcmwxLnRlc3QuY29tbWZpZGVzLmNvbS9Db21tZmlkZXNSb290LVNI
-        QTI1Ni5jcmwwPaA7oDmGN2h0dHA6Ly9jcmwyLnRlc3QuY29tbWZpZGVzLmNvbS9Db21tZmlkZXNS
-        b290LVNIQTI1Ni5jcmwwDgYDVR0PAQH/BAQDAgEGMA0GCSqGSIb3DQEBCwUAA4IBAQB429FURBiQ
-        VTJyHLUsEAEAljKO7eyilDSSdBAu0iyIrA+1hXviQhalROsfBas/wZYvDd1xZQ80IlSHKrtqMf2+
-        Jtl/2t2LMwFl+Ml7tA3/VCr2ClDWC2VTjUJxQ75Lo6QyOPqHnUZApWUkxxS03i89GI8XfAvtRU8O
-        wKR8qTuWHLt16y3dPRtUVu58DGjYCeT97Tx0VnzHNBdWe7LCIms5gvTVZT845zcsedb0EmGo5hJM
-        yhut4o9U9OcDHwoaF6GKPWupCoVxvZlqvSHQElqv2QzA1I8MsEAKDV3cqdJe5v/eL6Cg/qDdraVh
-        CKRCTOefSW2OGfdxRzLzsBYjkCIxAAAAAgAWaW50ZXJtZWRpYXRlLWNvbW1maWRlcwAAAVauAMau
-        AAVYLjUwOQAABlYwggZSMIIFOqADAgECAghYsjPJjcoJazANBgkqhkiG9w0BAQsFADCCAQAxIjAg
-        BgNVBAMTGUNQTiBSb290IFNIQTI1NiBDQSAtIFRFU1QxRDBCBgNVBAsTO0NvbW1maWRlcyBUcnVz
-        dCBFbnZpcm9ubWVudChDKSBURVNUIDIwMTAgQ29tbWZpZGVzIE5vcmdlIEFTMSswKQYDVQQLEyJD
-        UE4gVEVTVCAtIEZvciBhdXRob3JpemVkIHVzZSBvbmx5MS8wLQYDVQQLEyZDUE4gUHJpbWFyeSBD
-        ZXJ0aWZpY2F0ZSBBdXRob3JpdHkgVEVTVDEpMCcGA1UEChMgQ29tbWZpZGVzIE5vcmdlIEFTIC0g
-        OTg4IDMxMiA0OTUxCzAJBgNVBAYTAk5PMB4XDTE0MTAxNzEyNDYxMFoXDTIyMTAwMzEyNTM0NFow
-        gfMxPTA7BgNVBAMTNENvbW1maWRlcyBDUE4gRW50ZXJwcmlzZS1Ob3J3ZWdpYW4gU0hBMjU2IENB
-        IC0gVEVTVDIxRjBEBgNVBAsTPUNvbW1maWRlcyBUcnVzdCBFbnZpcm9ubWVudChDKSAyMDE0IENv
-        bW1maWRlcyBOb3JnZSBBUyAtIFRFU1QxMjAwBgNVBAsTKUNQTiBFbnRlcnByaXNlLU5vcndlZ2lh
-        biBTSEEyNTYgQ0EtIFRFU1QyMSkwJwYDVQQKEyBDb21tZmlkZXMgTm9yZ2UgQVMgLSA5ODggMzEy
-        IDQ5NTELMAkGA1UEBhMCTk8wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDSqloffW6g
-        v+O+5ab61v3KikPv5N/pPaCxxfOg1+CTF0MLsFMJlEnowPELvQ+IyJZ6To63Rpq8m7askHR1XYeY
-        KMnf3P1T7CmqMfvxKVvQ+J/cuToo9PKlC4KsgJlWKY+G6lTT0zAckqCvll+my+wrAYm+xmFMQr4Q
-        kN2FNk2XY7znYbHhFmEAxUYYwE+5OmaAVHkDKWx7dbV6heiXwiMaXxOGZ4sYdcGPn2Itb48hqYLS
-        mwAGuauDQbdagTm2IkVvdp/bNgLOdQ6BjJrEbwVX7VyFXupwqIEh6FIub6ZNV84MRNEke8IvstGr
-        q4fPH815j9tY7L1sn2PRFc/4bKf5AgMBAAGjggHYMIIB1DCBzAYIKwYBBQUHAQEEgb8wgbwwQwYI
-        KwYBBQUHMAKGN2h0dHA6Ly9jcmwxLnRlc3QuY29tbWZpZGVzLmNvbS9Db21tZmlkZXNSb290LVNI
-        QTI1Ni5jcnQwQwYIKwYBBQUHMAKGN2h0dHA6Ly9jcmwyLnRlc3QuY29tbWZpZGVzLmNvbS9Db21t
-        ZmlkZXNSb290LVNIQTI1Ni5jcnQwMAYIKwYBBQUHMAGGJGh0dHA6Ly9vY3NwMS50ZXN0LmNvbW1m
-        aWRlcy5jb20vb2NzcDAdBgNVHQ4EFgQURDHvyb7t6WKNn4QgTUqFyn5UcFYwDwYDVR0TAQH/BAUw
-        AwEB/zAfBgNVHSMEGDAWgBQekA31KmNkpmofSVFbmM+ufCFEcjAXBgNVHSAEEDAOMAwGCmCEQgEd
-        hxABAQAwgYgGA1UdHwSBgDB+MD2gO6A5hjdodHRwOi8vY3JsMS50ZXN0LmNvbW1maWRlcy5jb20v
-        Q29tbWZpZGVzUm9vdC1TSEEyNTYuY3JsMD2gO6A5hjdodHRwOi8vY3JsMi50ZXN0LmNvbW1maWRl
-        cy5jb20vQ29tbWZpZGVzUm9vdC1TSEEyNTYuY3JsMA4GA1UdDwEB/wQEAwIBBjANBgkqhkiG9w0B
-        AQsFAAOCAQEAsOghwCE1MfOvuVJLeADNiKJl+Ru9taFkFT2M35wSWH61tveL/pG2pBVso5FwQfgt
-        jwJvi0u0Us3dargTEZaJKxDbSLXG8an0+HpAAUleeQiBTlpsnprrR3gLPt16PtHS5WvVRmk+dtyU
-        mLa1kZOZWHsB0Xcw5Nm9bwl33DmLjVjgQppeKdk3/UF1oXjZHVpAXZkDFGLGv8QLzXzF28YLQ2UV
-        2wHiZ/R8iTB5mp3u2vDObQ0kGHBeRFNmT+gCOYnZn8DwsoGqPdm8Hetf+ySN4tFF+3Cr0kd5dU6T
-        tAzjZNbsOE1c+fQqd6HwfBSNwjlwqWfNbvUA76/Ug1fpp5K4uK58JG4r7BYqBhreYDYa2LT7l5Nq
-    </KeyStore>
+    <CertificateBucket name="intermediate">
+
+        <!-- CN=Buypass Class 3 Test4 CA 3,O=Buypass AS-983163327,C=NO -->
+        <Certificate>
+            MIIE3zCCAsegAwIBAgIBITANBgkqhkiG9w0BAQsFADBUMQswCQYDVQQGEwJOTzEd
+            MBsGA1UECgwUQnV5cGFzcyBBUy05ODMxNjMzMjcxJjAkBgNVBAMMHUJ1eXBhc3Mg
+            Q2xhc3MgMyBUZXN0NCBSb290IENBMB4XDTEyMDIxNjA3MDAwMFoXDTMyMDIxNjA3
+            MDAwMFowUTELMAkGA1UEBhMCTk8xHTAbBgNVBAoMFEJ1eXBhc3MgQVMtOTgzMTYz
+            MzI3MSMwIQYDVQQDDBpCdXlwYXNzIENsYXNzIDMgVGVzdDQgQ0EgMzCCASIwDQYJ
+            KoZIhvcNAQEBBQADggEPADCCAQoCggEBAL+O+sVB04JWLWOwBqDZwSeNK4qgXG0J
+            G0VbEVQXF7F9VYoDOVV7urPotkVktJr6n30BfRxsTrWylhREFAnplK1RLYA3OuI6
+            pWO2ASC1/EbLZP1GqHARG8gMiQbUJHc0LpgjreN495QN0NYfKUPyUKxaTW3fGpbz
+            NnxL5djPZsDyG5OnK5XGZLA7nXaILVUj8aKwNfOonckHF1VvcKpY2aIIh6isBaQQ
+            nRvrifAKi1CeiZVZEcxxXyKmTIC0U6WQiiOS6FgGLLVth88tQVhRuAcccJV41p9z
+            96vmzMqRs9YfJepiVx1ris4I4YMQzN5tajGU9qktX+ngUPatoMLcioMCAwEAAaOB
+            vjCBuzAPBgNVHRMBAf8EBTADAQH/MB8GA1UdIwQYMBaAFO20zz97Ixh2OsatsmsA
+            XXrGiNbrMB0GA1UdDgQWBBQ/rvV4C5KjcCA1X1r69ySgUgHwQTAOBgNVHQ8BAf8E
+            BAMCAQYwEQYDVR0gBAowCDAGBgRVHSAAMEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6
+            Ly9jcmwudGVzdDQuYnV5cGFzcy5uby9jcmwvQlBDbGFzczNUNFJvb3RDQS5jcmww
+            DQYJKoZIhvcNAQELBQADggIBAB+6cFmLHB5mpmB+XsjhWxTkhPTnj3lnLMz0LKXy
+            vc5+SeB4Id9NycDBJ4bK/auvGKTAwebIl1lS3nzUAb1AcWypiJoxvEvbDJyh+n53
+            05csFtBx9pUSeUrWX7FvXN0eOnBxUnTboI+sUODXA2o47O/QwfJnTy6/NnNA535B
+            U7J2trxTugU2GQxdMTgqJGVs+5LYAIRRIIG1zdfsUPiLWc+4d4Fy/tcAD82vgInA
+            7PTW/VdDSxuypL4BYA8T5iicEkgrYxZPw6CIKz0EaQseb2oGJ9IilyvPLz/INTji
+            GIGjkkdGNYLPNvhfKqHG0V2vXI45e55v/jZNLFcnudsuzHdYF1pCKvsQH7ZiWifl
+            VwV2yr9Nm+WwwjrpgSpFyyNyqKawG3jIgkLd9Vxecs262uT4v3E19JIgBJ7FiRFJ
+            gGGcJbAwlhiAY3iNi+Yoykz8dZuHVMZ59YeC/WjO1nCXY+PZQbAsuQCxub3ZW1rN
+            WZxxezps2ZsNiGhVWlZVy0RoCXpxvyyewjdEgDfRPktr3TOIntQlmh6BvPnj0NJm
+            53lx5SZKyyH9XHvdLOFawWeBkm2zFWNhJhIdIXXCQS+GH2xC1PBxteSNWcrl1kMt
+            1HJ6NLV+Dsi2DQMR7JmLJJjv1jyjBS1ZLa81Of5Yyr3rKawYE9LlcZOpaeMAHkrP
+            NFF8
+        </Certificate>
+
+        <!-- C=NO,O=Commfides Norge AS - 988 312 495,OU=CPN Enterprise-Norwegian SHA256 CA- TEST,
+        OU=Commfides Trust Environment(C) 2014 Commfides Norge AS - TEST,
+        CN=Commfides CPN Enterprise-Norwegian SHA256 CA - TEST -->
+        <Certificate>
+            MIIGNzCCBR+gAwIBAgIIOoNek7CAe8EwDQYJKoZIhvcNAQELBQAwggEAMSIwIAYD
+            VQQDExlDUE4gUm9vdCBTSEEyNTYgQ0EgLSBURVNUMUQwQgYDVQQLEztDb21tZmlk
+            ZXMgVHJ1c3QgRW52aXJvbm1lbnQoQykgVEVTVCAyMDEwIENvbW1maWRlcyBOb3Jn
+            ZSBBUzErMCkGA1UECxMiQ1BOIFRFU1QgLSBGb3IgYXV0aG9yaXplZCB1c2Ugb25s
+            eTEvMC0GA1UECxMmQ1BOIFByaW1hcnkgQ2VydGlmaWNhdGUgQXV0aG9yaXR5IFRF
+            U1QxKTAnBgNVBAoTIENvbW1maWRlcyBOb3JnZSBBUyAtIDk4OCAzMTIgNDk1MQsw
+            CQYDVQQGEwJOTzAeFw0xNDA4MTExMzMxMzRaFw0yMjEwMDMxMjUzNDRaMIHxMTww
+            OgYDVQQDEzNDb21tZmlkZXMgQ1BOIEVudGVycHJpc2UtTm9yd2VnaWFuIFNIQTI1
+            NiBDQSAtIFRFU1QxRjBEBgNVBAsTPUNvbW1maWRlcyBUcnVzdCBFbnZpcm9ubWVu
+            dChDKSAyMDE0IENvbW1maWRlcyBOb3JnZSBBUyAtIFRFU1QxMTAvBgNVBAsTKENQ
+            TiBFbnRlcnByaXNlLU5vcndlZ2lhbiBTSEEyNTYgQ0EtIFRFU1QxKTAnBgNVBAoT
+            IENvbW1maWRlcyBOb3JnZSBBUyAtIDk4OCAzMTIgNDk1MQswCQYDVQQGEwJOTzCC
+            ASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALESYYrjTPWKUWfuaQNVofM9
+            HnJUjEEYjdrTSian5WNlgkOjw/1s0RYDYTmTv2rNKgMA+iI/2PQriMXa5dRFzABk
+            nYoJreotuhK04i5QMD2xrmV5lryWz83bE309EFlXy8XeQyo9zUmdeuAtOZPM+1gj
+            fOAuYaM4XRke5kUAseSrf/XVUkcO0WDbX6O0exlwr6M34JSlQT2bbtwDzUtwttMw
+            PO6cH2YgabA2Eap2MFAowDURiNVqAydUxqsPFiixNrVh+gTkAhr2uJ7oEEX51vUp
+            5kwWVdcEP3078ONEV7+ZHDuqfpsk2NYXssgprYPwkuGhYgGgWrg37HxxH9+TxcMC
+            AwEAAaOCAb8wggG7MIHMBggrBgEFBQcBAQSBvzCBvDBDBggrBgEFBQcwAoY3aHR0
+            cDovL2NybDEudGVzdC5jb21tZmlkZXMuY29tL0NvbW1maWRlc1Jvb3QtU0hBMjU2
+            LmNydDBDBggrBgEFBQcwAoY3aHR0cDovL2NybDIudGVzdC5jb21tZmlkZXMuY29t
+            L0NvbW1maWRlc1Jvb3QtU0hBMjU2LmNydDAwBggrBgEFBQcwAYYkaHR0cDovL29j
+            c3AxLnRlc3QuY29tbWZpZGVzLmNvbS9vY3NwMB0GA1UdDgQWBBR/stYtZW5Q/Ctr
+            DJOHJXKU9gBELzAPBgNVHRMBAf8EBTADAQH/MB8GA1UdIwQYMBaAFB6QDfUqY2Sm
+            ah9JUVuYz658IURyMIGIBgNVHR8EgYAwfjA9oDugOYY3aHR0cDovL2NybDEudGVz
+            dC5jb21tZmlkZXMuY29tL0NvbW1maWRlc1Jvb3QtU0hBMjU2LmNybDA9oDugOYY3
+            aHR0cDovL2NybDIudGVzdC5jb21tZmlkZXMuY29tL0NvbW1maWRlc1Jvb3QtU0hB
+            MjU2LmNybDAOBgNVHQ8BAf8EBAMCAQYwDQYJKoZIhvcNAQELBQADggEBAKRTyIyB
+            lg4wSCi5FRyWsmH9kVcmd/d8PiM+qJAfbJRKDfBh8SETH6n86ySwW7QBhnMSAF3/
+            VgFU4RUTUI0d+f+efnbsFulX5lIT+jdBzaUC9gAgqOPx3kzQRd+FjSV+JiyQKILP
+            H0y3LPTxIyUlIWaHdJO7VhmCFNlXPKOl62PBTwtSMXn/sRDmUTLSvQBIkY+rIR4i
+            cKmvbjqZ/hAyZZWAGD02HuWpyPlPoz/j+aMJQMB3nbxK/c92/3/NgWZL4OJVK86t
+            J/Nx7ORT6s0FW+l9HqJi14j2vXl0sZbjzWQALpT3Ay4BQLWIZnoPVKnABt4er+sX
+            RZB5Z0Cl4Bp164I=
+        </Certificate>
+
+        <!-- C=NO,O=Commfides Norge AS - 988 312 495,OU=CPN Enterprise-Norwegian SHA256 CA- TEST2,
+        OU=Commfides Trust Environment(C) 2014 Commfides Norge AS - TEST,
+        CN=Commfides CPN Enterprise-Norwegian SHA256 CA - TEST2 -->
+        <Certificate>
+            MIIGUjCCBTqgAwIBAgIIWLIzyY3KCWswDQYJKoZIhvcNAQELBQAwggEAMSIwIAYD
+            VQQDExlDUE4gUm9vdCBTSEEyNTYgQ0EgLSBURVNUMUQwQgYDVQQLEztDb21tZmlk
+            ZXMgVHJ1c3QgRW52aXJvbm1lbnQoQykgVEVTVCAyMDEwIENvbW1maWRlcyBOb3Jn
+            ZSBBUzErMCkGA1UECxMiQ1BOIFRFU1QgLSBGb3IgYXV0aG9yaXplZCB1c2Ugb25s
+            eTEvMC0GA1UECxMmQ1BOIFByaW1hcnkgQ2VydGlmaWNhdGUgQXV0aG9yaXR5IFRF
+            U1QxKTAnBgNVBAoTIENvbW1maWRlcyBOb3JnZSBBUyAtIDk4OCAzMTIgNDk1MQsw
+            CQYDVQQGEwJOTzAeFw0xNDEwMTcxMjQ2MTBaFw0yMjEwMDMxMjUzNDRaMIHzMT0w
+            OwYDVQQDEzRDb21tZmlkZXMgQ1BOIEVudGVycHJpc2UtTm9yd2VnaWFuIFNIQTI1
+            NiBDQSAtIFRFU1QyMUYwRAYDVQQLEz1Db21tZmlkZXMgVHJ1c3QgRW52aXJvbm1l
+            bnQoQykgMjAxNCBDb21tZmlkZXMgTm9yZ2UgQVMgLSBURVNUMTIwMAYDVQQLEylD
+            UE4gRW50ZXJwcmlzZS1Ob3J3ZWdpYW4gU0hBMjU2IENBLSBURVNUMjEpMCcGA1UE
+            ChMgQ29tbWZpZGVzIE5vcmdlIEFTIC0gOTg4IDMxMiA0OTUxCzAJBgNVBAYTAk5P
+            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0qpaH31uoL/jvuWm+tb9
+            yopD7+Tf6T2gscXzoNfgkxdDC7BTCZRJ6MDxC70PiMiWek6Ot0aavJu2rJB0dV2H
+            mCjJ39z9U+wpqjH78Slb0Pif3Lk6KPTypQuCrICZVimPhupU09MwHJKgr5Zfpsvs
+            KwGJvsZhTEK+EJDdhTZNl2O852Gx4RZhAMVGGMBPuTpmgFR5Aylse3W1eoXol8Ij
+            Gl8ThmeLGHXBj59iLW+PIamC0psABrmrg0G3WoE5tiJFb3af2zYCznUOgYyaxG8F
+            V+1chV7qcKiBIehSLm+mTVfODETRJHvCL7LRq6uHzx/NeY/bWOy9bJ9j0RXP+Gyn
+            +QIDAQABo4IB2DCCAdQwgcwGCCsGAQUFBwEBBIG/MIG8MEMGCCsGAQUFBzAChjdo
+            dHRwOi8vY3JsMS50ZXN0LmNvbW1maWRlcy5jb20vQ29tbWZpZGVzUm9vdC1TSEEy
+            NTYuY3J0MEMGCCsGAQUFBzAChjdodHRwOi8vY3JsMi50ZXN0LmNvbW1maWRlcy5j
+            b20vQ29tbWZpZGVzUm9vdC1TSEEyNTYuY3J0MDAGCCsGAQUFBzABhiRodHRwOi8v
+            b2NzcDEudGVzdC5jb21tZmlkZXMuY29tL29jc3AwHQYDVR0OBBYEFEQx78m+7eli
+            jZ+EIE1Khcp+VHBWMA8GA1UdEwEB/wQFMAMBAf8wHwYDVR0jBBgwFoAUHpAN9Spj
+            ZKZqH0lRW5jPrnwhRHIwFwYDVR0gBBAwDjAMBgpghEIBHYcQAQEAMIGIBgNVHR8E
+            gYAwfjA9oDugOYY3aHR0cDovL2NybDEudGVzdC5jb21tZmlkZXMuY29tL0NvbW1m
+            aWRlc1Jvb3QtU0hBMjU2LmNybDA9oDugOYY3aHR0cDovL2NybDIudGVzdC5jb21t
+            ZmlkZXMuY29tL0NvbW1maWRlc1Jvb3QtU0hBMjU2LmNybDAOBgNVHQ8BAf8EBAMC
+            AQYwDQYJKoZIhvcNAQELBQADggEBALDoIcAhNTHzr7lSS3gAzYiiZfkbvbWhZBU9
+            jN+cElh+tbb3i/6RtqQVbKORcEH4LY8Cb4tLtFLN3Wq4ExGWiSsQ20i1xvGp9Ph6
+            QAFJXnkIgU5abJ6a60d4Cz7dej7R0uVr1UZpPnbclJi2tZGTmVh7AdF3MOTZvW8J
+            d9w5i41Y4EKaXinZN/1BdaF42R1aQF2ZAxRixr/EC818xdvGC0NlFdsB4mf0fIkw
+            eZqd7trwzm0NJBhwXkRTZk/oAjmJ2Z/A8LKBqj3ZvB3rX/skjeLRRftwq9JHeXVO
+            k7QM42TW7DhNXPn0Kneh8HwUjcI5cKlnzW71AO+v1INX6aeSuLg=
+        </Certificate>
+    </CertificateBucket>
+
 </ValidatorRecipe>

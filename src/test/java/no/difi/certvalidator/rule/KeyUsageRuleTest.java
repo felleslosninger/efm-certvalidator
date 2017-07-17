@@ -13,7 +13,7 @@ public class KeyUsageRuleTest {
     @Test
     public void simpleValid() throws Exception {
         new Validator(
-                new KeyUsageRule(KeyUsage.DIGITAL_SIGNATURE, KeyUsage.KEY_ENCIPHERMENT, KeyUsage.DATA_ENCIPHERMENT))
+                new KeyUsageRule(KeyUsage.NON_REPUDIATION))
                 .validate(getClass().getResourceAsStream("/virksert-test-difi.cer"));
     }
 

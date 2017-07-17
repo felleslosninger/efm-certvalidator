@@ -22,7 +22,7 @@ public class OrJunction extends AbstractJunction {
      */
     @Override
     public void validate(X509Certificate certificate) throws CertificateValidationException {
-        List<CertificateValidationException> exceptions = new ArrayList<CertificateValidationException>();
+        List<CertificateValidationException> exceptions = new ArrayList<>();
 
         for (ValidatorRule validatorRule : validatorRules) {
             try {

@@ -49,6 +49,8 @@ public class ValidatorLoaderTest {
 
         Assert.assertTrue(validator.isValid(getClass().getResourceAsStream("/virksert-test-difi.cer")));
         Assert.assertFalse(validator.isValid(getClass().getResourceAsStream("/peppol-prod-ap-difi.cer")));
+
+        validator.validate(getClass().getResourceAsStream("/virksert-test-riksantikvaren.cer"));
     }
 
     @Test
