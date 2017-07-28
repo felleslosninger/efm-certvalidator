@@ -7,4 +7,9 @@
             <jaxb:package name="no.difi.certvalidator.jaxb"/>
         </jaxb:schemaBindings>
     </jaxb:bindings>
+    <jaxb:bindings schemaLocation="../xsd/xmldsig-core-schema.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="no.difi.certvalidator.jaxb.xmldsig"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
 </jaxb:bindings>
