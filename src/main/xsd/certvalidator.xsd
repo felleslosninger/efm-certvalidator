@@ -13,6 +13,7 @@
                 <xs:element name="Validator" type="ValidatorType" minOccurs="1" maxOccurs="unbounded"/>
                 <xs:element name="CertificateBucket" type="CertificateBucketType" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="KeyStore" type="KeyStoreType" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="Extension" type="ExtensionType" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element ref="xmldsig:Signature" minOccurs="0"/>
             </xs:sequence>
             <xs:attribute name="name" type="xs:string"/>
@@ -41,6 +42,7 @@
             <xs:element name="Signing" type="SigningType"/>
             <xs:element name="Try" type="TryType"/>
             <xs:element name="ValidatorReference" type="ValidatorReferenceType"/>
+            <xs:element name="Extension" type="ExtensionType"/>
         </xs:choice>
     </xs:complexType>
 
@@ -62,6 +64,7 @@
             <xs:element name="RootBucketReference" type="CertificateBucketReferenceType"/>
             <xs:element name="IntermediateBucketReference" type="CertificateBucketReferenceType"/>
             <xs:element name="Policy" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Extension" type="ExtensionType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -74,16 +77,22 @@
     <xs:complexType name="CriticalExtensionRecognizedType">
         <xs:sequence>
             <xs:element name="Value" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Extension" type="ExtensionType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="CriticalExtensionRequiredType">
         <xs:sequence>
             <xs:element name="Value" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Extension" type="ExtensionType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="CRLType"/>
+    <xs:complexType name="CRLType">
+        <xs:sequence>
+            <xs:element name="Extension" type="ExtensionType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
 
     <xs:complexType name="DummyType">
         <xs:simpleContent>
@@ -92,6 +101,9 @@
     </xs:complexType>
 
     <xs:complexType name="ExpirationType">
+        <xs:sequence>
+            <xs:element name="Extension" type="ExtensionType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
         <xs:attribute name="millis" type="xs:long"/>
     </xs:complexType>
 
@@ -112,12 +124,14 @@
     <xs:complexType name="KeyUsageType">
         <xs:sequence>
             <xs:element name="Identifier" type="KeyUsageEnum" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Extension" type="ExtensionType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="OCSPType">
         <xs:choice>
             <xs:element name="IntermediateBucketReference" type="CertificateBucketReferenceType"/>
+            <xs:element name="Extension" type="ExtensionType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:choice>
     </xs:complexType>
 
@@ -125,6 +139,7 @@
         <xs:choice>
             <xs:element name="Value" type="xs:string" maxOccurs="unbounded"/>
             <xs:element name="Reference" type="ReferenceType"/>
+            <xs:element name="Extension" type="ExtensionType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:choice>
         <xs:attribute name="field" type="xs:string"/>
         <xs:attribute name="principal" type="PrincipalEnum"/>
@@ -257,5 +272,14 @@
             <xs:enumeration value="DECIPHER_ONLY"/>
         </xs:restriction>
     </xs:simpleType>
+
+    <!-- Extension -->
+
+    <xs:complexType name="ExtensionType">
+        <xs:sequence>
+            <xs:any namespace="##other" processContents="lax" />
+        </xs:sequence>
+        <xs:attribute name="type" type="xs:string"/>
+    </xs:complexType>
 
 </xs:schema>

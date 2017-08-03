@@ -10,18 +10,12 @@ import java.security.Security;
  */
 public class BCHelper {
 
-    private static final Provider PROVIDER;
+    public static final Provider PROVIDER;
 
     static {
-        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) != null) {
-            PROVIDER = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME);
-        } else {
-            PROVIDER = new BouncyCastleProvider();
-            Security.addProvider(PROVIDER);
-        }
-    }
+        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null)
+            Security.addProvider(new BouncyCastleProvider());
 
-    public static Provider getProvider() {
-        return PROVIDER;
+        PROVIDER = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME);
     }
 }

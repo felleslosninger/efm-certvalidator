@@ -18,7 +18,9 @@ import java.util.Set;
 public class ChainRule implements ValidatorRule {
 
     private CertificateBucket rootCertificates;
+
     private CertificateBucket intermediateCertificates;
+
     private Set<String> policies = new HashSet<>();
 
     /**
@@ -77,10 +79,10 @@ public class ChainRule implements ValidatorRule {
         trustedIntermediateCert.add(cert);
 
         pkixParams.addCertStore(CertStore.getInstance("Collection",
-                new CollectionCertStoreParameters(trustedIntermediateCert), BCHelper.getProvider()));
+                new CollectionCertStoreParameters(trustedIntermediateCert), BCHelper.PROVIDER));
 
         // Build and verify the certification chain
-        CertPathBuilder builder = CertPathBuilder.getInstance("PKIX", BCHelper.getProvider());
+        CertPathBuilder builder = CertPathBuilder.getInstance("PKIX", BCHelper.PROVIDER);
         return (PKIXCertPathBuilderResult) builder.build(pkixParams);
     }
 }

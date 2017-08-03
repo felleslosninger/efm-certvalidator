@@ -27,6 +27,13 @@ public class ValidatorLoader {
         return this;
     }
 
+    public ValidatorLoader putAll(Map<String, Object> values) {
+        if (values != null)
+            objectStorage.putAll(values);
+
+        return this;
+    }
+
     public ValidatorGroup build(Path path) throws IOException, ValidatorParsingException {
         InputStream inputStream = Files.newInputStream(path);
         ValidatorGroup validatorGroup = build(inputStream);
