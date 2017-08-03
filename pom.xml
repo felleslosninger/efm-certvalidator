@@ -4,14 +4,14 @@
     <groupId>no.difi.commons</groupId>
     <artifactId>commons-certvalidator</artifactId>
     <packaging>jar</packaging>
-    <version>2.1.1</version>
+    <version>2.1.2-SNAPSHOT</version>
 
     <name>Certificate validator</name>
     <description>Rule engine for creation of certificate validator.</description>
     <url>https://github.com/difi/certvalidator</url>
 
     <scm>
-        <tag>commons-certvalidator-2.1.1</tag>
+        <tag>HEAD</tag>
         <url>https://github.com/difi/certvalidator</url>
         <connection>scm:git:https://github.com/difi/certvalidator.git</connection>
         <developerConnection>scm:git:git@github.com:difi/certvalidator.git</developerConnection>
