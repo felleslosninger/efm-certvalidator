@@ -3,6 +3,7 @@ package no.difi.certvalidator.rule;
 import no.difi.certvalidator.Validator;
 import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.FailedValidationException;
+import no.difi.certvalidator.api.Report;
 import no.difi.certvalidator.api.ValidatorRule;
 import org.testng.annotations.Test;
 
@@ -27,6 +28,11 @@ public class HandleErrorRuleTest {
         new HandleErrorRule(new ValidatorRule() {
             @Override
             public void validate(X509Certificate certificate) throws CertificateValidationException {
+                throw new CertificateValidationException("Unable to load something...");
+            }
+
+            @Override
+            public Report validate(X509Certificate certificate, Report report) throws CertificateValidationException {
                 throw new CertificateValidationException("Unable to load something...");
             }
         })

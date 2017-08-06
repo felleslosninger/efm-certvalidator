@@ -2,7 +2,6 @@ package no.difi.certvalidator.rule;
 
 import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.FailedValidationException;
-import no.difi.certvalidator.api.ValidatorRule;
 import no.difi.certvalidator.util.KeyUsage;
 
 import java.security.cert.X509Certificate;
@@ -13,7 +12,7 @@ import java.util.List;
 /**
  * @author erlend
  */
-public class KeyUsageRule implements ValidatorRule {
+public class KeyUsageRule extends AbstractRule {
 
     private KeyUsage[] expectedKeyUsages;
 

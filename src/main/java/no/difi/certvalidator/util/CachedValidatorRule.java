@@ -4,6 +4,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import no.difi.certvalidator.api.CertificateValidationException;
+import no.difi.certvalidator.api.Report;
 import no.difi.certvalidator.api.ValidatorRule;
 
 import java.security.cert.X509Certificate;
@@ -27,6 +28,13 @@ public class CachedValidatorRule extends CacheLoader<X509Certificate, CachedVali
     @Override
     public void validate(X509Certificate certificate) throws CertificateValidationException {
         cache.getUnchecked(certificate).trigger();
+    }
+
+    @Override
+    public Report validate(X509Certificate certificate, Report report) throws CertificateValidationException {
+        validate(certificate);
+
+        return report;
     }
 
     @Override

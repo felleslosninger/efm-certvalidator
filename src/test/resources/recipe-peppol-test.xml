@@ -25,18 +25,21 @@
             </OCSP>
         </Cached>
     </Validator>
+
     <Validator name="AP" timeout="10">
         <PrincipleName field="CN" principal="ISSUER">
             <Value>PEPPOL ACCESS POINT TEST CA</Value>
         </PrincipleName>
         <ValidatorReference>default</ValidatorReference>
     </Validator>
+
     <Validator name="SMP" timeout="10">
         <PrincipleName field="CN" principal="ISSUER">
             <Value>PEPPOL SERVICE METADATA PUBLISHER TEST CA</Value>
         </PrincipleName>
         <ValidatorReference>default</ValidatorReference>
     </Validator>
+
     <Validator name="ALL" timeout="10">
         <ValidatorReference>default</ValidatorReference>
     </Validator>
@@ -70,6 +73,7 @@
             g2XAc9hM
         </Certificate>
     </CertificateBucket>
+
     <CertificateBucket name="intermediate">
         <!-- CN=PEPPOL ACCESS POINT TEST CA,OU=FOR TEST PURPOSES ONLY,O=NATIONAL IT AND TELECOM AGENCY,C=DK -->
         <Certificate>

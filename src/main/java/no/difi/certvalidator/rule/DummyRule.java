@@ -1,7 +1,6 @@
 package no.difi.certvalidator.rule;
 
 import no.difi.certvalidator.api.CertificateValidationException;
-import no.difi.certvalidator.api.ValidatorRule;
 import no.difi.certvalidator.api.FailedValidationException;
 
 import java.security.cert.X509Certificate;
@@ -9,7 +8,7 @@ import java.security.cert.X509Certificate;
 /**
  * Throws an exception on validation if message is set.
  */
-public class DummyRule implements ValidatorRule {
+public class DummyRule extends AbstractRule {
 
     public static DummyRule alwaysSuccess() {
         return new DummyRule();

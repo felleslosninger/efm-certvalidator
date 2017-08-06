@@ -1,21 +1,24 @@
 package no.difi.certvalidator.rule;
 
-import no.difi.certvalidator.api.CertificateBucket;
-import no.difi.certvalidator.api.CertificateValidationException;
-import no.difi.certvalidator.api.FailedValidationException;
-import no.difi.certvalidator.api.ValidatorRule;
+import no.difi.certvalidator.api.*;
 import no.difi.certvalidator.util.BCHelper;
+import no.difi.certvalidator.util.SimpleProperty;
 
 import java.security.GeneralSecurityException;
 import java.security.cert.*;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
  * Validator checking validity of chain using root certificates and intermediate certificates.
  */
-public class ChainRule implements ValidatorRule {
+public class ChainRule extends AbstractRule {
+
+    public static final Property<List<? extends Certificate>> PATH = SimpleProperty.create();
+
+    public static final Property<X509Certificate> ANCHOR = SimpleProperty.create();
 
     private CertificateBucket rootCertificates;
 
@@ -37,9 +40,14 @@ public class ChainRule implements ValidatorRule {
      * {@inheritDoc}
      */
     @Override
-    public void validate(X509Certificate certificate) throws CertificateValidationException {
+    public Report validate(X509Certificate certificate, Report report) throws CertificateValidationException {
         try {
-            verifyCertificate(certificate);
+            PKIXCertPathBuilderResult result = verifyCertificate(certificate);
+
+            report.set(ANCHOR, result.getTrustAnchor().getTrustedCert());
+            report.set(PATH, result.getCertPath().getCertificates());
+
+            return report;
         } catch (GeneralSecurityException e) {
             throw new FailedValidationException(e.getMessage(), e);
         }

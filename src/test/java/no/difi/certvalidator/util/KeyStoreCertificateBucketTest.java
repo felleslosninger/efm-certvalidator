@@ -50,7 +50,7 @@ public class KeyStoreCertificateBucketTest {
     @Test(expectedExceptions = CertificateBucketException.class)
     @SuppressWarnings("all")
     public void triggerNullPointerInStartsWith() throws Exception {
-        new KeyStoreCertificateBucket(null).startsWith(null);
+        new KeyStoreCertificateBucket(null).startsWith((String) null);
     }
 
     @Test(expectedExceptions = IllegalStateException.class)

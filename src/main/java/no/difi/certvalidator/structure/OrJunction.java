@@ -2,6 +2,7 @@ package no.difi.certvalidator.structure;
 
 import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.FailedValidationException;
+import no.difi.certvalidator.api.Report;
 import no.difi.certvalidator.api.ValidatorRule;
 
 import java.security.cert.X509Certificate;
@@ -21,13 +22,12 @@ public class OrJunction extends AbstractJunction {
      * {@inheritDoc}
      */
     @Override
-    public void validate(X509Certificate certificate) throws CertificateValidationException {
+    public Report validate(X509Certificate certificate, Report report) throws CertificateValidationException {
         List<CertificateValidationException> exceptions = new ArrayList<>();
 
         for (ValidatorRule validatorRule : validatorRules) {
             try {
-                validatorRule.validate(certificate);
-                return;
+                return validatorRule.validate(certificate, report.copy());
             } catch (CertificateValidationException e) {
                 exceptions.add(e);
             }

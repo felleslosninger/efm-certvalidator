@@ -1,7 +1,6 @@
 package no.difi.certvalidator.rule;
 
 import no.difi.certvalidator.api.CertificateValidationException;
-import no.difi.certvalidator.api.ValidatorRule;
 import no.difi.certvalidator.api.FailedValidationException;
 
 import java.security.cert.X509Certificate;
@@ -9,7 +8,7 @@ import java.security.cert.X509Certificate;
 /**
  * Validation making sure certificate doesn't expire in n milliseconds.
  */
-public class ExpirationSoonRule implements ValidatorRule {
+public class ExpirationSoonRule extends AbstractRule {
 
     private long millis;
 

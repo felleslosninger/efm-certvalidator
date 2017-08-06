@@ -1,10 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>no.difi.commons</groupId>
     <artifactId>commons-certvalidator</artifactId>
     <packaging>jar</packaging>
-    <version>2.1.2-SNAPSHOT</version>
+    <version>2.2.0-SNAPSHOT</version>
 
     <name>Certificate validator</name>
     <description>Rule engine for creation of certificate validator.</description>
@@ -97,14 +98,6 @@
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcpkix-jdk15on</artifactId>
             <version>1.57</version>
-        </dependency>
-
-        <!-- Logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <!-- Testing -->
@@ -248,10 +241,10 @@
                     </configuration>
                 </plugin>
                 <plugin>
-                     <groupId>org.apache.maven.plugins</groupId>
-                     <artifactId>maven-release-plugin</artifactId>
-                     <version>2.5.3</version>
-                     <dependencies>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5.3</version>
+                    <dependencies>
                         <dependency>
                             <groupId>org.apache.maven.scm</groupId>
                             <artifactId>maven-scm-provider-gitexe</artifactId>

@@ -4,9 +4,8 @@ import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.CrlCache;
 import no.difi.certvalidator.api.CrlFetcher;
 import no.difi.certvalidator.api.FailedValidationException;
-import no.difi.certvalidator.api.ValidatorRule;
-import no.difi.certvalidator.util.SimpleCrlCache;
 import no.difi.certvalidator.util.SimpleCachingCrlFetcher;
+import no.difi.certvalidator.util.SimpleCrlCache;
 import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.x509.CRLDistPoint;
 import org.bouncycastle.asn1.x509.DistributionPoint;
@@ -20,7 +19,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CRLRule implements ValidatorRule {
+public class CRLRule extends AbstractRule {
 
     private static final String CRL_EXTENSION = "2.5.29.31";
 

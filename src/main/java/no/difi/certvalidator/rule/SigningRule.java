@@ -1,14 +1,20 @@
 package no.difi.certvalidator.rule;
 
 import no.difi.certvalidator.api.CertificateValidationException;
-import no.difi.certvalidator.api.ValidatorRule;
 import no.difi.certvalidator.api.FailedValidationException;
+import no.difi.certvalidator.api.Property;
+import no.difi.certvalidator.api.Report;
+import no.difi.certvalidator.util.SimpleProperty;
 
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-public class SigningRule implements ValidatorRule {
+public class SigningRule extends AbstractRule {
+
+    public static final Property<Kind> KIND = SimpleProperty.create();
+
+    private final Kind kind;
 
     public static SigningRule PublicSignedOnly() {
         return new SigningRule(Kind.PUBLIC_SIGNED_ONLY);
@@ -17,8 +23,6 @@ public class SigningRule implements ValidatorRule {
     public static SigningRule SelfSignedOnly() {
         return new SigningRule(Kind.SELF_SIGNED_ONLY);
     }
-
-    private Kind kind;
 
     public SigningRule() {
         this(Kind.PUBLIC_SIGNED_ONLY);
@@ -29,7 +33,7 @@ public class SigningRule implements ValidatorRule {
     }
 
     @Override
-    public void validate(X509Certificate certificate) throws CertificateValidationException {
+    public Report validate(X509Certificate certificate, Report report) throws CertificateValidationException {
         try {
             if (isSelfSigned(certificate)) {
                 // Self signed
@@ -40,6 +44,10 @@ public class SigningRule implements ValidatorRule {
                 if (kind.equals(Kind.SELF_SIGNED_ONLY))
                     throw new FailedValidationException("Certificate should be self-signed.");
             }
+
+            report.set(KIND, kind);
+
+            return report;
         } catch (FailedValidationException e) {
             throw e;
         } catch (Exception e) {

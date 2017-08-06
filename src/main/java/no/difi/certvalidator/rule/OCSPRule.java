@@ -1,11 +1,10 @@
 package no.difi.certvalidator.rule;
 
+import net.klakegg.pkix.ocsp.CertificateResult;
 import net.klakegg.pkix.ocsp.OcspClient;
 import net.klakegg.pkix.ocsp.OcspException;
-import no.difi.certvalidator.api.CertificateBucket;
-import no.difi.certvalidator.api.CertificateValidationException;
-import no.difi.certvalidator.api.FailedValidationException;
-import no.difi.certvalidator.api.ValidatorRule;
+import no.difi.certvalidator.api.*;
+import no.difi.certvalidator.util.SimpleProperty;
 
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -14,7 +13,9 @@ import java.util.List;
 /**
  * @author erlend
  */
-public class OCSPRule implements ValidatorRule {
+public class OCSPRule extends AbstractRule {
+
+    public static final Property<CertificateResult> RESULT = SimpleProperty.create();
 
     protected OcspClient ocspClient;
 
@@ -34,9 +35,11 @@ public class OCSPRule implements ValidatorRule {
     }
 
     @Override
-    public void validate(X509Certificate certificate) throws CertificateValidationException {
+    public Report validate(X509Certificate certificate, Report report) throws CertificateValidationException {
         try {
-            ocspClient.verify(certificate);
+            report.set(RESULT, ocspClient.verify(certificate));
+
+            return report;
         } catch (OcspException e) {
             throw new FailedValidationException(e.getMessage(), e);
         } catch (Exception e) {

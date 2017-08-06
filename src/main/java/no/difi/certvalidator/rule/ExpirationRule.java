@@ -1,7 +1,6 @@
 package no.difi.certvalidator.rule;
 
 import no.difi.certvalidator.api.FailedValidationException;
-import no.difi.certvalidator.api.ValidatorRule;
 
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
@@ -11,7 +10,7 @@ import java.util.Date;
 /**
  * Validate validity of certificate.
  */
-public class ExpirationRule implements ValidatorRule {
+public class ExpirationRule extends AbstractRule {
 
     /**
      * {@inheritDoc}

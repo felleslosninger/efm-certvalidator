@@ -13,7 +13,7 @@ import java.util.List;
  * for encapsulation of CRLRule and other rules where use of external resources may cause validation to fail due to
  * unavailability of services.
  */
-public class HandleErrorRule implements ValidatorRule {
+public class HandleErrorRule extends AbstractRule {
 
     private final List<ValidatorRule> validatorRules;
 

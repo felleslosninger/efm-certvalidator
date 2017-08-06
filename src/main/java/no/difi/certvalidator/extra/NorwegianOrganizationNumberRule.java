@@ -1,9 +1,8 @@
 package no.difi.certvalidator.extra;
 
-import no.difi.certvalidator.api.CertificateValidationException;
-import no.difi.certvalidator.api.FailedValidationException;
-import no.difi.certvalidator.api.PrincipalNameProvider;
+import no.difi.certvalidator.api.*;
 import no.difi.certvalidator.rule.PrincipalNameRule;
+import no.difi.certvalidator.util.SimpleProperty;
 
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
@@ -19,7 +18,10 @@ import java.util.regex.Pattern;
  */
 public class NorwegianOrganizationNumberRule extends PrincipalNameRule {
 
-    private static final Pattern patternSerialnumber = Pattern.compile("^[0-9]{9}$");
+    public static final Property<NorwegianOrganization> ORGANIZATION = SimpleProperty.create();
+
+    private static final Pattern patternSerialNumber = Pattern.compile("^[0-9]{9}$");
+
     private static final Pattern patternOrganizationName = Pattern.compile("^.+\\-\\W*([0-9]{9})$");
 
     public NorwegianOrganizationNumberRule() {
@@ -39,11 +41,15 @@ public class NorwegianOrganizationNumberRule extends PrincipalNameRule {
      * {@inheritDoc}
      */
     @Override
-    public void validate(X509Certificate certificate) throws CertificateValidationException {
+    public Report validate(X509Certificate certificate, Report report) throws CertificateValidationException {
         NorwegianOrganization organization = extractNumber(certificate);
-        if (organization != null)
-            if (provider.validate(organization.getNumber()))
-                return;
+        if (organization != null) {
+            if (provider.validate(organization.getNumber())) {
+                report.set(ORGANIZATION, organization);
+
+                return report;
+            }
+        }
 
         throw new FailedValidationException("Organization number not detected.");
     }
@@ -62,7 +68,7 @@ public class NorwegianOrganizationNumberRule extends PrincipalNameRule {
 
             //matches "C=NO,ST=AKERSHUS,L=FORNEBUVEIEN 1\\, 1366 LYSAKER,O=RF Commfides,SERIALNUMBER=399573952,CN=RF Commfides"
             for (String value : extract(getSubject(certificate), "SERIALNUMBER"))
-                if (patternSerialnumber.matcher(value).matches())
+                if (patternSerialNumber.matcher(value).matches())
                     return new NorwegianOrganization(value, name.isEmpty() ? null : name.get(0));
 
             //matches "CN=name, OU=None, O=organisasjon - 123456789, L=None, C=None"
@@ -79,7 +85,9 @@ public class NorwegianOrganizationNumberRule extends PrincipalNameRule {
     }
 
     public static class NorwegianOrganization {
+
         private String number;
+
         private String name;
 
         public NorwegianOrganization(String number, String name) {

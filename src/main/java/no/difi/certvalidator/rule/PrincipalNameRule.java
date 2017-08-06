@@ -1,9 +1,7 @@
 package no.difi.certvalidator.rule;
 
-import no.difi.certvalidator.api.CertificateValidationException;
-import no.difi.certvalidator.api.FailedValidationException;
-import no.difi.certvalidator.api.PrincipalNameProvider;
-import no.difi.certvalidator.api.ValidatorRule;
+import no.difi.certvalidator.api.*;
+import no.difi.certvalidator.util.SimpleProperty;
 import org.bouncycastle.asn1.x500.AttributeTypeAndValue;
 import org.bouncycastle.asn1.x500.RDN;
 import org.bouncycastle.asn1.x500.X500Name;
@@ -19,7 +17,9 @@ import java.util.List;
 /**
  * Validator using defined logic to validate content in principal name of subject or issuer.
  */
-public class PrincipalNameRule implements ValidatorRule {
+public class PrincipalNameRule extends AbstractRule {
+
+    public static final Property<String> NAME = SimpleProperty.create();
 
     protected String field;
 
@@ -49,7 +49,7 @@ public class PrincipalNameRule implements ValidatorRule {
      * {@inheritDoc}
      */
     @Override
-    public void validate(X509Certificate certificate) throws CertificateValidationException {
+    public Report validate(X509Certificate certificate, Report report) throws CertificateValidationException {
         try {
             X500Name current;
             if (principal.equals(Principal.SUBJECT))
@@ -57,9 +57,13 @@ public class PrincipalNameRule implements ValidatorRule {
             else
                 current = getIssuer(certificate);
 
-            for (String value : extract(current, field))
-                if (provider.validate(value))
-                    return;
+            for (String value : extract(current, field)) {
+                if (provider.validate(value)) {
+                    report.set(NAME, value);
+
+                    return report;
+                }
+            }
 
             throw new FailedValidationException(String.format("Validation of subject principal(%s) failed.", field));
         } catch (CertificateEncodingException e) {

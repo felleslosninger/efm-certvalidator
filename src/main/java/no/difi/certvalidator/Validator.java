@@ -1,7 +1,11 @@
 package no.difi.certvalidator;
 
 import no.difi.certvalidator.api.CertificateValidationException;
+import no.difi.certvalidator.api.Property;
+import no.difi.certvalidator.api.Report;
 import no.difi.certvalidator.api.ValidatorRule;
+import no.difi.certvalidator.util.DummyReport;
+import no.difi.certvalidator.util.SimpleProperty;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -13,6 +17,8 @@ import java.security.cert.X509Certificate;
  * Encapsulate validator for a more extensive API.
  */
 public class Validator implements ValidatorRule {
+
+    public static final Property<X509Certificate> CERTIFICATE = SimpleProperty.create();
 
     private static CertificateFactory certFactory;
 
@@ -42,7 +48,12 @@ public class Validator implements ValidatorRule {
      */
     @Override
     public void validate(X509Certificate certificate) throws CertificateValidationException {
-        validatorRule.validate(certificate);
+        validate(certificate, DummyReport.INSTANCE);
+    }
+
+    @Override
+    public Report validate(X509Certificate certificate, Report report) throws CertificateValidationException {
+        return validatorRule.validate(certificate, report);
     }
 
     public X509Certificate validate(InputStream inputStream) throws CertificateValidationException {
@@ -51,15 +62,33 @@ public class Validator implements ValidatorRule {
         return certificate;
     }
 
+    public Report validate(InputStream inputStream, Report report) throws CertificateValidationException {
+        X509Certificate certificate = getCertificate(inputStream);
+        validate(certificate, report);
+
+        report.set(CERTIFICATE, certificate);
+
+        return report;
+    }
+
     public X509Certificate validate(byte[] bytes) throws CertificateValidationException {
         X509Certificate certificate = getCertificate(bytes);
         validate(certificate);
         return certificate;
     }
 
+    public Report validate(byte[] bytes, Report report) throws CertificateValidationException {
+        X509Certificate certificate = getCertificate(bytes);
+        validate(certificate, report);
+
+        report.set(CERTIFICATE, certificate);
+
+        return report;
+    }
+
     public boolean isValid(X509Certificate certificate) {
         try {
-            validate(certificate);
+            validate(certificate, DummyReport.INSTANCE);
             return true;
         } catch (CertificateValidationException e) {
             return false;

@@ -1,7 +1,10 @@
 package no.difi.certvalidator.structure;
 
+import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.ValidatorRule;
+import no.difi.certvalidator.util.DummyReport;
 
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,5 +20,10 @@ public abstract class AbstractJunction implements ValidatorRule {
     public AbstractJunction addRule(ValidatorRule... validatorRules) {
         this.validatorRules.addAll(Arrays.asList(validatorRules));
         return this;
+    }
+
+    @Override
+    public void validate(X509Certificate certificate) throws CertificateValidationException {
+        validate(certificate, DummyReport.INSTANCE);
     }
 }

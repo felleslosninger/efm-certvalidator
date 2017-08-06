@@ -13,4 +13,12 @@ public interface ValidatorRule {
      * @throws CertificateValidationException
      */
     void validate(X509Certificate certificate) throws CertificateValidationException;
+
+    /**
+     * Validate certificate.
+     * @param certificate Certificate subject to validation.
+     * @param report Report to be filled during validation.
+     * @throws CertificateValidationException
+     */
+    Report validate(X509Certificate certificate, Report report) throws CertificateValidationException;
 }

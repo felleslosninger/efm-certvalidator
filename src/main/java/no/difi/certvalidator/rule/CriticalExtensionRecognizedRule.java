@@ -2,14 +2,13 @@ package no.difi.certvalidator.rule;
 
 import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.FailedValidationException;
-import no.difi.certvalidator.api.ValidatorRule;
 
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-public class CriticalExtensionRecognizedRule implements ValidatorRule {
+public class CriticalExtensionRecognizedRule extends AbstractRule {
 
     private final List<String> recognizedExtensions;
 

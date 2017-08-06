@@ -5,6 +5,7 @@ import no.difi.certvalidator.ValidatorBuilder;
 import no.difi.certvalidator.api.CertificateBucket;
 import no.difi.certvalidator.api.FailedValidationException;
 import no.difi.certvalidator.util.KeyStoreCertificateBucket;
+import no.difi.certvalidator.util.SimpleReport;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -20,7 +21,7 @@ public class ChainRuleTest {
                 .addRule(new ChainRule(rootCertificates, intermediateCertificates))
                 .build();
 
-        validator.validate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"));
+        validator.validate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"), SimpleReport.newInstance());
         validator.validate(getClass().getResourceAsStream("/peppol-test-smp-difi.cer"));
 
         try {

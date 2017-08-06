@@ -1,6 +1,7 @@
 package no.difi.certvalidator.structure;
 
 import no.difi.certvalidator.api.CertificateValidationException;
+import no.difi.certvalidator.api.Report;
 import no.difi.certvalidator.api.ValidatorRule;
 
 import java.security.cert.X509Certificate;
@@ -18,8 +19,10 @@ public class AndJunction extends AbstractJunction {
      * {@inheritDoc}
      */
     @Override
-    public void validate(X509Certificate certificate) throws CertificateValidationException {
+    public Report validate(X509Certificate certificate, Report report) throws CertificateValidationException {
         for (ValidatorRule validatorRule : validatorRules)
-            validatorRule.validate(certificate);
+            report = validatorRule.validate(certificate, report.copy());
+
+        return report;
     }
 }
