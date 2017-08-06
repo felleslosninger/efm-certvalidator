@@ -17,7 +17,7 @@ Include dependency in your pom.xml:
 <dependency>
     <groupId>no.difi.commons</groupId>
     <artifactId>commons-certvalidator</artifactId>
-    <version>2.2.1</version>
+    <version>2.1.1</version>
 </dependency>
 ```
 
