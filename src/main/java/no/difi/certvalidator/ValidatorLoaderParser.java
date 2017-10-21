@@ -209,7 +209,10 @@ class ValidatorLoaderParser {
         for (Object o : optionalType.getCachedOrChainOrClazz())
             validatorRules.add(parse(o, objectStorage));
 
-        return new HandleErrorRule(validatorRules);
+        if (optionalType.getHandler() != null && objectStorage.get(optionalType.getHandler()) != null)
+            return new HandleErrorRule((ErrorHandler) objectStorage.get(optionalType.getHandler()), validatorRules);
+        else
+            return new HandleErrorRule(validatorRules);
     }
 
     private static ValidatorRule parse(JunctionType junctionType, Map<String, Object> objectStorage)

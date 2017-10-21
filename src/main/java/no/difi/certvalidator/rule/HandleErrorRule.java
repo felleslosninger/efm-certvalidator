@@ -1,6 +1,7 @@
 package no.difi.certvalidator.rule;
 
 import no.difi.certvalidator.api.CertificateValidationException;
+import no.difi.certvalidator.api.ErrorHandler;
 import no.difi.certvalidator.api.FailedValidationException;
 import no.difi.certvalidator.api.ValidatorRule;
 
@@ -15,13 +16,24 @@ import java.util.List;
  */
 public class HandleErrorRule extends AbstractRule {
 
+    private ErrorHandler errorHandler;
+
     private final List<ValidatorRule> validatorRules;
 
     public HandleErrorRule(ValidatorRule... validatorRules) {
-        this(Arrays.asList(validatorRules));
+        this(null, Arrays.asList(validatorRules));
+    }
+
+    public HandleErrorRule(ErrorHandler errorHandler, ValidatorRule... validatorRules) {
+        this(errorHandler, Arrays.asList(validatorRules));
     }
 
     public HandleErrorRule(List<ValidatorRule> validatorRules) {
+        this(null, validatorRules);
+    }
+
+    public HandleErrorRule(ErrorHandler errorHandler, List<ValidatorRule> validatorRules) {
+        this.errorHandler = errorHandler;
         this.validatorRules = validatorRules;
     }
 
@@ -33,7 +45,9 @@ public class HandleErrorRule extends AbstractRule {
             } catch (FailedValidationException e) {
                 throw e;
             } catch (CertificateValidationException e) {
-                // No action.
+                // Allow handling exceptions.
+                if (errorHandler != null)
+                    errorHandler.handle(e);
             }
         }
     }

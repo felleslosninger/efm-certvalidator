@@ -49,7 +49,7 @@ public class PeppolTest {
                 .validate(getClass().getResourceAsStream("/peppol-test-smp-difi.cer"));
     }
 
-    @Test
+    @Test(enabled = false)
     public void simpleProdAp() throws Exception {
         KeyStoreCertificateBucket keyStoreCertificateBucket = new KeyStoreCertificateBucket(getClass().getResourceAsStream("/peppol-prod.jks"), "peppol");
         CertificateBucket rootCertificates = keyStoreCertificateBucket.toSimple("peppol-root");

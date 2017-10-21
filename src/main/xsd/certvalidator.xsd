@@ -16,8 +16,8 @@
                 <xs:element name="Extension" type="ExtensionType" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element ref="xmldsig:Signature" minOccurs="0"/>
             </xs:sequence>
-            <xs:attribute name="name" type="xs:string"/>
-            <xs:attribute name="version" type="xs:string"/>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="version" type="xs:string" use="required"/>
         </xs:complexType>
     </xs:element>
 
@@ -109,7 +109,9 @@
 
     <xs:complexType name="HandleErrorType">
         <xs:complexContent>
-            <xs:extension base="ExtensibleType"/>
+            <xs:extension base="ExtensibleType">
+                <xs:attribute name="handler" type="xs:string"/>
+            </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
