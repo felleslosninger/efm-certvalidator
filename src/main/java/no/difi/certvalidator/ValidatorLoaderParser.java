@@ -120,8 +120,10 @@ class ValidatorLoaderParser {
         for (Object o : optionalType.getCachedOrChainOrClazz())
             validatorRules.add(parse(o, objectStorage));
 
-        if (optionalType.getHandler() != null && objectStorage.get(optionalType.getHandler()) != null)
-            return new HandleErrorRule((ErrorHandler) objectStorage.get(optionalType.getHandler()), validatorRules);
+        String handlerKey = optionalType.getHandler() != null ? optionalType.getHandler() : "#errorhandler";
+
+        if (objectStorage.get(handlerKey) != null)
+            return new HandleErrorRule((ErrorHandler) objectStorage.get(handlerKey), validatorRules);
         else
             return new HandleErrorRule(validatorRules);
     }
