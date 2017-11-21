@@ -16,6 +16,10 @@ public class SimpleCertificateBucket implements CertificateBucket {
 
     private List<X509Certificate> certificates = new ArrayList<>();
 
+    public static CertificateBucket with(X509Certificate... certificates) {
+        return new SimpleCertificateBucket(certificates);
+    }
+
     public SimpleCertificateBucket(X509Certificate... certificates) {
         add(certificates);
     }

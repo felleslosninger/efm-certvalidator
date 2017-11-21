@@ -3,9 +3,7 @@ package no.difi.certvalidator;
 import no.difi.certvalidator.api.*;
 import no.difi.certvalidator.jaxb.*;
 import no.difi.certvalidator.lang.ValidatorParsingException;
-import no.difi.certvalidator.rule.ChainRule;
-import no.difi.certvalidator.rule.HandleErrorRule;
-import no.difi.certvalidator.rule.OCSPRule;
+import no.difi.certvalidator.rule.*;
 import no.difi.certvalidator.structure.Junction;
 import no.difi.certvalidator.util.CachedValidatorRule;
 
@@ -44,7 +42,7 @@ class ValidatorLoaderParser {
             Map<String, ValidatorRule> rulesMap = new HashMap<>();
 
             for (ValidatorType validatorType : recipe.getValidator()) {
-                ValidatorRule validatorRule = parse(validatorType.getCachedOrChainOrClazz(), objectStorage, JunctionEnum.AND);
+                ValidatorRule validatorRule = parse(validatorType.getBlacklistOrCachedOrChain(), objectStorage, JunctionEnum.AND);
 
                 if (validatorType.getTimeout() != null)
                     validatorRule = new CachedValidatorRule(validatorRule, validatorType.getTimeout());
@@ -77,7 +75,9 @@ class ValidatorLoaderParser {
 
     private static ValidatorRule parse(Object rule, Map<String, Object> objectStorage)
             throws CertificateValidationException {
-        if (rule instanceof CachedType)
+        if (rule instanceof BlacklistType)
+            return parse((BlacklistType) rule, objectStorage);
+        else if (rule instanceof CachedType)
             return parse((CachedType) rule, objectStorage);
         else if (rule instanceof ChainType)
             return parse((ChainType) rule, objectStorage);
@@ -89,6 +89,8 @@ class ValidatorLoaderParser {
             return parse((HandleErrorType) rule, objectStorage);
         else if (rule instanceof TryType)
             return parse((TryType) rule, objectStorage);
+        else if (rule instanceof WhitelistType)
+            return parse((WhitelistType) rule, objectStorage);
         else {
             for (ValidatorRuleParser parser : ruleParsers)
                 if (parser.supports(rule.getClass()))
@@ -98,10 +100,15 @@ class ValidatorLoaderParser {
         throw new ValidatorParsingException(String.format("Unable to parse '%s'", rule));
     }
 
+    private static ValidatorRule parse(BlacklistType rule, Map<String, Object> objectStorage)
+            throws CertificateValidationException {
+        return new BlacklistRule(getBucket(rule.getValue(), objectStorage));
+    }
+
     private static ValidatorRule parse(CachedType rule, Map<String, Object> objectStorage) throws
             CertificateValidationException {
         return new CachedValidatorRule(
-                parse(rule.getCachedOrChainOrClazz(), objectStorage, JunctionEnum.AND),
+                parse(rule.getBlacklistOrCachedOrChain(), objectStorage, JunctionEnum.AND),
                 rule.getTimeout()
         );
     }
@@ -117,7 +124,7 @@ class ValidatorLoaderParser {
     private static ValidatorRule parse(HandleErrorType optionalType, Map<String, Object> objectStorage)
             throws CertificateValidationException {
         List<ValidatorRule> validatorRules = new ArrayList<>();
-        for (Object o : optionalType.getCachedOrChainOrClazz())
+        for (Object o : optionalType.getBlacklistOrCachedOrChain())
             validatorRules.add(parse(o, objectStorage));
 
         String handlerKey = optionalType.getHandler() != null ? optionalType.getHandler() : "#errorhandler";
@@ -130,7 +137,7 @@ class ValidatorLoaderParser {
 
     private static ValidatorRule parse(JunctionType junctionType, Map<String, Object> objectStorage)
             throws CertificateValidationException {
-        return parse(junctionType.getCachedOrChainOrClazz(),
+        return parse(junctionType.getBlacklistOrCachedOrChain(),
                 objectStorage, junctionType.getType());
     }
 
@@ -140,7 +147,7 @@ class ValidatorLoaderParser {
 
     private static ValidatorRule parse(TryType tryType, Map<String, Object> objectStorage)
             throws CertificateValidationException {
-        for (Object rule : tryType.getCachedOrChainOrClazz()) {
+        for (Object rule : tryType.getBlacklistOrCachedOrChain()) {
             try {
                 return parse(rule, objectStorage);
             } catch (Exception e) {
@@ -149,6 +156,11 @@ class ValidatorLoaderParser {
         }
 
         throw new CertificateValidationException("Unable to find valid rule in try.");
+    }
+
+    private static ValidatorRule parse(WhitelistType rule, Map<String, Object> objectStorage)
+            throws CertificateValidationException {
+        return new WhitelistRule(getBucket(rule.getValue(), objectStorage));
     }
 
     // HELPERS

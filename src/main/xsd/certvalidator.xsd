@@ -25,6 +25,7 @@
 
     <xs:complexType name="ExtensibleType">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="Blacklist" type="BlacklistType"/>
             <xs:element name="Cached" type="CachedType"/>
             <xs:element name="Chain" type="ChainType"/>
             <xs:element name="Class" type="ClassType"/>
@@ -42,6 +43,7 @@
             <xs:element name="Signing" type="SigningType"/>
             <xs:element name="Try" type="TryType"/>
             <xs:element name="ValidatorReference" type="ValidatorReferenceType"/>
+            <xs:element name="Whitelist" type="WhitelistType"/>
             <xs:element name="Extension" type="ExtensionType"/>
         </xs:choice>
     </xs:complexType>
@@ -58,6 +60,12 @@
     </xs:complexType>
 
     <!-- Rule -->
+
+    <xs:complexType name="BlacklistType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string"/>
+        </xs:simpleContent>
+    </xs:complexType>
 
     <xs:complexType name="ChainType">
         <xs:sequence>
@@ -167,6 +175,12 @@
         <xs:complexContent>
             <xs:extension base="ReferenceType"/>
         </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="WhitelistType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string"/>
+        </xs:simpleContent>
     </xs:complexType>
 
     <!-- Certificate Bucket -->
