@@ -1,5 +1,8 @@
 package no.difi.certvalidator;
 
+import net.klakegg.pkix.ocsp.OcspClient;
+import net.klakegg.pkix.ocsp.api.OcspFetcher;
+import net.klakegg.pkix.ocsp.builder.Builder;
 import no.difi.certvalidator.api.*;
 import no.difi.certvalidator.jaxb.*;
 import no.difi.certvalidator.lang.ValidatorParsingException;
@@ -143,7 +146,15 @@ class ValidatorLoaderParser {
     }
 
     private static ValidatorRule parse(OCSPType ocspType, Map<String, Object> objectStorage) {
-        return new OCSPRule(getBucket(ocspType.getIntermediateBucketReference().getValue(), objectStorage));
+        Builder<OcspClient> builder = OcspClient.builder();
+
+        builder = builder.set(OcspClient.INTERMEDIATES, getBucket(ocspType.getIntermediateBucketReference().getValue(), objectStorage)
+                .asList());
+
+        if (objectStorage.containsKey("ocsp_fetcher"))
+            builder = builder.set(OcspClient.FETCHER, (OcspFetcher) objectStorage.get("ocsp_fetcher"));
+
+        return new OCSPRule(builder.build());
     }
 
     private static ValidatorRule parse(TryType tryType, Map<String, Object> objectStorage)

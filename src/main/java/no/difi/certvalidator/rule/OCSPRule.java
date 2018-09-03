@@ -8,8 +8,6 @@ import no.difi.certvalidator.util.SimpleProperty;
 
 import java.net.UnknownHostException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author erlend
@@ -21,13 +19,8 @@ public class OCSPRule extends AbstractRule {
     protected OcspClient ocspClient;
 
     public OCSPRule(CertificateBucket intermediateCertificates) {
-        List<X509Certificate> intermediates = new ArrayList<>();
-
-        for (X509Certificate intermediateCertificate : intermediateCertificates)
-            intermediates.add(intermediateCertificate);
-
         ocspClient = OcspClient.builder()
-                .set(OcspClient.INTERMEDIATES, intermediates)
+                .set(OcspClient.INTERMEDIATES, intermediateCertificates.asList())
                 .build();
     }
 

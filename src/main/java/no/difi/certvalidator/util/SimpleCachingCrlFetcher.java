@@ -4,7 +4,9 @@ import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.CrlCache;
 import no.difi.certvalidator.api.CrlFetcher;
 
+import java.io.IOException;
 import java.net.URI;
+import java.security.cert.CRLException;
 import java.security.cert.X509CRL;
 
 /**
@@ -13,7 +15,7 @@ import java.security.cert.X509CRL;
  */
 public class SimpleCachingCrlFetcher implements CrlFetcher {
 
-    private CrlCache crlCache;
+    protected CrlCache crlCache;
 
     public SimpleCachingCrlFetcher(CrlCache crlCache) {
         this.crlCache = crlCache;
@@ -35,17 +37,23 @@ public class SimpleCachingCrlFetcher implements CrlFetcher {
     }
 
     protected X509CRL download(String url) throws CertificateValidationException {
+        if (url != null && url.matches("http[s]{0,1}://.*")) {
+            X509CRL crl = httpDownload(url);
+            crlCache.set(url, crl);
+            return crl;
+        } else if (url != null && url.startsWith("ldap://")) {
+            // Currently not supported.
+            return null;
+        }
+
+        return null;
+    }
+
+    protected X509CRL httpDownload(String url) throws CertificateValidationException {
         try {
-            if (url.matches("http[s]{0,1}://.*")) {
-                X509CRL crl = CrlUtils.load(URI.create(url).toURL().openStream());
-                crlCache.set(url, crl);
-                return crl;
-            } else if (url.startsWith("ldap://"))
-                // Currently not supported.
-                return null;
-        } catch (Exception e) {
+            return CrlUtils.load(URI.create(url).toURL().openStream());
+        } catch (IOException | CRLException e) {
             throw new CertificateValidationException(String.format("Failed to download CRL '%s' (%s)", url, e.getMessage()), e);
         }
-        return null;
     }
 }
