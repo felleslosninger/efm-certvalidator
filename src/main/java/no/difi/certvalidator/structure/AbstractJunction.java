@@ -17,8 +17,17 @@ public abstract class AbstractJunction implements ValidatorRule {
         addRule(validatorRules);
     }
 
+    public AbstractJunction(List<ValidatorRule> validatorRules) {
+        addRule(validatorRules);
+    }
+
     public AbstractJunction addRule(ValidatorRule... validatorRules) {
         this.validatorRules.addAll(Arrays.asList(validatorRules));
+        return this;
+    }
+
+    public AbstractJunction addRule(List<ValidatorRule> validatorRules) {
+        this.validatorRules.addAll(validatorRules);
         return this;
     }
 

@@ -13,7 +13,6 @@ import java.util.Map;
  * @author erlend
  */
 @MetaInfServices
-@SuppressWarnings("unused")
 public class SigningRuleParser implements ValidatorRuleParser {
 
     @Override

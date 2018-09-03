@@ -17,7 +17,6 @@ import java.util.Map;
  */
 @Order(100)
 @MetaInfServices
-@SuppressWarnings("unused")
 public class ValidatorKeyStoresLoader implements ValidatorRecipeParser {
 
     @Override

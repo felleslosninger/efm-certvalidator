@@ -12,7 +12,6 @@ import java.util.Map;
  * @author erlend
  */
 @MetaInfServices
-@SuppressWarnings("unused")
 public class ValidatorReferenceRuleParser implements ValidatorRuleParser {
 
     @Override

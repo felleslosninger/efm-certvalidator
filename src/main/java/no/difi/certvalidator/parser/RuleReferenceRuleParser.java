@@ -1,6 +1,5 @@
 package no.difi.certvalidator.parser;
 
-import no.difi.certvalidator.api.CertificateValidationException;
 import no.difi.certvalidator.api.ValidatorRule;
 import no.difi.certvalidator.api.ValidatorRuleParser;
 import no.difi.certvalidator.jaxb.RuleReferenceType;
@@ -13,7 +12,6 @@ import java.util.Map;
  * @author erlend
  */
 @MetaInfServices
-@SuppressWarnings("unused")
 public class RuleReferenceRuleParser implements ValidatorRuleParser {
 
     @Override

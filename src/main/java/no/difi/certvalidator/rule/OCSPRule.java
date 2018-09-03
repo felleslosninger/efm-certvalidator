@@ -6,6 +6,7 @@ import net.klakegg.pkix.ocsp.OcspException;
 import no.difi.certvalidator.api.*;
 import no.difi.certvalidator.util.SimpleProperty;
 
+import java.net.UnknownHostException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,10 @@ public class OCSPRule extends AbstractRule {
 
             return report;
         } catch (OcspException e) {
-            throw new FailedValidationException(e.getMessage(), e);
+            if (e.getCause() instanceof UnknownHostException)
+                throw new CertificateValidationException(e.getMessage(), e);
+            else
+                throw new FailedValidationException(e.getMessage(), e);
         } catch (Exception e) {
             throw new CertificateValidationException(e.getMessage(), e);
         }

@@ -18,6 +18,10 @@ public class OrJunction extends AbstractJunction {
         super(validatorRules);
     }
 
+    public OrJunction(List<ValidatorRule> validatorRules) {
+        super(validatorRules);
+    }
+
     /**
      * {@inheritDoc}
      */

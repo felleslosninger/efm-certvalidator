@@ -11,7 +11,7 @@ public class JunctionTest {
     @Test
     public void simpleAnd() throws Exception {
         Junction.and(DummyRule.alwaysSuccess(), DummyRule.alwaysSuccess(), DummyRule.alwaysSuccess())
-        .validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
+                .validate(Validator.getCertificate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
     }
 
     @Test
@@ -63,10 +63,5 @@ public class JunctionTest {
 
         Assert.assertTrue(Junction.xor(new DummyRule()) instanceof DummyRule);
         Assert.assertTrue(Junction.xor(new DummyRule(), new DummyRule()) instanceof XorJunction);
-    }
-
-    @Test
-    public void simpleConstructor() {
-        new Junction();
     }
 }

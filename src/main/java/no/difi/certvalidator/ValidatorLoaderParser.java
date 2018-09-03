@@ -12,6 +12,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.transform.stream.StreamSource;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 class ValidatorLoaderParser {
 
@@ -100,8 +102,7 @@ class ValidatorLoaderParser {
         throw new ValidatorParsingException(String.format("Unable to parse '%s'", rule));
     }
 
-    private static ValidatorRule parse(BlacklistType rule, Map<String, Object> objectStorage)
-            throws CertificateValidationException {
+    private static ValidatorRule parse(BlacklistType rule, Map<String, Object> objectStorage) {
         return new BlacklistRule(getBucket(rule.getValue(), objectStorage));
     }
 
@@ -170,22 +171,15 @@ class ValidatorLoaderParser {
     }
 
     public static <T> List<T> serviceLoader(Class<T> cls) {
-        List<T> result = new ArrayList<>();
-        for (T obj : ServiceLoader.load(cls))
-            result.add(obj);
+        return StreamSupport.stream(ServiceLoader.load(cls).spliterator(), false)
+                .sorted((o1, o2) -> {
+                    int v1 = o1.getClass().isAnnotationPresent(Order.class) ?
+                            o1.getClass().getAnnotation(Order.class).value() : 0;
+                    int v2 = o2.getClass().isAnnotationPresent(Order.class) ?
+                            o2.getClass().getAnnotation(Order.class).value() : 0;
 
-        Collections.sort(result, new Comparator<T>() {
-            @Override
-            public int compare(T o1, T o2) {
-                int v1 = o1.getClass().isAnnotationPresent(Order.class) ?
-                        o1.getClass().getAnnotation(Order.class).value() : 0;
-                int v2 = o2.getClass().isAnnotationPresent(Order.class) ?
-                        o2.getClass().getAnnotation(Order.class).value() : 0;
-
-                return Integer.compare(v1, v2);
-            }
-        });
-
-        return result;
+                    return Integer.compare(v1, v2);
+                })
+                .collect(Collectors.toList());
     }
 }

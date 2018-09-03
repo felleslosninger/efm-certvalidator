@@ -18,7 +18,6 @@ import java.util.Map;
  */
 @Order(200)
 @MetaInfServices
-@SuppressWarnings("unused")
 public class ValidatorBucketsLoader implements ValidatorRecipeParser {
 
     @Override

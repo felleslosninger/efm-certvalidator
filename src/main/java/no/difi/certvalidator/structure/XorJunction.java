@@ -18,6 +18,10 @@ public class XorJunction extends AbstractJunction {
         super(validatorRules);
     }
 
+    public XorJunction(List<ValidatorRule> validatorRules) {
+        super(validatorRules);
+    }
+
     /**
      * {@inheritDoc}
      */

@@ -5,6 +5,7 @@ import no.difi.certvalidator.api.Report;
 import no.difi.certvalidator.api.ValidatorRule;
 
 import java.security.cert.X509Certificate;
+import java.util.List;
 
 /**
  * Allows combining instances of validators using a limited set of logic.
@@ -12,6 +13,10 @@ import java.security.cert.X509Certificate;
 public class AndJunction extends AbstractJunction {
 
     public AndJunction(ValidatorRule... validatorRules) {
+        super(validatorRules);
+    }
+
+    public AndJunction(List<ValidatorRule> validatorRules) {
         super(validatorRules);
     }
 

@@ -33,6 +33,16 @@ public class ValidatorBuilder {
      * @return Builder instance.
      */
     public ValidatorBuilder addRule(ValidatorRule validatorRule) {
+        return add(validatorRule);
+    }
+
+    /**
+     * Append validator instance to validator.
+     *
+     * @param validatorRule Configured validator.
+     * @return Builder instance.
+     */
+    public ValidatorBuilder add(ValidatorRule validatorRule) {
         validatorRules.add(validatorRule);
         return this;
     }
@@ -46,6 +56,6 @@ public class ValidatorBuilder {
         if (validatorRules.size() == 1)
             return new Validator(validatorRules.get(0));
 
-        return new Validator(Junction.and(validatorRules.toArray(new ValidatorRule[validatorRules.size()])));
+        return new Validator(Junction.and(validatorRules));
     }
 }
