@@ -3,6 +3,7 @@ package no.difi.certvalidator.rule;
 import net.klakegg.pkix.ocsp.CertificateResult;
 import net.klakegg.pkix.ocsp.OcspClient;
 import net.klakegg.pkix.ocsp.OcspException;
+import net.klakegg.pkix.ocsp.OcspServerException;
 import no.difi.certvalidator.api.*;
 import no.difi.certvalidator.util.SimpleProperty;
 
@@ -34,6 +35,8 @@ public class OCSPRule extends AbstractRule {
             report.set(RESULT, ocspClient.verify(certificate));
 
             return report;
+        } catch (OcspServerException e) {
+            throw new CertificateValidationException(e.getMessage(), e);
         } catch (OcspException e) {
             if (e.getCause() instanceof UnknownHostException)
                 throw new CertificateValidationException(e.getMessage(), e);
