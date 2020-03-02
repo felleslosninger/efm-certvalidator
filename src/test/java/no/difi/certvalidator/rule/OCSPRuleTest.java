@@ -23,7 +23,7 @@ public class OCSPRuleTest {
         rule.validate(certificate);
     }
 
-    @Test
+    @Test(enabled = false)
     public void certificateWithOCSP() throws CertificateValidationException {
         KeyStoreCertificateBucket keyStoreCertificateBucket = new KeyStoreCertificateBucket("JKS", getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
         ValidatorRule rule = new OCSPRule(keyStoreCertificateBucket.toSimple("peppol-ap", "peppol-smp"));

@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
  */
 public class CertificateBucketWrapperTest {
 
-    @Test
+    @Test(enabled = false)
     public void simple() throws Exception {
         // Load keystore
         KeyStoreCertificateBucket keyStoreCertificateBucket = new KeyStoreCertificateBucket(getClass().getResourceAsStream("/peppol-test.jks"), "peppol");

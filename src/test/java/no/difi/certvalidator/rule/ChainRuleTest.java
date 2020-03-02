@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 
 public class ChainRuleTest {
 
-    @Test
+    @Test(enabled = false)
     public void simple() throws Exception {
         KeyStoreCertificateBucket keyStoreCertificateBucket = new KeyStoreCertificateBucket("JKS", getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
         CertificateBucket rootCertificates = keyStoreCertificateBucket.toSimple("peppol-root");

@@ -20,7 +20,7 @@ public class CRLRuleTest {
 
     private CrlCache crlCache = new SimpleCrlCache();
 
-    @Test
+    @Test(enabled = false)
     public void simple() throws Exception {
         ValidatorBuilder.newInstance()
                 .addRule(new CRLRule())
@@ -28,7 +28,7 @@ public class CRLRuleTest {
                 .validate((getClass().getResourceAsStream("/peppol-test-ap-difi.cer")));
     }
 
-    @Test
+    @Test(enabled = false)
     public void updateCrl() throws Exception {
         String crlUrl = "http://pilotonsitecrl.verisign.com/DigitaliseringsstyrelsenPilotOpenPEPPOLACCESSPOINTCA/LatestCRL.crl";
 

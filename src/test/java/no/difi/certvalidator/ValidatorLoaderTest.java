@@ -14,7 +14,7 @@ import java.io.File;
 
 public class ValidatorLoaderTest {
 
-    @Test
+    @Test(enabled = false)
     public void simplePeppolTest() throws Exception {
         ValidatorGroup validator = ValidatorLoader.newInstance()
                 .put("crlCache", new SimpleCrlCache())

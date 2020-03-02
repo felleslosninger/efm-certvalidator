@@ -13,7 +13,7 @@ public class PeppolTest {
 
     private CrlCache crlCache = new SimpleCrlCache();
 
-    @Test
+    @Test(enabled = false)
     public void simpleTestAp() throws Exception {
         KeyStoreCertificateBucket keyStoreCertificateBucket = new KeyStoreCertificateBucket(getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
         CertificateBucket rootCertificates = keyStoreCertificateBucket.toSimple("peppol-root");
@@ -32,7 +32,7 @@ public class PeppolTest {
         valvalidatordatorHelper.validate(getClass().getResourceAsStream("/peppol-test-ap-difi.cer"));
     }
 
-    @Test
+    @Test(enabled = false)
     public void simpleTestSmp() throws Exception {
         KeyStoreCertificateBucket keyStoreCertificateBucket = new KeyStoreCertificateBucket(getClass().getResourceAsStream("/peppol-test.jks"), "peppol");
         CertificateBucket rootCertificates = keyStoreCertificateBucket.toSimple("peppol-root");
@@ -66,7 +66,7 @@ public class PeppolTest {
                 .validate(getClass().getResourceAsStream("/peppol-prod-ap-difi.cer"));
     }
 
-    @Test
+    @Test(enabled = false)
     public void simpleProdSmp() throws Exception {
         KeyStoreCertificateBucket keyStoreCertificateBucket = new KeyStoreCertificateBucket(getClass().getResourceAsStream("/peppol-prod.jks"), "peppol");
         CertificateBucket rootCertificates = keyStoreCertificateBucket.toSimple("peppol-root");
