@@ -1,3 +1,8 @@
+> [!WARNING]
+> Please note that this project is not being maintained.
+>
+> A fork is being maintained under https://github.com/felleslosninger/efm-common/tree/development/certvalidator for the purpose of eFormidlings certificate validation.
+
 # Certificate validator for X.509 certificates
 
 [![Build Status](https://travis-ci.org/difi/certvalidator.svg?branch=master)](https://travis-ci.org/difi/certvalidator)
